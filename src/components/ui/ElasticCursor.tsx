@@ -116,26 +116,25 @@ function ElasticCursor() {
 
   const [cursorMoved, setCursorMoved] = useState(false);
 
-  //mouse click effect:
+  // mouse click effect:
   const handleClick = () => {
     if (!jellyRef.current) return;
 
-    gsap.killTweensOf(jellyRef.current); // stop any ongoing animations
-
-    gsap.fromTo(
-      jellyRef.current,
-      { scale: 1 },
-      {
-        scale: 2,          // expand to 2x
-        duration: 0.1,     // very fast expand
+    gsap.timeline()
+      .to(jellyRef.current, {
+        scaleX: 2.2,
+        scaleY: 1.6,
+        duration: 0.12,
         ease: "power2.out",
-        yoyo: true,
-        repeat: 1,         // go back instantly
-        duration: 0.15,
-        ease: "power2.inOut",
-      }
-    );
+      })
+      .to(jellyRef.current, {
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.2,
+        ease: "elastic.out(1, 0.4)",
+      });
   };
+
   // Run on Mouse Move
   useLayoutEffect(() => {
     if (isMobile) return;
@@ -194,11 +193,17 @@ function ElasticCursor() {
       loop();
     };
 
-    if (!isLoading) window.addEventListener("mousemove", setFromEvent);
+    if (!isLoading) {
+      window.addEventListener("mousemove", setFromEvent);
+      window.addEventListener("mousedown", handleClick);
+    }
     return () => {
-      if (!isLoading) window.removeEventListener("mousemove", setFromEvent);
+      if (!isLoading) {
+        window.removeEventListener("mousemove", setFromEvent);
+        window.removeEventListener("mousedown", handleClick);
+      }
     };
-  }, [isLoading]);
+  }, [isLoading, isMobile, cursorMoved, loop]);
 
   useEffect(() => {
     if (!jellyRef.current) return;
