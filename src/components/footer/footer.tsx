@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { footer } from "./config";
 import { Button } from "../ui/button";
@@ -6,7 +7,16 @@ import SocialMediaButtons from "../social/social-media-icons";
 import { config } from "@/data/config";
 
 function Footer() {
-  const year = new Date().getFullYear();
+  const [mounted, setMounted] = useState(false);
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setMounted(true);
+    setYear(new Date().getFullYear());
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t border-border px-4 py-6 sm:flex-row md:px-6 sm:justify-between">
       <p className="text-xs text-gray-500 dark:text-gray-400">
