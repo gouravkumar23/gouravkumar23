@@ -51,7 +51,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
         particles[i].life = 1.0;
         // Spawn slightly behind the bird
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          -4, // Offset behind (increased for larger bird)
+          -4, // Offset behind
           (Math.random() - 0.5) * 1,
           (Math.random() - 0.5) * 1
         ));
@@ -138,7 +138,7 @@ function Model({ scale = 0.02, ...props }: any) {
     // 1. Spawn at Center Top
     tl.set(group.current.position, { x: 0, y: 5, z: 0 });
     tl.set(group.current.scale, { x: 1, y: 1, z: 1 });
-    tl.set(group.current.rotation, { y: Math.PI / 2 }); // Face Right
+    tl.set(group.current.rotation, { y: -Math.PI / 2 }); // Face Right (Corrected)
 
     // 2. Pass 1: Gentle Glide to Right
     tl.to(group.current.position, { x: 30, y: -5, z: -5, duration: 10, ease: "none" });
@@ -156,8 +156,8 @@ function Model({ scale = 0.02, ...props }: any) {
     tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section)
-    tl.to(group.current.position, { x: 0, y: -4, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section) - Moved lower (y: -12)
+    tl.to(group.current.position, { x: 0, y: -12, z: 5, duration: 10, ease: "power1.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -189,7 +189,7 @@ const PhoenixModel = () => {
         <ambientLight intensity={2} />
         <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
-          <Float speed={3} rotationIntensity={0.3} floatIntensity={0.3}>
+          <Float speed={3} rotationIntensity={0.1} floatIntensity={0.3}>
             <Model scale={isMobile ? 0.015 : 0.02} />
           </Float>
         </Suspense>
