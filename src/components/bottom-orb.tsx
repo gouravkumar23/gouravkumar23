@@ -1,19 +1,29 @@
 "use client";
 
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Float, MeshDistortMaterial } from "@react-three/drei";
+import { useGLTF, useAnimations, Float, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 
 function OrbModel() {
   const group = useRef<THREE.Group>(null);
-  // Using the energy_orb model from your 3dmodels folder
-  const { scene } = useGLTF("/3dmodels/energy_orb/scene.gltf");
+  // Load the model and its animations from the public folder
+  const { scene, animations } = useGLTF("/3dmodels/energy_orb/scene.gltf");
+  const { actions } = useAnimations(animations, group);
+
+  useEffect(() => {
+    // Play all animations found in the GLTF file
+    if (actions && Object.keys(actions).length > 0) {
+      Object.values(actions).forEach((action) => {
+        action?.reset().fadeIn(0.5).play();
+      });
+    }
+  }, [actions]);
 
   useFrame((state) => {
     if (group.current) {
+      // Subtle continuous rotation to keep it dynamic
       group.current.rotation.y += 0.005;
-      group.current.position.y = Math.sin(state.clock.getElapsedTime()) * 0.2;
     }
   });
 
@@ -21,41 +31,42 @@ function OrbModel() {
     <group ref={group} dispose={null}>
       <primitive 
         object={scene} 
-        scale={1.5} 
+        scale={2.5} 
         position={[0, 0, 0]} 
       />
-      {/* Adding a glow effect */}
-      <mesh scale={2}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <MeshDistortMaterial
-          color="#6366f1"
-          speed={2}
-          distort={0.4}
-          radius={1}
-          transparent
-          opacity={0.1}
-        />
-      </mesh>
     </group>
   );
 }
 
 const BottomOrb = () => {
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full h-40 pointer-events-none z-[30]">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }} alpha={true}>
-        <ambientLight intensity={1} />
-        <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none z-[30]">
+      <Canvas camera={{ position: [0, 0, 8], fov: 45 }} alpha={true}>
+        <ambientLight intensity={1.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#6366f1" />
+        <pointLight position={[-10, -10, -10]} intensity={1} color="#f43f5e" />
+        
         <Suspense fallback={null}>
-          <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+          <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
             <OrbModel />
           </Float>
+          <ContactShadows 
+            position={[0, -2.5, 0]} 
+            opacity={0.4} 
+            scale={10} 
+            blur={2.5} 
+            far={4} 
+          />
         </Suspense>
       </Canvas>
-      {/* Subtle floor glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-indigo-500/20 blur-[100px] rounded-full -z-10" />
+      
+      {/* Visual glow effect in CSS for extra pop */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-32 bg-indigo-500/10 blur-[120px] rounded-full -z-10" />
     </div>
   );
 };
+
+// Preload the model to avoid jank during navigation
+useGLTF.preload("/3dmodels/energy_orb/scene.gltf");
 
 export default BottomOrb;
