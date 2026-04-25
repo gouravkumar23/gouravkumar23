@@ -85,7 +85,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
   );
 }
 
-function Model({ scale = 0.001, ...props }: any) {
+function Model({ scale = 0.0095, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
   const [modelOpacity, setModelOpacity] = React.useState(1);
@@ -136,7 +136,7 @@ function Model({ scale = 0.001, ...props }: any) {
     // 1. Spawn at Center
     tl.set(group.current.position, { x: 0, y: 0, z: 0 });
     tl.set(group.current.scale, { x: 1, y: 1, z: 1 });
-    tl.set(group.current.rotation, { y: Math.PI / 2 }); // Face Right
+    tl.set(group.current.rotation, { y: Math.PI / 2 + Math.PI }); // Rotated 180 degrees
 
     // 2. Pass 1: Gentle Downward Slant to Right
     tl.to(group.current.position, { x: 20, y: -12, z: -5, duration: 8, ease: "none" });
