@@ -47,7 +47,7 @@ function useInstance(value = {}) {
 
 // Function for Mouse Move Scale Change
 function getScale(diffX: number, diffY: number) {
-  const distance = Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
+  const distance = Math.sqrt(Math.pow(diffX, 3) + Math.pow(diffY, 3));
   return Math.min(distance / 735, 0.35);
 }
 
