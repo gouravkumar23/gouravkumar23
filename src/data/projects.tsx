@@ -249,6 +249,7 @@ const projects: Project[] = [
       frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.tailwind],
       backend: [PROJECT_SKILLS.flask, PROJECT_SKILLS.firebase, PROJECT_SKILLS.gemini],
     },
+    live: "https://scrumassisstant.vercel.app/",
     github: "https://github.com/gouravkumar23/Scrum-Assisstant",
     get content() {
       return (
@@ -256,7 +257,7 @@ const projects: Project[] = [
           <TypographyP className="font-mono ">
             Intelligent Scrum Master Assistant that automates Scrum duties and integrates with WhatsApp for team management.
           </TypographyP>
-          <ProjectsLinks repo={this.github} />
+          <ProjectsLinks live={this.live} repo={this.github} />
           <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
           <ul className="list-disc ml-6 font-mono">
             <li>WhatsApp integration for real-time team updates</li>
@@ -278,6 +279,7 @@ const projects: Project[] = [
       frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.tailwind],
       backend: [PROJECT_SKILLS.flask, PROJECT_SKILLS.firebase],
     },
+    live: "https://jazzy-dodol-06b17d.netlify.app/",
     github: "https://github.com/gouravkumar23/BayMax",
     get content() {
       return (
@@ -285,7 +287,7 @@ const projects: Project[] = [
           <TypographyP className="font-mono ">
             AI-Powered IT Incident Summarization platform designed to provide analytical dashboards for IT management.
           </TypographyP>
-          <ProjectsLinks repo={this.github} />
+          <ProjectsLinks live={this.live} repo={this.github} />
           <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
           <ul className="list-disc ml-6 font-mono">
             <li>BART-based AI summarization of IT incidents</li>

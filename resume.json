@@ -130,6 +130,7 @@
       "description": "AI Based Scrum Assistant Software [cite: 17]",
       "technologies": "Gemini API, Whapi, SMTP, Firebase Firestore & Auth, Bolt.new, Flask, Requests [cite: 18]",
       "links": {
+        "live": "https://scrumassisstant.vercel.app/ [cite: 17]",
         "github": "https://github.com/gouravkumar23/Scrum-Assisstant [cite: 17]"
       },
       "details": [
@@ -143,6 +144,7 @@
       "description": "AI Platform for IT Incidents [cite: 18]",
       "technologies": "BART (facebook/bart-base), Gradio, Flask, Firebase, React, Web Analytics [cite: 18]",
       "links": {
+        "live": "https://jazzy-dodol-06b17d.netlify.app/ [cite: 18]",
         "github": "https://github.com/gouravkumar23/BayMax [cite: 18]"
       },
       "details": [
