@@ -72,7 +72,7 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.6} // Even larger particles
+        size={0.6}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -119,16 +119,18 @@ function Model({ scale = 1, ...props }: any) {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.3, // Faster response
+        scrub: 0.3,
         onUpdate: (self) => {
           scrollDir.current = self.direction;
           if (!group.current) return;
           
           // Adjust rotation based on scroll direction
+          // If scrolling down (direction 1), fly right-to-left (face left: -PI/2)
+          // If scrolling up (direction -1), fly left-to-right (face right: PI/2)
           const targetY = self.direction >= 0 ? -Math.PI / 2 : Math.PI / 2;
           gsap.to(group.current.rotation, {
             y: targetY,
-            duration: 0.2,
+            duration: 0.3,
             overwrite: "auto"
           });
         }
