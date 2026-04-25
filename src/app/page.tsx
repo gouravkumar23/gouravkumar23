@@ -22,25 +22,32 @@ function MainPage() {
   return (
     <>
       <SmoothScroll>
-        <main className={cn("bg-slate-100 dark:bg-transparent")}>
-          {/* Background Keyboard */}
-          <div className="top-0 z-0 fixed w-full h-screen">
-            <AnimatedBackground />
+        <main className={cn("bg-slate-100 dark:bg-transparent relative")}>
+          {/* Background Keyboard - Higher Z-index for interaction */}
+          <div className="top-0 z-[10] fixed w-full h-screen pointer-events-none">
+            <div className="w-full h-full pointer-events-auto">
+              <AnimatedBackground />
+            </div>
           </div>
 
-          {/* Revolving Phoenix */}
-          <div className="fixed inset-0 z-[1] pointer-events-none">
+          {/* Revolving Phoenix - Lower Z-index so it doesn't block keyboard */}
+          <div className="fixed inset-0 z-[5] pointer-events-none">
             <PhoenixModel />
           </div>
 
-          <HeroSection />
-          <EducationSection />
-          <ExperienceSection />
-          <SkillsSection />
-          <ProjectsSection />
-          <CertificatesSection />
-          <LeadershipSection />
-          <ContactSection />
+          {/* Content - Highest Z-index */}
+          <div className="relative z-[20] pointer-events-none">
+            <div className="pointer-events-auto">
+              <HeroSection />
+              <EducationSection />
+              <ExperienceSection />
+              <SkillsSection />
+              <ProjectsSection />
+              <CertificatesSection />
+              <LeadershipSection />
+              <ContactSection />
+            </div>
+          </div>
         </main>
       </SmoothScroll>
     </>
