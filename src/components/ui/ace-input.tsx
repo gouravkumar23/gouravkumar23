@@ -41,52 +41,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             `flex h-10 w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm  file:border-0 file:bg-transparent 
           file:text-sm file:font-medium placeholder:text-neutral-400 dark:placeholder-text-neutral-600 
           focus-visible:outline-none focus-visible:ring-[2px]  focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600
-           disabled:cursor-not-allowed disabled:think
-The user wants me to continue the previous response which was cut off.
-The previous response was implementing `src/components/ui/ace-input.tsx`.
-It stopped at: `disabled:cursor-not-allowed disabled:`
-
-I need to finish the `ace-input.tsx` file and then check if there were other files I was supposed to write.
-In the previous turn, I was writing:
-1. `src/components/ui/card.tsx` (Finished)
-2. `src/components/ui/ace-input.tsx` (Cut off)
-
-I should also probably provide `src/components/ui/ace-textarea.tsx` since it's used in `ContactForm.tsx`.
-
-Let's finish `ace-input.tsx` first.
-
-```tsx
            disabled:cursor-not-allowed disabled:opacity-50
-           dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
-           group-hover/input:shadow-none transition duration-400
-           `,
-            className
-          )}
-          ref={ref}
-          {...props}
-        />
-      </motion.div>
-    );
-  }
-);
-Input.displayName = "Input";
-
-export { Input };
-```
-
-And then `src/components/ui/ace-textarea.tsx`:
-
-```tsx
+           dark:shadow<dyad-write path="src/components/ui/ace-input.tsx" description="Completing the Ace Input component.">
 "use client";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { useMotionTemplate, useMotionValue, motion } from "framer-motion";
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
     const radius = 100;
     const [visible, setVisible] = React.useState(false);
 
@@ -115,37 +80,13 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         onMouseLeave={() => setVisible(false)}
         className="p-[2px] rounded-lg transition duration-300 group/input"
       >
-        <textarea
+        <input
+          type={type}
           className={cn(
-            `flex min-h-[80px] w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm  placeholder:text-neutral-400 dark:placeholder-text-neutral-600 
+            `flex h-10 w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm  file:border-0 file:bg-transparent 
+          file:text-sm file:font-medium placeholder:text-neutral-400 dark:placeholder-text-neutral-600 
           focus-visible:outline-none focus-visible:ring-[2px]  focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600
            disabled:cursor-not-allowed disabled:opacity-50
-           dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
-           group-hover/input:shadow-none transition duration-400
-           `,
-            className
-          )}
-          ref={ref}
-          {...props}
-        />
-      </motion.div>
-    );
-  }
-);
-Textarea.displayName = "Textarea";
-
-export { Textarea };
-```
-
-Wait, I should also check if `use-toast.ts` and `toaster.tsx` are needed.
-The user is getting "Element type is invalid".
-In `ContactForm.tsx`:
-`import { useToast } from "./ui/use-toast";`
-`import { Toaster } from "@/components/ui/toaster";` (in layout.tsx)
-
-I should provide these as well.
-
-Let's start with finishing `ace-input.tsx`.opacity-50
            dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
            group-hover/input:shadow-none transition duration-400
            `,
