@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Volumetric Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 600; // Increased for a denser, longer trail
+  const count = 600; 
   
   const particles = useMemo(() => {
     const arr = [];
@@ -40,7 +40,6 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        // Slower decay (0.4 instead of 1.5) makes the trail much longer
         particles[i].life -= delta * 0.4; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
@@ -54,7 +53,6 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
           (Math.random() - 0.5) * 0.5,
           (Math.random() - 0.5) * 1.0
         ));
-        // Slight drift velocity
         particles[i].velocity.set(
           (Math.random() - 0.5) * 0.2,
           (Math.random() - 0.5) * 0.2,
@@ -122,8 +120,9 @@ function Model({ scale = 1, ...props }: any) {
     });
 
     // Initial state: Center (Hero section)
+    // Adjusted rotation to face forward (towards +X)
     tl.set(group.current.position, { x: 0, y: 0, z: 0 })
-      .set(group.current.rotation, { y: Math.PI / 2, z: 0.1 });
+      .set(group.current.rotation, { y: -Math.PI / 2, z: 0.1 });
 
     // Segment 1: Fly out to the right
     tl.to(group.current.position, { x: 25, y: 10, z: -5, duration: 5, ease: "none" })
@@ -168,10 +167,10 @@ const PhoenixModel = () => {
         style={{ pointerEvents: 'none' }}
       >
         <ambientLight intensity={1.2} />
-        <pointLight position={[10, 10, 10]} intensity={3} color="#6366f1" />
+        <pointLight position={[10, 10, 10]} intensity={4} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={3} rotationIntensity={0.4} floatIntensity={0.4}>
-            <Model scale={isMobile ? 0.005 : 0.008} />
+            <Model scale={isMobile ? 0.008 : 0.015} />
           </Float>
         </Suspense>
       </Canvas>
