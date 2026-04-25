@@ -1,121 +1,145 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, useAnimations, Float, ContactShadows } from "@react-three/drei";
+import { Float, ContactShadows } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
-function OrbModel() {
-  const group = useRef<THREE.Group>(null);
+function EnergyRing() {
   const ringRef = useRef<THREE.Mesh>(null);
-  const { scene, animations } = useGLTF("/3dmodels/energy_orb/scene.gltf");
-  const { actions } = useAnimations(animations, group);
+  const spikesRef = useRef<THREE.Group>(null);
 
-  // Apply the "shattered energy" look
-  useEffect(() => {
-    scene.traverse((obj) => {
-      if ((obj as THREE.Mesh).isMesh) {
-        const mesh = obj as THREE.Mesh;
-        
-        // Hide solid inner parts to keep it hollow
-        if (mesh.name.toLowerCase().includes("core") || 
-            mesh.name.toLowerCase().includes("center") || 
-            mesh.name.toLowerCase().includes("inner")) {
-          mesh.visible = false;
-        }
-
-        // Create a sharp, crystalline energy material
-        mesh.material = new THREE.MeshStandardMaterial({
-          color: "#000000",
-          emissive: "#a855f7",
-          emissiveIntensity: 20,
-          transparent: true,
-          opacity: 0.7,
-          wireframe: true, // Gives it that sharp, shattered look from the image
-          side: THREE.DoubleSide,
-          blending: THREE.AdditiveBlending,
-        });
-      }
-    });
-  }, [scene]);
-
-  useEffect(() => {
-    if (actions && Object.keys(actions).length > 0) {
-      Object.values(actions).forEach((action) => {
-        action?.reset().fadeIn(0.5).play();
-      });
+  // Create sparse energy spikes
+  const spikes = useMemo(() => {
+    const temp = [];
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2;
+      const length = 1.5 + Math.random() * 2;
+      temp.push({ angle, length });
     }
-  }, [actions]);
+    return temp;
+  }, []);
 
   useFrame((state) => {
-    if (group.current) {
-      // Fast, chaotic rotation for energy effect
-      group.current.rotation.y += 0.02;
-      group.current.rotation.z += 0.015;
-      group.current.rotation.x += 0.01;
-      
-      // Pulse the whole group
-      const s = 3.5 + Math.sin(state.clock.elapsedTime * 4) * 0.2;
-      group.current.scale.set(s, s, s);
-    }
+    const t = state.clock.getElapsedTime();
     
     if (ringRef.current) {
-      // Rotate the ring separately
-      ringRef.current.rotation.z += 0.01;
+      ringRef.current.rotation.z = t * 0.5;
+      // Subtle pulse
+      const s = 1 + Math.sin(t * 4) * 0.05;
+      ringRef.current.scale.set(s, s, s);
+    }
+
+    if (spikesRef.current) {
+      spikesRef.current.rotation.z = -t * 0.3;
+      spikesRef.current.children.forEach((child, i) => {
+        // Flickering effect for spikes
+        const flicker = 0.8 + Math.sin(t * 10 + i) * 0.2;
+        if (child instanceof THREE.Mesh) {
+          child.scale.y = flicker;
+          (child.material as THREE.MeshBasicMaterial).opacity = 0.4 + Math.sin(t * 15 + i) * 0.3;
+        }
+      });
     }
   });
 
   return (
-    <group ref={group} dispose={null}>
-      {/* The bright circular ring seen in the image */}
-      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.2, 0.02, 16, 100]} />
-        <meshStandardMaterial 
-          color="#ffffff" 
-          emissive="#bf00ff" 
-          emissiveIntensity={50} 
-          toneMapped={false}
+    <group>
+      {/* Main Neon Ring */}
+      <mesh ref={ringRef}>
+        <torusGeometry args={[2.5, 0.03, 16, 100]} />
+        <meshBasicMaterial 
+          color="#ff00ff" 
+          transparent 
+          opacity={0.9}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
         />
       </mesh>
-      
-      {/* The shattered shards */}
-      <primitive object={scene} />
+
+      {/* Secondary Inner Ring */}
+      <mesh rotation={[0, 0, Math.PI / 4]}>
+        <torusGeometry args={[2.3, 0.01, 16, 100]} />
+        <meshBasicMaterial 
+          color="#8a2be2" 
+          transparent 
+          opacity={0.5}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Energy Spikes */}
+      <group ref={spikesRef}>
+        {spikes.map((spike, i) => (
+          <mesh 
+            key={i} 
+            position={[
+              Math.cos(spike.angle) * 2.5, 
+              Math.sin(spike.angle) * 2.5, 
+              0
+            ]}
+            rotation={[0, 0, spike.angle + Math.PI / 2]}
+          >
+            <cylinderGeometry args={[0.01, 0.04, spike.length, 8]} />
+            <meshBasicMaterial 
+              color="#ff00ff" 
+              transparent 
+              opacity={0.6}
+              blending={THREE.AdditiveBlending}
+              depthWrite={false}
+            />
+          </mesh>
+        ))}
+      </group>
     </group>
   );
 }
 
 const BottomOrb = () => {
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full h-96 pointer-events-none z-[30]">
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} alpha={true}>
-        <ambientLight intensity={0.1} />
-        
-        {/* High intensity point lights for the glow */}
-        <pointLight position={[0, 0, 0]} intensity={100} color="#bf00ff" distance={15} />
-        <pointLight position={[5, 5, 5]} intensity={50} color="#7e22ce" />
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full h-[500px] pointer-events-none z-[30]">
+      <Canvas 
+        camera={{ position: [0, 0, 10], fov: 45 }} 
+        alpha={true}
+        gl={{ 
+          antialias: false,
+          powerPreference: "high-performance",
+        }}
+      >
+        <color attach="background" args={["#000000"]} />
         
         <Suspense fallback={null}>
-          <Float speed={6} rotationIntensity={2} floatIntensity={2}>
-            <OrbModel />
+          <Float speed={4} rotationIntensity={0.5} floatIntensity={1}>
+            <EnergyRing />
           </Float>
+
           <ContactShadows 
             position={[0, -4.5, 0]} 
-            opacity={1} 
+            opacity={0.4} 
             scale={20} 
-            blur={4} 
-            far={6} 
-            color="#7e22ce"
+            blur={2} 
+            far={4.5} 
+            color="#8a2be2"
           />
+
+          {/* Unreal Bloom Post-processing */}
+          <EffectComposer disableNormalPass>
+            <Bloom 
+              intensity={2.5} 
+              luminanceThreshold={0.1} 
+              luminanceSmoothing={0.9} 
+              radius={0.5}
+            />
+          </EffectComposer>
         </Suspense>
       </Canvas>
       
-      {/* Intense CSS glow layers */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-purple-600/30 blur-[180px] rounded-full -z-10" />
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-magenta-500/40 blur-[100px] rounded-full -z-10" />
+      {/* Background Glow Layers */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-purple-900/20 blur-[180px] rounded-full -z-10" />
     </div>
   );
 };
-
-useGLTF.preload("/3dmodels/energy_orb/scene.gltf");
 
 export default BottomOrb;
