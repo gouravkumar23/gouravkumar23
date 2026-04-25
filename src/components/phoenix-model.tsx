@@ -15,7 +15,6 @@ function Model({ scale = 1, ...props }: any) {
 
   useEffect(() => {
     if (actions && names.length > 0) {
-      // Play the first animation found in the GLTF file
       const action = actions[names[0]];
       if (action) {
         action.reset().fadeIn(0.5).play();
@@ -28,8 +27,7 @@ function Model({ scale = 1, ...props }: any) {
     };
   }, [actions, names]);
 
-  // Add a very subtle constant rotation to ensure it looks 3D even without interaction
-  useFrame((state) => {
+  useFrame(() => {
     if (group.current) {
       group.current.rotation.y += 0.005;
     }
@@ -99,7 +97,6 @@ const PhoenixModel = () => {
   );
 };
 
-// Preload the model to avoid delays
 useGLTF.preload("/3dmodels/phoenix_bird/scene.gltf");
 
 export default PhoenixModel;

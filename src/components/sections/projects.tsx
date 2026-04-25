@@ -16,30 +16,57 @@ import SmoothScroll from "../smooth-scroll";
 import projects, { Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
-const ProjectsSection = () => {
+const ProjectContents = ({ project }: { project: Project }) => {
   return (
-    <section id="projects" className="max-w-7xl mx-auto px-4 py-20">
-      <Link href={"#projects"}>
-        <h2
-          className={cn(
-            "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
-            "bg-gradient-to-b from-black/80 to-black/50",
-            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-16 md:mb-32"
+    <div className="p-2 md:p-4">
+      <h4 className="text-xl md:text-3xl text-neutral-800 dark:text-neutral-100 font-bold text-center mb-6 md:mb-10">
+        {project.title}
+      </h4>
+      <div className="flex flex-col md:flex-row md:justify-evenly gap-6 mb-10">
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
+            Frontend
+          </p>
+          {project.skills.frontend && project.skills.frontend.length > 0 && (
+            <FloatingDock items={project.skills.frontend} />
           )}
-        >
-          Projects
-        </h2>
-      </Link>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <Modall key={project.id} project={project} />
-        ))}
+        </div>
+        {project.skills.backend && project.skills.backend.length > 0 && (
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
+              Backend
+            </p>
+            <FloatingDock items={project.skills.backend} />
+          </div>
+        )}
       </div>
-    </section>
+      <div className="prose dark:prose-invert max-w-none">
+        {project.content}
+      </div>
+    </div>
   );
 };
 
-const Modall = ({ project }: { project: Project }) => {
+const ModalFooterContent = ({ project }: { project: Project }) => {
+  const { setOpen } = useModal();
+  return (
+    <ModalFooter className="gap-4 flex-row justify-end">
+      <button 
+        onClick={() => setOpen(false)}
+        className="px-4 py-2 bg-gray-200 text-black dark:bg-zinc-800 dark:text-white border border-transparent rounded-md text-sm transition-colors hover:bg-gray-300 dark:hover:bg-zinc-700"
+      >
+        Cancel
+      </button>
+      <Link href={project.live || "#"} target="_blank">
+        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-4 py-2 rounded-md border border-transparent transition-opacity hover:opacity-90">
+          Visit
+        </button>
+      </Link>
+    </ModalFooter>
+  );
+};
+
+const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <div className="flex items-center justify-center w-full">
       <Modal>
@@ -78,53 +105,26 @@ const Modall = ({ project }: { project: Project }) => {
   );
 };
 
-const ModalFooterContent = ({ project }: { project: Project }) => {
-  const { setOpen } = useModal();
+const ProjectsSection = () => {
   return (
-    <ModalFooter className="gap-4 flex-row justify-end">
-      <button 
-        onClick={() => setOpen(false)}
-        className="px-4 py-2 bg-gray-200 text-black dark:bg-zinc-800 dark:text-white border border-transparent rounded-md text-sm transition-colors hover:bg-gray-300 dark:hover:bg-zinc-700"
-      >
-        Cancel
-      </button>
-      <Link href={project.live || "#"} target="_blank">
-        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-4 py-2 rounded-md border border-transparent transition-opacity hover:opacity-90">
-          Visit
-        </button>
-      </Link>
-    </ModalFooter>
-  );
-};
-
-const ProjectContents = ({ project }: { project: Project }) => {
-  return (
-    <div className="p-2 md:p-4">
-      <h4 className="text-xl md:text-3xl text-neutral-800 dark:text-neutral-100 font-bold text-center mb-6 md:mb-10">
-        {project.title}
-      </h4>
-      <div className="flex flex-col md:flex-row md:justify-evenly gap-6 mb-10">
-        <div className="flex flex-col items-center gap-3">
-          <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
-            Frontend
-          </p>
-          {project.skills.frontend?.length > 0 && (
-            <FloatingDock items={project.skills.frontend} />
+    <section id="projects" className="max-w-7xl mx-auto px-4 py-20">
+      <Link href={"#projects"}>
+        <h2
+          className={cn(
+            "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
+            "bg-gradient-to-b from-black/80 to-black/50",
+            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-16 md:mb-32"
           )}
-        </div>
-        {project.skills.backend?.length > 0 && (
-          <div className="flex flex-col items-center gap-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
-              Backend
-            </p>
-            <FloatingDock items={project.skills.backend} />
-          </div>
-        )}
+        >
+          Projects
+        </h2>
+      </Link>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
       </div>
-      <div className="prose dark:prose-invert max-w-none">
-        {project.content}
-      </div>
-    </div>
+    </section>
   );
 };
 
