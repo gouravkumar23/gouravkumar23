@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Volumetric Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 600; 
+  const count = 800; // Denser trail
   
   const particles = useMemo(() => {
     const arr = [];
@@ -36,11 +36,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = 5; 
+    const spawnRate = 8; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 0.4; 
+        particles[i].life -= delta * 0.3; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -49,14 +49,15 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       } else if (spawned < spawnRate) {
         particles[i].life = 1.0;
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
+          (Math.random() - 0.5) * 2.0,
           (Math.random() - 0.5) * 1.0,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 1.0
+          (Math.random() - 0.5) * 2.0
         ));
+        // Trail goes in opposite direction of flight (Right and Up)
         particles[i].velocity.set(
-          (Math.random() - 0.5) * 0.2,
-          (Math.random() - 0.5) * 0.2,
-          (Math.random() - 0.5) * 0.2
+          0.5 + Math.random() * 0.5,
+          0.2 + Math.random() * 0.2,
+          (Math.random() - 0.5) * 0.5
         );
         spawned++;
       }
@@ -69,11 +70,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.1}
+        size={0.4} // Increased particle size
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.6}
+        opacity={0.7}
       />
     </Points>
   );
@@ -119,29 +120,25 @@ function Model({ scale = 1, ...props }: any) {
       }
     });
 
-    // Forward rotation (facing +X direction)
-    const forwardRotation = { y: Math.PI / 2, z: 0.1 };
+    // Facing Left and slightly Down
+    const flightRotation = { y: -Math.PI / 2, z: -0.2 };
 
-    // Initial state: Center (Hero section)
+    // Initial: Center
     tl.set(group.current.position, { x: 0, y: 0, z: 0 })
-      .set(group.current.rotation, forwardRotation);
+      .set(group.current.rotation, flightRotation);
 
-    // Segment 1: Fly out to the right
-    tl.to(group.current.position, { x: 25, y: 10, z: -5, duration: 5, ease: "none" })
+    // Lap 1: Start Top-Right, fly to Left-Middle
+    tl.set(group.current.position, { x: 25, y: 15, z: -10 })
+      .to(group.current.position, { x: -25, y: 5, z: -10, duration: 10, ease: "none" })
       
-      // Reset: Reappear from the left
-      .set(group.current.position, { x: -25, y: -10, z: -5 })
-      .set(group.current.rotation, forwardRotation)
+      // Wrap-around: Back to Right at same height (5)
+      .set(group.current.position, { x: 25, y: 5, z: -10 })
       
-      // Segment 2: Fly across the whole screen
-      .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" })
+      // Lap 2: Fly to Left-Bottom
+      .to(group.current.position, { x: -25, y: -15, z: -10, duration: 10, ease: "none" })
       
-      // Reset: Reappear from the left again
-      .set(group.current.position, { x: -25, y: -10, z: -5 })
-      .set(group.current.rotation, forwardRotation)
-      
-      // Segment 3: Final pass
-      .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" });
+      // Final: At the bottom, fly to the front (Z axis)
+      .to(group.current.position, { z: 10, duration: 5, ease: "power2.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -170,11 +167,11 @@ const PhoenixModel = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
-        <ambientLight intensity={1.2} />
-        <pointLight position={[10, 10, 10]} intensity={4} color="#6366f1" />
+        <ambientLight intensity={1.5} />
+        <pointLight position={[10, 10, 10]} intensity={5} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={3} rotationIntensity={0.4} floatIntensity={0.4}>
-            <Model scale={isMobile ? 0.008 : 0.015} />
+            <Model scale={isMobile ? 0.015 : 0.03} />
           </Float>
         </Suspense>
       </Canvas>
