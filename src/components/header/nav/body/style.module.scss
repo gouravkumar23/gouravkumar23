@@ -13,9 +13,9 @@
     margin: 0px;
     display: flex;
     overflow: hidden;
-    font-size: 32px;
-    padding-right: 30px;
-    padding-top: 10px;
+    font-size: 24px; // Reduced from 32px
+    padding-right: 20px;
+    padding-top: 8px;
     font-weight: 350;
   }
 }
@@ -23,11 +23,11 @@
 @media only screen and (min-width: 1000px) {
   .body {
     max-width: 1200px;
-    margin-top: 80px;
+    margin-top: 60px;
 
     p {
-      font-size: 5vw;
-      padding-right: 2vw;
+      font-size: 3.5vw; // Reduced from 5vw
+      padding-right: 1.5vw;
     }
   }
 }
