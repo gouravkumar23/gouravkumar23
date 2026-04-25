@@ -2,6 +2,7 @@ import styles from './style.module.scss';
 import { translate } from '../../anim';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { config } from '@/data/config';
 
 export default function Footer() {
   return (
@@ -14,14 +15,8 @@ export default function Footer() {
           animate="enter"
           exit="exit"
         >
-          <span>Design Inspiration:</span>{' '}
-          <Link 
-            href="https://github.com/Abhiz2411/3D-interactive-portfolio" 
-            target="_blank"
-            className="hover:text-brand transition-colors"
-          >
-            Abhijit Zende
-          </Link>
+          <span>Developer:</span>{' '}
+          <span className="text-brand">{config.author}</span>
         </motion.li>
       </ul>
       <ul>
