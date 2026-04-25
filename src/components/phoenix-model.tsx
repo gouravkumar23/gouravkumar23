@@ -138,25 +138,25 @@ function Model({ scale = 0.001, ...props }: any) {
     tl.set(group.current.scale, { x: 1, y: 1, z: 1 });
     tl.set(group.current.rotation, { y: Math.PI / 2 }); // Face Right
 
-    // 2. Pass 1: Steep Downward Slant to Right
-    tl.to(group.current.position, { x: 20, y: -20, z: -5, duration: 8, ease: "none" });
+    // 2. Pass 1: Gentle Downward Slant to Right
+    tl.to(group.current.position, { x: 20, y: -12, z: -5, duration: 8, ease: "none" });
     
     // 3. Vanish at Right
     tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
     tl.to(material, { opacity: 0, duration: 0.5 }, "<");
 
     // 4. Teleport to Left (at same Y)
-    tl.set(group.current.position, { x: -20, y: -20, z: -5 });
+    tl.set(group.current.position, { x: -20, y: -12, z: -5 });
     
     // 5. Reappear at Left
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
     tl.to(material, { opacity: 0.3, duration: 0.5 }, "<");
 
-    // 6. Pass 2: Steep Downward Slant to Right
-    tl.to(group.current.position, { x: 20, y: -45, z: -5, duration: 10, ease: "none" });
+    // 6. Pass 2: Gentle Downward Slant to Right
+    tl.to(group.current.position, { x: 20, y: -28, z: -5, duration: 10, ease: "none" });
 
     // 7. Final: Glide to Center and stay stationary (Contact Section)
-    tl.to(group.current.position, { x: 0, y: -70, z: 5, duration: 5, ease: "power2.out" });
+    tl.to(group.current.position, { x: 0, y: -45, z: 5, duration: 5, ease: "power2.out" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -189,7 +189,7 @@ const PhoenixModel = () => {
         <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={4} rotationIntensity={0.5} floatIntensity={0.5}>
-            <Model scale={isMobile ? 0.0008 : 0.0015} />
+            <Model scale={isMobile ? 0.0015 : 0.0025} />
           </Float>
         </Suspense>
       </Canvas>
