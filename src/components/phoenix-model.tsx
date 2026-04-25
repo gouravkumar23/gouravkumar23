@@ -11,9 +11,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 // Volumetric Trail Component with "Star" effect matching bird color
-function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THREE.Group>, direction: number }) {
+function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE.Group>, opacity: number }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 1500; 
+  const count = 1200; 
   
   const particles = useMemo(() => {
     const arr = [];
@@ -22,7 +22,6 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
         pos: new THREE.Vector3(0, -100, 0),
         life: 0,
         velocity: new THREE.Vector3(),
-        size: Math.random() * 0.4 + 0.1,
       });
     }
     return arr;
@@ -37,11 +36,12 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = 15; 
+    // Only spawn if the bird is visible
+    const spawnRate = opacity > 0.1 ? 15 : 0; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 0.5; 
+        particles[i].life -= delta * 0.6; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -50,15 +50,14 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
       } else if (spawned < spawnRate) {
         particles[i].life = 1.0;
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          (Math.random() - 0.5) * 1.2,
-          (Math.random() - 0.5) * 1.2,
-          (Math.random() - 0.5) * 1.2
+          (Math.random() - 0.5) * 1.0,
+          (Math.random() - 0.5) * 1.0,
+          (Math.random() - 0.5) * 1.0
         ));
         
-        // Trail velocity is slightly randomized for a "sparkle" spread
         particles[i].velocity.set(
           (Math.random() - 0.5) * 2,
-          0.5 + Math.random() * 0.5,
+          0.3 + Math.random() * 0.5,
           (Math.random() - 0.5) * 2
         );
         spawned++;
@@ -69,7 +68,7 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
     // Twinkle effect
     if (pointsRef.current.material instanceof THREE.PointsMaterial) {
       const time = state.clock.getElapsedTime();
-      pointsRef.current.material.opacity = 0.3 + Math.sin(time * 8) * 0.2;
+      pointsRef.current.material.opacity = (0.2 + Math.sin(time * 10) * 0.1) * opacity;
     }
   });
 
@@ -77,8 +76,8 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
     <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#6366f1" // Matches bird's indigo glow
-        size={0.2}
+        color="#6366f1"
+        size={0.15}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -91,25 +90,29 @@ function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THR
 function Model({ scale = 1, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
-  const scrollDir = useRef(1);
+  const [modelOpacity, setModelOpacity] = React.useState(1);
   const { scene, animations } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
   const { actions, names } = useAnimations(animations, group);
+
+  const material = useMemo(() => {
+    const mat = new THREE.MeshStandardMaterial({
+      color: "#1e1b4b",
+      wireframe: true,
+      transparent: true,
+      opacity: 0.3,
+      emissive: "#6366f1",
+      emissiveIntensity: 3,
+    });
+    return mat;
+  }, []);
 
   useMemo(() => {
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
-        const mesh = obj as THREE.Mesh;
-        mesh.material = new THREE.MeshStandardMaterial({
-          color: "#1e1b4b",
-          wireframe: true,
-          transparent: true,
-          opacity: 0.3,
-          emissive: "#6366f1",
-          emissiveIntensity: 3,
-        });
+        (obj as THREE.Mesh).material = material;
       }
     });
-  }, [scene]);
+  }, [scene, material]);
 
   useEffect(() => {
     if (actions && names.length > 0) {
@@ -127,7 +130,8 @@ function Model({ scale = 1, ...props }: any) {
         end: "bottom bottom",
         scrub: 0.5,
         onUpdate: (self) => {
-          scrollDir.current = self.direction;
+          // Update local state for the trail component
+          if (group.current) setModelOpacity(group.current.scale.x / scale);
         }
       }
     });
@@ -136,34 +140,50 @@ function Model({ scale = 1, ...props }: any) {
     tl.set(group.current.position, { x: 0, y: 0, z: 0 });
     tl.set(group.current.rotation, { y: Math.PI / 2 }); // Face Right
 
-    // 2. Slant to Right Corner
+    // 2. Pass 1: Slant to Top-Right
     tl.to(group.current.position, { x: 25, y: 18, z: -10, duration: 5, ease: "power1.inOut" });
     
-    // 3. Flip and fly to Left Corner at same Y
-    tl.to(group.current.rotation, { y: -Math.PI / 2, duration: 0.5 });
-    tl.to(group.current.position, { x: -25, y: 18, z: -10, duration: 5, ease: "none" });
+    // 3. Vanish at Right
+    tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
+    tl.to(material, { opacity: 0, duration: 0.5 }, "<");
+
+    // 4. Teleport to Top-Left
+    tl.set(group.current.position, { x: -25, y: 18, z: -10 });
     
-    // 4. Flip and slant to Right Corner (Lower)
-    tl.to(group.current.rotation, { y: Math.PI / 2, duration: 0.5 });
-    tl.to(group.current.position, { x: 25, y: -18, z: -10, duration: 10, ease: "power1.inOut" });
-    
-    // 5. Flip and return to Middle at the end
-    tl.to(group.current.rotation, { y: -Math.PI / 2, duration: 0.5 });
+    // 5. Reappear at Left
+    tl.to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 });
+    tl.to(material, { opacity: 0.3, duration: 0.5 }, "<");
+
+    // 6. Pass 2: Slant from Top-Left to Bottom-Right
+    tl.to(group.current.position, { x: 25, y: -10, z: -10, duration: 10, ease: "none" });
+
+    // 7. Vanish at Right
+    tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
+    tl.to(material, { opacity: 0, duration: 0.5 }, "<");
+
+    // 8. Teleport to Bottom-Left
+    tl.set(group.current.position, { x: -25, y: -10, z: -10 });
+
+    // 9. Reappear at Left
+    tl.to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 });
+    tl.to(material, { opacity: 0.3, duration: 0.5 }, "<");
+
+    // 10. Final: Slant to Middle (Footer)
     tl.to(group.current.position, { x: 0, y: -38, z: 10, duration: 5, ease: "power2.out" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
-  }, [scale]);
+  }, [scale, material]);
 
   return (
     <>
       <group ref={group} dispose={null}>
         <group ref={birdRef}>
-          <primitive object={scene} scale={scale} {...props} />
+          <primitive object={scene} scale={1} {...props} />
         </group>
       </group>
-      <PhoenixTrail targetRef={birdRef} direction={scrollDir.current} />
+      <PhoenixTrail targetRef={birdRef} opacity={modelOpacity} />
     </>
   );
 }
