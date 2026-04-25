@@ -77,7 +77,7 @@ const InteractiveGrid = () => {
           translateX: "-50%",
           translateY: "-50%",
           background: "radial-gradient(circle, rgba(255, 100, 0, 0.4) 0%, transparent 70%)",
-          backgroundColor: "rgba(255, 100, 0, 0.25)", // Increased opacity for light mode
+          backgroundColor: "rgba(255, 100, 0, 0.25)", 
         }}
       />
     </div>
