@@ -1,113 +1,99 @@
-![Portfolio Preview](https://github.com/Abhiz2411/3D-interactive-portfolio/blob/main/public/assets/seo/og-image.png?raw=true)
+# Hi there, I'm Gourav Kumar Gunjari 👋
 
-# 🚀 My Portfolio Website
+### AI & Software Developer | Computer Science Student @ Anurag University
 
-Welcome to the repository for my personal portfolio website! 🎉 This project is a culmination of creativity, technology, and my dedication to showcasing my skills, projects, and personality in a visually stunning and interactive manner.
-
-### Live preview: https://www.abhijitzende.com/
-
-![Preview](https://github.com/Abhiz2411/3D-interactive-portfolio/blob/main/public/assets/preview_video.gif?raw=true)
-
-https://github.com/Abhiz2411/3D-interactive-portfolio/blob/main/preview_video.mp4
-
-This project is **inspired** by the amazing work of [Naresh Khatri](https://github.com/Naresh-Khatri/Portfolio). His innovative approach to web design and attention to detail has been a huge influence. Thank you, Naresh! 🙏
-
-## 🔥 Features
-
-Here are the key highlights of my portfolio:
-
-### 🎹 **3D Interactive Animations**
-- Features a custom-made interactive keyboard built with **Spline**.
-- Each keycap represents a skill and reveals titles and descriptions on hover for an immersive experience.
-- Smooth, responsive 3D interactions that captivate visitors.
-
-### ✨ **Slick Interactions & Animations**
-- Powered by **GSAP** and **Framer Motion**, delivering buttery-smooth animations on scroll, hover, and element reveals.
-- Creative motion designs that enhance storytelling and keep users engaged.
-
-### 🌌 **Space-Themed Design**
-- Particles floating on a dark, cosmic background simulate an outer-space vibe.
-- Adds a unique and futuristic look to the portfolio.
-
-### 📱 **Responsive Design**
-- Fully responsive layout ensures the website looks and functions beautifully on all devices.
-- Optimized for both desktop and mobile experiences.
-
-### 🧠 **Innovative Web Design**
-- Combines cutting-edge technology with an intuitive user experience.
-- Creative use of animations and visuals to push the boundaries of modern web design.
-
-## 🛠️ Tech Stack
-
-The portfolio website is built using the following tools and technologies:
-
-- **Frontend:** Next.js, React, Tailwind CSS, Shadcn, Aceternity UI
-- **Animations:** GSAP, Framer Motion, Spline Runtime
-- **Other Tools:** Resend, Socket.io, Zod
-
-## 🌟 Getting Started
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/Abhiz2411/3D-interactive-portfolio.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd 3D-interactive-portfolio
-   ```
-
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-4. Set up environment variables:
-   ```bash
-   # Create a .env.local file in the root directory
-   touch .env.local
-
-   # Add your Resend API key
-   RESEND_API_KEY=your_resend_api_key_here
-   ```
-
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-6. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
-
-## 🚀 Deployment
-
-This project is deployed using **Vercel** for its blazing-fast performance and ease of use. You can view the live site [here](https://www.abhijitzende.com/).
-
-### Setting up Resend API on Vercel
-
-1. Sign up for a [Resend](https://resend.com) account and get your API key
-2. Go to your Vercel project settings
-3. Navigate to the "Environment Variables" section
-4. Add a new environment variable:
-   - Name: `RESEND_API_KEY`
-   - Value: Your Resend API key
-5. Save the changes and redeploy your application
-
-Note: Make sure to keep your API key secret and never commit it to your repository.
-
-## 💖 Acknowledgments
-
-A huge shoutout to [Naresh Khatri](https://github.com/Naresh-Khatri/Portfolio) for the inspiration and ideas that sparked this journey! 💡 If you're interested in creative web design, definitely check out his work.
-
-## 📬 Contact
-
-Feel free to reach out to me for collaboration, feedback, or just to say hi! 😊
-
-- **Email:** abhijitzende75@gmail.com
-- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/zende-abhijit/)
+I am a passionate developer specializing in building intelligent systems, distributed networks, and AI-powered applications. Currently pursuing my Bachelor's in Computer Science with a focus on Data Science, I aim to bridge the gap between complex algorithms and user-centric software.
 
 ---
 
-⭐ If you like this project, don't forget to give it a star!
+## 🚀 About Me
+
+- 📍 Based in **Secunderabad, Telangana**
+- 🎓 Pursuing **B.Tech in Computer Science (Data Science)** at Anurag University (CGPA: 8.79)
+- 💼 Former **Software Development Intern** at **DRDO – Research Centre Imarat (RCI)**
+- 🧠 Interested in **Agentic AI, RAG Systems, Distributed Systems, and Computer Vision**
+- 🌱 Currently exploring **LangGraph, MCP Servers, and Context-Aware AI Systems**
+
+---
+
+## 🛠 Tech Stack
+
+### 💻 Programming Languages
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
+![R](https://img.shields.io/badge/r-%23276DC3.svg?style=for-the-badge&logo=r&logoColor=white)
+
+### 🌐 Web & Mobile Development
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![Django](https://img.shields.io/badge/django-%23092e20.svg?style=for-the-badge&logo=django&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+
+### 🤖 AI & Machine Learning
+![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+
+### 🗄️ Database & Cloud
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/postgresql-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+---
+
+## 💼 Professional Experience
+
+### **Software Development Intern** | DRDO – RCI, Hyderabad
+*Jul 2025 – Aug 2025*
+- Developed a C-based software system to interface with defense-grade hardware protocols (RS-422, MIL-STD-1553).
+- Implemented a native Windows GUI using WinAPI for real-time visualization and diagnostics.
+- Collaborated with hardware teams to ensure low-latency performance and protocol compliance.
+
+---
+
+## 🌟 Featured Projects
+
+### 🎓 **EduEase – AI Proctored Examination Platform**
+- Built an AI-powered testing platform with real-time proctoring (face detection, noise analysis).
+- Integrated Gemini API for automated MCQ generation and personalized learning paths.
+- **Tech:** React, Firebase, Node.js, Gemini API.
+
+### 🛡️ **DANCCES – Distributed Autonomous Network Compliance System**
+- Developed a decentralized endpoint compliance system with autonomous enforcement.
+- Implemented cryptographic command validation and real-time heartbeat monitoring.
+- **Tech:** Python, Networking, Security.
+
+### 🏆 **DataDynomo2 – Hackathon Management Platform**
+- Full-stack system for managing hackathons with QR-based secure check-ins.
+- Features real-time announcements, voting systems, and audit logging.
+- **Tech:** React, TypeScript, Firebase, Zod.
+
+---
+
+## 🏆 Leadership & Activities
+
+- **Chief Advisory Chair Person** | GeeksforGeeks Student Chapter, Anurag University
+- **President** | Data Analytics Club (Organized 8+ events including hackathons)
+- **Quick Learner** | Passionate about adapting to new technologies like Agentic AI and RAG.
+
+---
+
+## 📫 Connect with me
+
+- 📧 **Email:** [gunjarigourav@gmail.com](mailto:gunjarigourav@gmail.com)
+- 🔗 **LinkedIn:** [linkedin.com/in/gunjari-gourav-kumar](https://linkedin.com/in/gunjari-gourav-kumar)
+- 🌐 **Portfolio:** [gouravkumar23.github.io/profile](https://gouravkumar23.github.io/profile)
+
+---
+
+![Gourav's GitHub stats](https://github-readme-stats.vercel.app/api?username=gouravkumar23&show_icons=true&theme=radical)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=gouravkumar23&layout=compact&theme=radical)
+
+*"Building the future, one line of code at a time."*
