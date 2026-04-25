@@ -7,9 +7,9 @@ const SkillsSection = () => {
   return (
     <section 
       id="skills" 
-      className="w-full min-h-[180dvh] px-4 pt-48 md:pt-80 pb-32 pointer-events-none"
+      className="w-full min-h-[250dvh] px-4 pt-48 md:pt-80 pb-64 pointer-events-none"
     >
-      <div className="top-[150px] sticky mb-64 md:mb-[500px] pointer-events-auto">
+      <div className="top-[150px] sticky mb-96 md:mb-[600px] pointer-events-auto">
         <Link href={"#skills"}>
           <BoxReveal width="100%">
             <h2

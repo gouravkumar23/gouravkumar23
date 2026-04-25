@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Volumetric Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 250; // Increased count for better shape
+  const count = 300; 
   
   const particles = useMemo(() => {
     const arr = [];
@@ -36,30 +36,29 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = 3; // Spawn multiple particles per frame for volume
+    const spawnRate = 4; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 1.5; // Fade faster
-        // Particles drift slightly backwards and outwards
+        particles[i].life -= delta * 1.2; 
+        // Particles drift slightly
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
         positions[i * 3 + 1] = particles[i].pos.y;
         positions[i * 3 + 2] = particles[i].pos.z;
       } else if (spawned < spawnRate) {
-        // Spawn with random offset to mimic bird shape
         particles[i].life = 1.0;
+        // Spawn at bird's world position with random offset
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          (Math.random() - 0.5) * 1.5,
-          (Math.random() - 0.5) * 0.8,
-          (Math.random() - 0.5) * 1.5
+          (Math.random() - 0.5) * 1.2,
+          (Math.random() - 0.5) * 0.6,
+          (Math.random() - 0.5) * 1.2
         ));
-        // Velocity away from bird movement
         particles[i].velocity.set(
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3
         );
         spawned++;
       }
@@ -72,11 +71,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.08}
+        size={0.07}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.6}
+        opacity={0.5}
       />
     </Points>
   );
@@ -113,28 +112,30 @@ function Model({ scale = 1, ...props }: any) {
   useEffect(() => {
     if (!group.current) return;
 
-    // Faster, more dynamic flight path
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.5, // Smoother scrub
+        scrub: 0.5,
       }
     });
 
-    tl.to(group.current.position, { x: 12, y: 4, z: -2, duration: 1.5, ease: "power1.inOut" })
-      .to(group.current.rotation, { y: Math.PI * 0.4, duration: 1.5 }, 0)
+    // Flight Path 1: Across to the right
+    tl.to(group.current.position, { x: 15, y: 4, z: -2, duration: 2, ease: "power1.inOut" })
+      .to(group.current.rotation, { y: Math.PI * 0.4, duration: 2 }, 0)
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.3 })
       
-      // Reset to a closer position so it reappears faster
-      .set(group.current.position, { x: -12, y: -2, z: 0 })
+      // Reset: Reappear from the left
+      .set(group.current.position, { x: -15, y: -2, z: 2 })
       .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.3 })
       
-      .to(group.current.position, { x: 0, y: 1, z: 1, duration: 1.5, ease: "power1.inOut" })
-      .to(group.current.rotation, { y: Math.PI * 2.2, duration: 1.5 }, "<")
+      // Flight Path 2: Swoop through center
+      .to(group.current.position, { x: 0, y: 1, z: 3, duration: 2, ease: "power1.inOut" })
+      .to(group.current.rotation, { y: Math.PI * 2.2, duration: 2 }, "<")
       
-      .to(group.current.position, { x: 15, y: 5, z: -4, duration: 1.5, ease: "power1.in" })
+      // Exit: To the right again
+      .to(group.current.position, { x: 18, y: 5, z: -2, duration: 2, ease: "power1.in" })
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.3 });
 
     return () => {
@@ -143,12 +144,15 @@ function Model({ scale = 1, ...props }: any) {
   }, [scale]);
 
   return (
-    <group ref={group} dispose={null}>
-      <group ref={birdRef}>
-        <primitive object={scene} scale={scale} {...props} />
+    <>
+      <group ref={group} dispose={null}>
+        <group ref={birdRef}>
+          <primitive object={scene} scale={scale} {...props} />
+        </group>
       </group>
+      {/* Trail is outside the animated group to stay in world space */}
       <PhoenixTrail targetRef={birdRef} />
-    </group>
+    </>
   );
 }
 
@@ -158,7 +162,7 @@ const PhoenixModel = () => {
   return (
     <div className="w-full h-full pointer-events-none">
       <Canvas 
-        camera={{ position: [0, 0, 10], fov: isMobile ? 60 : 45 }}
+        camera={{ position: [0, 0, 12], fov: isMobile ? 65 : 45 }}
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
