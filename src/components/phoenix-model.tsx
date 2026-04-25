@@ -51,15 +51,15 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
         particles[i].life = 1.0;
         // Spawn slightly behind the bird
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          -2, // Offset behind
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          -4, // Offset behind (increased for larger bird)
+          (Math.random() - 0.5) * 1,
+          (Math.random() - 0.5) * 1
         ));
         
         particles[i].velocity.set(
-          -2 - Math.random() * 2, // Move backwards
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          -3 - Math.random() * 3, // Move backwards
+          (Math.random() - 0.5) * 1,
+          (Math.random() - 0.5) * 1
         );
         spawned++;
       }
@@ -76,7 +76,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.15}
+        size={0.2}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -86,7 +86,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
   );
 }
 
-function Model({ scale = 0.01, ...props }: any) {
+function Model({ scale = 0.02, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
   const { resolvedTheme } = useTheme();
@@ -141,23 +141,23 @@ function Model({ scale = 0.01, ...props }: any) {
     tl.set(group.current.rotation, { y: Math.PI / 2 + Math.PI }); // Face Right
 
     // 2. Pass 1: Gentle Glide to Right
-    tl.to(group.current.position, { x: 25, y: -5, z: -5, duration: 10, ease: "none" });
+    tl.to(group.current.position, { x: 30, y: -5, z: -5, duration: 10, ease: "none" });
     
     // 3. Loop 1: Vanish and Teleport to Top Left
     tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
-    tl.set(group.current.position, { x: -25, y: 5, z: -5 });
+    tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
     // 4. Pass 2: Gentle Glide to Right
-    tl.to(group.current.position, { x: 25, y: -10, z: -5, duration: 10, ease: "none" });
+    tl.to(group.current.position, { x: 30, y: -10, z: -5, duration: 10, ease: "none" });
 
     // 5. Loop 2: Vanish and Teleport to Top Left
     tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
-    tl.set(group.current.position, { x: -25, y: 5, z: -5 });
+    tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section) - Adjusted Y to stay above footer
-    tl.to(group.current.position, { x: 0, y: -11, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section) - Moved significantly higher (y: -4)
+    tl.to(group.current.position, { x: 0, y: -4, z: 5, duration: 10, ease: "power1.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -182,7 +182,7 @@ const PhoenixModel = () => {
   return (
     <div className="w-full h-full pointer-events-none">
       <Canvas 
-        camera={{ position: [0, 0, 20], fov: isMobile ? 75 : 55 }}
+        camera={{ position: [0, 0, 25], fov: isMobile ? 75 : 55 }}
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
@@ -190,7 +190,7 @@ const PhoenixModel = () => {
         <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={3} rotationIntensity={0.3} floatIntensity={0.3}>
-            <Model scale={isMobile ? 0.009 : 0.01} />
+            <Model scale={isMobile ? 0.015 : 0.02} />
           </Float>
         </Suspense>
       </Canvas>
