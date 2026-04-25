@@ -11,8 +11,8 @@ import {
   FaJava,
   FaDocker,
   FaNodeJs,
-  FaExternalLinkAlt,
 } from "react-icons/fa6";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import {
   RiFirebaseFill,
   RiJavascriptFill,
