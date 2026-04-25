@@ -70,7 +70,7 @@ const HeroSection = () => {
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    AI Enthusiast
+                    AI & Software Developer
                   </p>
                 </BlurIn>
               </div>
@@ -102,7 +102,7 @@ const HeroSection = () => {
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
+                      <p>Let&apos;s build something amazing! 🚀</p>
                     </TooltipContent>
                   </Tooltip>
                   <Link
