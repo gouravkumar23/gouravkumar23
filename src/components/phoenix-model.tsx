@@ -22,14 +22,15 @@ function Model({ scale = 1, ...props }: any) {
 
   useFrame((state) => {
     if (group.current) {
-      // Subtle hover effect instead of full rotation
-      group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      // Subtle hover effect
+      group.current.rotation.y = (Math.PI + 0.5) + Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
     }
   });
 
   return (
-    <group ref={group} dispose={null} rotation={[0, Math.PI, 0]}>
-      <primitive object={scene} scale={scale} {...props} />
+    <group ref={group} dispose={null}>
+      {/* Positioned slightly down with [0, -1.5, 0] */}
+      <primitive object={scene} scale={scale} position={[0, -1.5, 0]} {...props} />
     </group>
   );
 }
@@ -65,9 +66,10 @@ const PhoenixModel = () => {
             polar={[-0.1, Math.PI / 4]}
             rotation={[0, 0, 0]}
           >
-            <Stage environment="city" intensity={0.5} contactShadow={false}>
-              <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-                <Model scale={isMobile ? 0.008 : 0.012} />
+            <Stage environment="city" intensity={0.5} contactShadow={false} adjustCamera={false}>
+              <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
+                {/* Reduced scale: 0.006 for mobile, 0.009 for desktop */}
+                <Model scale={isMobile ? 0.006 : 0.009} />
               </Float>
             </Stage>
           </PresentationControls>
