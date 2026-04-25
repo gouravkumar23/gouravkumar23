@@ -16,6 +16,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     function handleMouseMove({ currentTarget, clientX, clientY }: any) {
       let { left, top } = currentTarget.getBoundingClientRect();
+
       mouseX.set(clientX - left);
       mouseY.set(clientY - top);
     }
