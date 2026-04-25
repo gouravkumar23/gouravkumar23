@@ -119,22 +119,26 @@ function Model({ scale = 1, ...props }: any) {
       }
     });
 
+    // Forward rotation (facing +X direction)
+    const forwardRotation = { y: Math.PI / 2, z: 0.1 };
+
     // Initial state: Center (Hero section)
-    // Adjusted rotation to face forward (towards +X)
     tl.set(group.current.position, { x: 0, y: 0, z: 0 })
-      .set(group.current.rotation, { y: -Math.PI / 2, z: 0.1 });
+      .set(group.current.rotation, forwardRotation);
 
     // Segment 1: Fly out to the right
     tl.to(group.current.position, { x: 25, y: 10, z: -5, duration: 5, ease: "none" })
       
       // Reset: Reappear from the left
       .set(group.current.position, { x: -25, y: -10, z: -5 })
+      .set(group.current.rotation, forwardRotation)
       
       // Segment 2: Fly across the whole screen
       .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" })
       
       // Reset: Reappear from the left again
       .set(group.current.position, { x: -25, y: -10, z: -5 })
+      .set(group.current.rotation, forwardRotation)
       
       // Segment 3: Final pass
       .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" });
