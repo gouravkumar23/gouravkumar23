@@ -30,7 +30,7 @@ const InteractiveGrid = () => {
     };
 
     const handleMouseDown = () => {
-      animate(scale, 2.5, { duration: 0.1, ease: "easeOut" });
+      animate(scale, 3, { duration: 0.1, ease: "easeOut" });
     };
 
     const handleMouseUp = () => {
@@ -56,7 +56,7 @@ const InteractiveGrid = () => {
       className="fixed inset-0 -z-20 overflow-hidden pointer-events-none"
     >
       <div 
-        className="absolute inset-0 opacity-[0.15] dark:opacity-[0.1]"
+        className="absolute inset-0 opacity-[0.2] dark:opacity-[0.1]"
         style={{
           backgroundImage: `
             linear-gradient(to right, #888 1px, transparent 1px),
@@ -69,15 +69,15 @@ const InteractiveGrid = () => {
         }}
       />
       <motion.div
-        className="absolute w-[400px] h-[400px] rounded-full blur-[100px] pointer-events-none"
+        className="absolute w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none"
         style={{
           x,
           y,
           scale: springScale,
           translateX: "-50%",
           translateY: "-50%",
-          background: "radial-gradient(circle, rgba(var(--brand-rgb), 0.4) 0%, transparent 70%)",
-          backgroundColor: "rgba(255, 100, 0, 0.15)",
+          background: "radial-gradient(circle, rgba(255, 100, 0, 0.4) 0%, transparent 70%)",
+          backgroundColor: "rgba(255, 100, 0, 0.25)", // Increased opacity for light mode
         }}
       />
     </div>
