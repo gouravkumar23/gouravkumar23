@@ -83,6 +83,9 @@ function ElasticCursor() {
   const pos = useInstance(() => ({ x: 0, y: 0 }));
   const vel = useInstance(() => ({ x: 0, y: 0 }));
   const set = useInstance();
+  
+  // Click scale factor to avoid being overwritten by the loop
+  const clickScale = useInstance(() => ({ x: 1, y: 1 }));
 
   // Set GSAP quick setter Values on useLayoutEffect Update
   useLayoutEffect(() => {
@@ -107,10 +110,13 @@ function ElasticCursor() {
       set.y(pos.y);
       set.width(50 + scale * 300);
       set.r(rotation);
-      set.sx(1 + scale);
-      set.sy(1 - scale * 2);
+      // Multiply by clickScale to allow the click animation to show
+      set.sx((1 + scale) * clickScale.x);
+      set.sy((1 - scale * 2) * clickScale.y);
     } else {
       set.r(0);
+      set.sx(clickScale.x);
+      set.sy(clickScale.y);
     }
   }, [isHovering, isLoading]);
 
@@ -121,15 +127,15 @@ function ElasticCursor() {
     if (!jellyRef.current) return;
 
     gsap.timeline()
-      .to(jellyRef.current, {
-        scaleX: 2.2,
-        scaleY: 1.6,
+      .to(clickScale, {
+        x: 2.2,
+        y: 1.6,
         duration: 0.12,
         ease: "power2.out",
       })
-      .to(jellyRef.current, {
-        scaleX: 1,
-        scaleY: 1,
+      .to(clickScale, {
+        x: 1,
+        y: 1,
         duration: 0.2,
         ease: "elastic.out(1, 0.4)",
       });
