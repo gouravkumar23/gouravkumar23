@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
 import AnimatedBackground from "@/components/animated-background";
@@ -19,38 +19,44 @@ const PhoenixModel = dynamic(() => import("@/components/phoenix-model"), {
 });
 
 function MainPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
-    <>
-      <SmoothScroll>
-        <main className={cn("bg-slate-100 dark:bg-transparent relative")}>
-          {/* Background Keyboard - Higher Z-index for interaction */}
-          <div className="top-0 z-[10] fixed w-full h-screen pointer-events-none">
-            <div className="w-full h-full pointer-events-auto">
-              <AnimatedBackground />
-            </div>
-          </div>
+    <SmoothScroll>
+      <main className={cn("bg-slate-100 dark:bg-transparent relative min-h-screen")}>
+        {/* Layer 1: Background Phoenix (Non-interactive) */}
+        <div className="fixed inset-0 z-[5] pointer-events-none">
+          <PhoenixModel />
+        </div>
 
-          {/* Revolving Phoenix - Lower Z-index so it doesn't block keyboard */}
-          <div className="fixed inset-0 z-[5] pointer-events-none">
-            <PhoenixModel />
+        {/* Layer 2: Interactive Keyboard */}
+        <div className="fixed inset-0 z-[10] pointer-events-none">
+          <div className="w-full h-full pointer-events-auto">
+            <AnimatedBackground />
           </div>
+        </div>
 
-          {/* Content - Highest Z-index */}
-          <div className="relative z-[20] pointer-events-none">
-            <div className="pointer-events-auto">
-              <HeroSection />
-              <EducationSection />
-              <ExperienceSection />
-              <SkillsSection />
-              <ProjectsSection />
-              <CertificatesSection />
-              <LeadershipSection />
-              <ContactSection />
-            </div>
+        {/* Layer 3: Page Content */}
+        <div className="relative z-[20] pointer-events-none">
+          <div className="pointer-events-auto">
+            <HeroSection />
+            <EducationSection />
+            <ExperienceSection />
+            <SkillsSection />
+            <ProjectsSection />
+            <CertificatesSection />
+            <LeadershipSection />
+            <ContactSection />
           </div>
-        </main>
-      </SmoothScroll>
-    </>
+        </div>
+      </main>
+    </SmoothScroll>
   );
 }
 
