@@ -10,20 +10,34 @@ function OrbModel() {
   const { scene, animations } = useGLTF("/3dmodels/energy_orb/scene.gltf");
   const { actions } = useAnimations(animations, group);
 
-  // Apply pink/purple color to the model's materials
+  // Apply the "hollow purple energy" look
   useMemo(() => {
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh;
+        
+        // Hide the core/center if it exists to make it "empty in middle"
+        if (mesh.name.toLowerCase().includes("core") || 
+            mesh.name.toLowerCase().includes("center") || 
+            mesh.name.toLowerCase().includes("sphere")) {
+          mesh.visible = false;
+          return;
+        }
+
         if (mesh.material) {
-          // Clone material to avoid side effects
           mesh.material = mesh.material.clone();
           const mat = mesh.material as THREE.MeshStandardMaterial;
-          mat.color.set("#d946ef"); // Fuchsia/Pink
-          if (mat.emissive) {
-            mat.emissive.set("#a855f7"); // Purple
-            mat.emissiveIntensity = 2;
-          }
+          
+          // Deep purple base with bright magenta/purple glow
+          mat.color.set("#2e004f"); 
+          mat.emissive.set("#bf00ff"); 
+          mat.emissiveIntensity = 15; // High intensity for that "energy" look
+          mat.transparent = true;
+          mat.opacity = 0.8;
+          mat.side = THREE.DoubleSide;
+          
+          // Additive blending helps with the "glow" effect seen in the image
+          mat.blending = THREE.AdditiveBlending;
         }
       }
     });
@@ -39,7 +53,9 @@ function OrbModel() {
 
   useFrame((state) => {
     if (group.current) {
-      group.current.rotation.y += 0.005;
+      // Faster rotation for a more energetic feel
+      group.current.rotation.y += 0.01;
+      group.current.rotation.z += 0.005;
     }
   });
 
@@ -47,7 +63,7 @@ function OrbModel() {
     <group ref={group} dispose={null}>
       <primitive 
         object={scene} 
-        scale={2.5} 
+        scale={3} 
         position={[0, 0, 0]} 
       />
     </group>
@@ -58,26 +74,27 @@ const BottomOrb = () => {
   return (
     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none z-[30]">
       <Canvas camera={{ position: [0, 0, 8], fov: 45 }} alpha={true}>
-        <ambientLight intensity={1} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={5} color="#d946ef" />
-        <pointLight position={[-10, -10, -10]} intensity={2} color="#a855f7" />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[5, 5, 5]} intensity={20} color="#bf00ff" />
+        <pointLight position={[-5, -5, -5]} intensity={10} color="#4b0082" />
         
         <Suspense fallback={null}>
-          <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
+          <Float speed={4} rotationIntensity={1} floatIntensity={1}>
             <OrbModel />
           </Float>
           <ContactShadows 
-            position={[0, -2.5, 0]} 
-            opacity={0.4} 
+            position={[0, -3, 0]} 
+            opacity={0.6} 
             scale={10} 
-            blur={2.5} 
+            blur={3} 
             far={4} 
+            color="#bf00ff"
           />
         </Suspense>
       </Canvas>
       
-      {/* Visual glow effect in CSS */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-32 bg-fuchsia-500/10 blur-[120px] rounded-full -z-10" />
+      {/* Stronger purple glow at the bottom */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-40 bg-purple-600/20 blur-[140px] rounded-full -z-10" />
     </div>
   );
 };
