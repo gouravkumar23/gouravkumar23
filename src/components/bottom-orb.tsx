@@ -120,7 +120,7 @@ export default function BottomOrb() {
             color="#8a2be2"
           />
 
-          <EffectComposer disableNormalPass multisampling={0}>
+          <EffectComposer disableNormalPass multisampling={4}>
             <Bloom 
               intensity={2.5} 
               luminanceThreshold={0.1} 
