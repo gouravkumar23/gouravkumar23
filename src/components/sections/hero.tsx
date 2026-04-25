@@ -9,6 +9,7 @@ import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { config } from "@/data/config";
 import dynamic from "next/dynamic";
+import LightningCubes from "../lightning-cubes";
 
 const PhoenixModel = dynamic(() => import("../phoenix-model"), { 
   ssr: false,
@@ -19,7 +20,8 @@ const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
-    <section id="hero" className={cn("relative w-full min-h-screen flex flex-col justify-center")}>
+    <section id="hero" className={cn("relative w-full min-h-screen flex flex-col justify-center overflow-hidden")}>
+      <LightningCubes />
       <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pt-20 pb-32">
         <div className="z-[2] flex flex-col items-center lg:items-start text-center lg:text-left">
           {!isLoading && (

@@ -9,6 +9,9 @@ import ProjectsSection from "@/components/sections/projects";
 import ContactSection from "@/components/sections/contact";
 import HeroSection from "@/components/sections/hero";
 import CertificatesSection from "@/components/sections/certificates";
+import EducationSection from "@/components/sections/education";
+import ExperienceSection from "@/components/sections/experience";
+import LeadershipSection from "@/components/sections/leadership";
 
 function MainPage() {
   return (
@@ -19,9 +22,12 @@ function MainPage() {
             <AnimatedBackground />
           </div>
           <HeroSection />
+          <EducationSection />
+          <ExperienceSection />
           <SkillsSection />
           <ProjectsSection />
           <CertificatesSection />
+          <LeadershipSection />
           <ContactSection />
         </main>
       </SmoothScroll>

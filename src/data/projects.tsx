@@ -22,11 +22,13 @@ import {
   SiArduino,
   SiFlask,
   SiGooglecloud,
+  SiOpenlayers,
+  SiOpencv,
+  SiSupabase,
+  SiSpringboot,
 } from "react-icons/si";
 import { FaCss3Alt } from "react-icons/fa6";
 import { TbBrandFramerMotion } from "react-icons/tb";
-
-const BASE_PATH = "/assets/projects-screenshots";
 
 const ProjectsLinks = ({ live, repo, collaborator }: { live?: string; repo?: string; collaborator?: string }) => {
   return (
@@ -102,6 +104,9 @@ const PROJECT_SKILLS = {
   maven: { title: "Maven", bg: "black", fg: "white", icon: <SiApachemaven /> },
   flask: { title: "Flask", bg: "black", fg: "white", icon: <SiFlask /> },
   gemini: { title: "Gemini AI", bg: "black", fg: "white", icon: <SiGooglecloud /> },
+  opencv: { title: "OpenCV", bg: "black", fg: "white", icon: <SiOpencv /> },
+  supabase: { title: "Supabase", bg: "black", fg: "white", icon: <SiSupabase /> },
+  springboot: { title: "Spring Boot", bg: "black", fg: "white", icon: <SiSpringboot /> },
 };
 
 export type Project = {
@@ -210,30 +215,28 @@ const projects: Project[] = [
     },
   },
   {
-    id: "qwerty-mailing",
-    category: "AI Automation",
-    title: "qwerty mailing automation",
-    src: "/assets/projects-screenshots/qwerty-mailing/main.png",
+    id: "universal-mailing",
+    category: "Backend Service",
+    title: "Universal Mailing Service",
+    src: "/assets/projects-screenshots/logo-dark.svg",
     screenshots: [],
     skills: {
-      frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.ts, PROJECT_SKILLS.tailwind],
-      backend: [PROJECT_SKILLS.firebase, PROJECT_SKILLS.gemini],
+      frontend: [],
+      backend: [PROJECT_SKILLS.node, PROJECT_SKILLS.express],
     },
-    live: "https://qwertymailingautomation.vercel.app/",
-    github: "https://github.com/gouravkumar23/QwertyMailingAutomation",
+    github: "https://github.com/qwertymailingdemon/qwertyMailingService",
     get content() {
       return (
         <div>
           <TypographyP className="font-mono ">
-            AI-Powered Intelligent Email Management System integrating Gmail API and Gemini AI for automated processing.
+            Centralized email service supporting OTP, password reset, and notifications across multiple applications.
           </TypographyP>
-          <ProjectsLinks live={this.live} repo={this.github} />
+          <ProjectsLinks repo={this.github} />
           <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
           <ul className="list-disc ml-6 font-mono">
-            <li>AI-driven summarization and priority detection</li>
-            <li>Sentiment analysis for incoming emails</li>
-            <li>Real-time synchronization with Gmail</li>
-            <li>Automated email orchestration and processing</li>
+            <li>Secure API-based mailing system</li>
+            <li>Scalable deployment on Render</li>
+            <li>Authentication and rate limiting</li>
           </ul>
         </div>
       );
@@ -263,7 +266,6 @@ const projects: Project[] = [
             <li>WhatsApp integration for real-time team updates</li>
             <li>AI-guided project and team management</li>
             <li>Scalable architecture supporting 1000+ users</li>
-            <li>Automated Scrum Master duty orchestration</li>
           </ul>
         </div>
       );
@@ -290,11 +292,75 @@ const projects: Project[] = [
           <ProjectsLinks live={this.live} repo={this.github} />
           <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
           <ul className="list-disc ml-6 font-mono">
-            <li>BART-based AI summarization of IT incidents</li>
+            <li>BART-based AI summarization</li>
             <li>Analytical dashboards for incident tracking</li>
-            <li>Real-time incident reporting and management</li>
-            <li>Integration with IT management workflows</li>
           </ul>
+        </div>
+      );
+    },
+  },
+  {
+    id: "java-quiz",
+    category: "Web App",
+    title: "Online Quiz Application",
+    src: "/assets/projects-screenshots/logo-dark.svg",
+    screenshots: [],
+    skills: {
+      frontend: [PROJECT_SKILLS.html, PROJECT_SKILLS.css],
+      backend: [PROJECT_SKILLS.springboot],
+    },
+    github: "https://github.com/gouravkumar23/JavaQuiz",
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono ">
+            Web-based platform for hosting and managing online quizzes built with Java and Spring Boot.
+          </TypographyP>
+          <ProjectsLinks repo={this.github} />
+        </div>
+      );
+    },
+  },
+  {
+    id: "clubease",
+    category: "Management System",
+    title: "ClubEase",
+    src: "/assets/projects-screenshots/logo-dark.svg",
+    screenshots: [],
+    skills: {
+      frontend: [PROJECT_SKILLS.js, PROJECT_SKILLS.html, PROJECT_SKILLS.css],
+      backend: [PROJECT_SKILLS.supabase],
+    },
+    github: "https://github.com/gouravkumar23/club_manaement_system",
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono ">
+            Club management platform with Supabase APIs and real-time frontend data manipulation.
+          </TypographyP>
+          <ProjectsLinks repo={this.github} />
+        </div>
+      );
+    },
+  },
+  {
+    id: "trash-detection",
+    category: "Computer Vision",
+    title: "Trash Detection System",
+    src: "/assets/projects-screenshots/logo-dark.svg",
+    screenshots: [],
+    skills: {
+      frontend: [PROJECT_SKILLS.html, PROJECT_SKILLS.css],
+      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.opencv, PROJECT_SKILLS.gemini],
+    },
+    github: "https://github.com/gouravkumar23/Trash-Detection",
+    get content() {
+      return (
+        <div>
+          <TypographyP className="font-mono ">
+            System that detects and classifies trash into 3 categories, offering actionable solutions using Gemini API.
+          </TypographyP>
+          <ProjectsLinks repo={this.github} />
         </div>
       );
     },
