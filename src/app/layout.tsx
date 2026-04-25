@@ -58,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[archivoBlack.className].join(" ")}>
+    <html lang="en" className={[archivoBlack.className].join(" ")} suppressHydrationWarning>
       <head>
         <Script
           defer
@@ -69,7 +69,8 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
+          enableSystem
           disableTransitionOnChange
         >
           <InteractiveGrid />
