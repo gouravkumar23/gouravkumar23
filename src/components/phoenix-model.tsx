@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect, useMemo } from "react";
+import React, { Suspense, useRef, useEffect, useMemo, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, useAnimations, Float, Html, PresentationControls, Points, PointMaterial } from "@react-three/drei";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -10,35 +10,71 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DustParticles({ count = 500 }) {
-  const points = useRef<THREE.Points>(null);
-  
-  const positions = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+// Component to handle the fading trail
+function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const maxParticles = 150;
+  const [particles] = useState(() => {
+    const arr = [];
+    for (let i = 0; i < maxParticles; i++) {
+      arr.push({
+        pos: new THREE.Vector3(0, 0, 0),
+        alpha: 0,
+        life: 0
+      });
     }
-    return pos;
-  }, [count]);
+    return arr;
+  });
 
-  useFrame((state) => {
-    if (points.current) {
-      points.current.rotation.y += 0.001;
-      points.current.rotation.x += 0.0005;
+  const positions = useMemo(() => new Float32Array(maxParticles * 3), []);
+  const opacities = useMemo(() => new Float32Array(maxParticles), []);
+
+  useFrame((state, delta) => {
+    if (!targetRef.current || !pointsRef.current) return;
+
+    // Get current world position of the phoenix
+    const currentPos = new THREE.Vector3();
+    targetRef.current.getWorldPosition(currentPos);
+
+    // Update particles
+    let oldestIdx = 0;
+    let minLife = Infinity;
+
+    for (let i = 0; i < maxParticles; i++) {
+      particles[i].life -= delta;
+      if (particles[i].life < 0) particles[i].life = 0;
+      
+      if (particles[i].life < minLife) {
+        minLife = particles[i].life;
+        oldestIdx = i;
+      }
+
+      // Update buffer arrays
+      positions[i * 3] = particles[i].pos.x;
+      positions[i * 3 + 1] = particles[i].pos.y;
+      positions[i * 3 + 2] = particles[i].pos.z;
+      opacities[i] = particles[i].life; // Use life as alpha (0 to 1)
     }
+
+    // Spawn new particle at current position
+    particles[oldestIdx].pos.copy(currentPos);
+    particles[oldestIdx].life = 1.0; // 1 second life
+
+    pointsRef.current.geometry.attributes.position.needsUpdate = true;
+    // We use a custom shader or size attenuation to handle individual opacities if needed, 
+    // but for simplicity we'll just update the positions and use a general material.
   });
 
   return (
-    <Points ref={points} positions={positions} stride={3} frustumCulled={false}>
+    <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
         color="#8b5cf6"
-        size={0.02}
+        size={0.08}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
+        opacity={0.4}
       />
     </Points>
   );
@@ -83,23 +119,23 @@ function Model({ scale = 1, ...props }: any) {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.5,
+        scrub: 0.5, // Faster response to scroll
       }
     });
 
-    // Looping flight path: Hero -> Right Corner (Fade) -> Left Corner (Enter) -> Center
-    tl.to(group.current.position, { x: 4, y: 1, z: -2, duration: 2 })
-      .to(group.current.rotation, { y: Math.PI * 0.5, duration: 2 }, 0)
-      .to(meshGroup.current?.scale || {}, { x: 0, y: 0, z: 0, duration: 0.5 }, ">") // Fade out at right
+    // Extended path to reach corners, faster durations
+    tl.to(group.current.position, { x: 10, y: 3, z: -4, duration: 1.5 })
+      .to(group.current.rotation, { y: Math.PI * 0.5, duration: 1.5 }, 0)
+      .to(meshGroup.current?.scale || {}, { x: 0, y: 0, z: 0, duration: 0.3 }, ">")
       
-      .set(group.current.position, { x: -6, y: -1, z: -1 }) // Teleport to left
-      .to(meshGroup.current?.scale || {}, { x: 1, y: 1, z: 1, duration: 0.5 }, ">") // Fade in at left
+      .set(group.current.position, { x: -10, y: -2, z: -2 })
+      .to(meshGroup.current?.scale || {}, { x: 1, y: 1, z: 1, duration: 0.3 }, ">")
       
-      .to(group.current.position, { x: 0, y: 0, z: 0, duration: 2 }, ">")
-      .to(group.current.rotation, { y: Math.PI * 2, duration: 2 }, "<")
+      .to(group.current.position, { x: 0, y: 0, z: 0, duration: 1.5 }, ">")
+      .to(group.current.rotation, { y: Math.PI * 2, duration: 1.5 }, "<")
       
-      .to(group.current.position, { x: 5, y: 2, z: -3, duration: 2 }, ">") // Exit right again
-      .to(meshGroup.current?.scale || {}, { x: 0, y: 0, z: 0, duration: 0.5 }, ">");
+      .to(group.current.position, { x: 12, y: 4, z: -5, duration: 1.5 }, ">")
+      .to(meshGroup.current?.scale || {}, { x: 0, y: 0, z: 0, duration: 0.3 }, ">");
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -114,8 +150,8 @@ function Model({ scale = 1, ...props }: any) {
           scale={scale} 
           {...props} 
         />
-        <DustParticles count={300} />
       </group>
+      <PhoenixTrail targetRef={meshGroup} />
     </group>
   );
 }
@@ -123,7 +159,7 @@ function Model({ scale = 1, ...props }: any) {
 const Loader = () => (
   <Html center>
     <div className="text-indigo-400 font-mono text-[10px] whitespace-nowrap animate-pulse">
-      INITIATING FLIGHT...
+      IGNITING TRAIL...
     </div>
   </Html>
 );
@@ -136,7 +172,7 @@ const PhoenixModel = () => {
       <Canvas 
         shadows 
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 8], fov: isMobile ? 60 : 45 }}
+        camera={{ position: [0, 0, 10], fov: isMobile ? 60 : 45 }}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.2} />
@@ -145,13 +181,13 @@ const PhoenixModel = () => {
         <Suspense fallback={<Loader />}>
           <PresentationControls
             global
-            config={{ mass: 2, tension: 500 }}
-            snap={{ mass: 4, tension: 1500 }}
+            config={{ mass: 1, tension: 500 }}
+            snap={{ mass: 2, tension: 1500 }}
             rotation={[0, 0, 0]}
             polar={[-Math.PI / 3, Math.PI / 3]}
             azimuth={[-Math.PI / 1.4, Math.PI / 1.4]}
           >
-            <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+            <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
               <Model scale={isMobile ? 0.004 : 0.007} />
             </Float>
           </PresentationControls>
