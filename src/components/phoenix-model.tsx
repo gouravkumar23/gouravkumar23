@@ -41,7 +41,6 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
         particles[i].life -= delta * 1.2; 
-        // Particles drift slightly
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -49,7 +48,6 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
         positions[i * 3 + 2] = particles[i].pos.z;
       } else if (spawned < spawnRate) {
         particles[i].life = 1.0;
-        // Spawn at bird's world position with random offset
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
           (Math.random() - 0.5) * 1.2,
           (Math.random() - 0.5) * 0.6,
@@ -126,12 +124,12 @@ function Model({ scale = 1, ...props }: any) {
       .to(group.current.rotation, { y: Math.PI * 0.4, duration: 2 }, 0)
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.3 })
       
-      // Reset: Reappear from the left
-      .set(group.current.position, { x: -15, y: -2, z: 2 })
+      // Reset: Reappear from the left immediately
+      .set(group.current.position, { x: -15, y: -2, z: 0 })
       .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.3 })
       
       // Flight Path 2: Swoop through center
-      .to(group.current.position, { x: 0, y: 1, z: 3, duration: 2, ease: "power1.inOut" })
+      .to(group.current.position, { x: 0, y: 1, z: 2, duration: 2, ease: "power1.inOut" })
       .to(group.current.rotation, { y: Math.PI * 2.2, duration: 2 }, "<")
       
       // Exit: To the right again
@@ -150,7 +148,6 @@ function Model({ scale = 1, ...props }: any) {
           <primitive object={scene} scale={scale} {...props} />
         </group>
       </group>
-      {/* Trail is outside the animated group to stay in world space */}
       <PhoenixTrail targetRef={birdRef} />
     </>
   );
@@ -166,8 +163,8 @@ const PhoenixModel = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
-        <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color="#6366f1" />
+        <ambientLight intensity={0.8} />
+        <pointLight position={[10, 10, 10]} intensity={2} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={4} rotationIntensity={0.8} floatIntensity={0.8}>
             <Model scale={isMobile ? 0.004 : 0.007} />

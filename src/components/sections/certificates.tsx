@@ -9,8 +9,8 @@ import { BoxReveal } from "../reveal-animations";
 
 const CertificatesSection = () => {
   return (
-    <section id="certificates" className="max-w-7xl mx-auto py-20 px-4">
-      <Link href={"#certificates"}>
+    <section id="certificates" className="max-w-7xl mx-auto py-20 px-4 pointer-events-none">
+      <Link href={"#certificates"} className="pointer-events-auto">
         <BoxReveal width="100%">
           <h2
             className={cn(
@@ -32,6 +32,7 @@ const CertificatesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             viewport={{ once: true }}
+            className="pointer-events-auto"
           >
             <Link
               href={cert.link}

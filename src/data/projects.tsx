@@ -148,7 +148,7 @@ const projects: Project[] = [
             <li>AI proctoring (face detection, noise analysis, tab tracking)</li>
             <li>Automated MCQ generation using Gemini API</li>
             <li>4-tier architecture integrating frontend, Firebase, and AI services</li>
-            <li>Personalized learning techniques with Context AI systems</li>
+            <li>Introduced Concepts of rooms for targeted Studies and Context AI systems for improved personalized learning techniques.</li>
           </ul>
         </div>
       );
@@ -218,7 +218,7 @@ const projects: Project[] = [
     id: "universal-mailing",
     category: "Backend Service",
     title: "Universal Mailing Service",
-    src: "/assets/projects-screenshots/logo-dark.svg",
+    src: "/assets/logo-dark.svg",
     screenshots: [],
     skills: {
       frontend: [],
@@ -303,7 +303,7 @@ const projects: Project[] = [
     id: "java-quiz",
     category: "Web App",
     title: "Online Quiz Application",
-    src: "/assets/projects-screenshots/logo-dark.svg",
+    src: "/assets/logo-dark.svg",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.html, PROJECT_SKILLS.css],
@@ -325,7 +325,7 @@ const projects: Project[] = [
     id: "clubease",
     category: "Management System",
     title: "ClubEase",
-    src: "/assets/projects-screenshots/logo-dark.svg",
+    src: "/assets/logo-dark.svg",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.js, PROJECT_SKILLS.html, PROJECT_SKILLS.css],
@@ -347,7 +347,7 @@ const projects: Project[] = [
     id: "trash-detection",
     category: "Computer Vision",
     title: "Trash Detection System",
-    src: "/assets/projects-screenshots/logo-dark.svg",
+    src: "/assets/logo-dark.svg",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.html, PROJECT_SKILLS.css],

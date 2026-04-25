@@ -20,7 +20,7 @@ const LeadershipSection = () => {
   ];
 
   return (
-    <section id="leadership" className="max-w-7xl mx-auto py-20 px-4">
+    <section id="leadership" className="max-w-7xl mx-auto py-20 px-4 pointer-events-none">
       <BoxReveal width="100%">
         <h2 className="text-4xl md:text-7xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-b from-black/80 to-black/50 dark:from-white/80 dark:to-white/20">
           Leadership
@@ -33,7 +33,7 @@ const LeadershipSection = () => {
             key={index}
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm hover:border-brand transition-all"
+            className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm hover:border-brand transition-all pointer-events-auto"
           >
             <div className="mb-4 p-3 rounded-xl bg-brand/10 w-fit">
               {pos.icon}

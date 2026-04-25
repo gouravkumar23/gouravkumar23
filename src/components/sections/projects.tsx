@@ -57,18 +57,20 @@ const ModalFooterContent = ({ project }: { project: Project }) => {
       >
         Cancel
       </button>
-      <Link href={project.live || "#"} target="_blank">
-        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-4 py-2 rounded-md border border-transparent transition-opacity hover:opacity-90">
-          Visit
-        </button>
-      </Link>
+      {project.live && (
+        <Link href={project.live} target="_blank">
+          <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-4 py-2 rounded-md border border-transparent transition-opacity hover:opacity-90">
+            Visit
+          </button>
+        </Link>
+      )}
     </ModalFooter>
   );
 };
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center w-full pointer-events-auto">
       <Modal>
         <ModalTrigger className="bg-transparent flex justify-center group/modal-btn w-full">
           <div
@@ -107,8 +109,8 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="max-w-7xl mx-auto px-4 py-48 md:py-80">
-      <Link href={"#projects"}>
+    <section id="projects" className="max-w-7xl mx-auto px-4 py-48 md:py-80 pointer-events-none">
+      <Link href={"#projects"} className="pointer-events-auto">
         <h2
           className={cn(
             "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
