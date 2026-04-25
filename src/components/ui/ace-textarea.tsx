@@ -20,7 +20,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       mouseY.set(clientY - top);
     }
 
-    const backgroundStyle = useMotionTemplate`
+    const background = useMotionTemplate`
       radial-gradient(
         ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
         var(--brand),
@@ -30,9 +30,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <motion.div
-        style={{
-          background: backgroundStyle,
-        }}
+        style={{ background }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
@@ -40,9 +38,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       >
         <textarea
           className={cn(
-            `flex min-h-[80px] w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm placeholder:text-neutral-400 dark:placeholder:text-neutral-600 focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--neutral-700)]
-           group-hover/input:shadow-none transition duration-400
-           `,
+            "flex min-h-[80px] w-full border-none bg-gray-50 dark:bg-zinc-800 text-black dark:text-white shadow-input rounded-md px-3 py-2 text-sm placeholder:text-neutral-400 dark:placeholder-text-neutral-600 focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:shadow-[0px_0px_1px_1px_var(--neutral-700)] group-hover/input:shadow-none transition duration-400",
             className
           )}
           ref={ref}
