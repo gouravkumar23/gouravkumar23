@@ -11,18 +11,18 @@ function Model({ scale = 1, ...props }: any) {
   const { scene, animations } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
   const { actions, names } = useAnimations(animations, group);
 
-  // Apply wireframe grid structure and remove textures
+  // Apply wireframe grid structure with a color that syncs with the background
   useMemo(() => {
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh;
         mesh.material = new THREE.MeshStandardMaterial({
-          color: "#ff6400", // Brand color
+          color: "#71717a", // Zinc-500 to match the background/grid vibe
           wireframe: true,
           transparent: true,
-          opacity: 0.6,
-          emissive: "#ff6400",
-          emissiveIntensity: 0.5,
+          opacity: 0.4,
+          emissive: "#3f3f46", // Zinc-600 for a subtle glow
+          emissiveIntensity: 0.2,
         });
       }
     });
@@ -46,7 +46,6 @@ function Model({ scale = 1, ...props }: any) {
 
   return (
     <group ref={group} dispose={null}>
-      {/* Positioned further down and rotated 180 degrees (Math.PI) to face forward */}
       <primitive 
         object={scene} 
         scale={scale} 
@@ -61,7 +60,7 @@ function Model({ scale = 1, ...props }: any) {
 const Loader = () => (
   <Html center>
     <div className="text-zinc-500 font-mono text-xs whitespace-nowrap animate-pulse">
-      INITIALIZING GRID...
+      SYNCING GRID...
     </div>
   </Html>
 );
@@ -77,8 +76,8 @@ const PhoenixModel = () => {
         camera={{ position: [0, 0, 5], fov: isMobile ? 55 : 45 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#ff6400" />
+        <ambientLight intensity={0.3} />
+        <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
         
         <Suspense fallback={<Loader />}>
           <PresentationControls 
@@ -88,7 +87,7 @@ const PhoenixModel = () => {
             polar={[-0.1, Math.PI / 4]}
             rotation={[0, 0, 0]}
           >
-            <Stage environment="city" intensity={0.2} contactShadow={false} adjustCamera={false}>
+            <Stage environment="city" intensity={0.1} contactShadow={false} adjustCamera={false}>
               <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
                 <Model scale={isMobile ? 0.006 : 0.009} />
               </Float>
