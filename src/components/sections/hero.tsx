@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
@@ -12,121 +13,73 @@ import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { config } from "@/data/config";
+import dynamic from "next/dynamic";
+
+const PhoenixModel = dynamic(() => import("../phoenix-model"), { ssr: false });
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
-    <section id="hero" className={cn("relative w-full h-screen")}>
-      <div className="grid md:grid-cols-2">
-        <div
-          className={cn(
-            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
-            "col-span-1",
-            "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pt-0 sm:pb-32 md:p-24 lg:p-40 xl:p-48"
-          )}
-        >
+    <section id="hero" className={cn("relative w-full min-h-screen flex flex-col justify-center")}>
+      <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pt-20 pb-32">
+        <div className="z-[2] flex flex-col items-center lg:items-start text-center lg:text-left">
           {!isLoading && (
             <>
-              <div className="">
-                <BlurIn delay={0.7}>
-                  <p
-                    className={cn(
-                      "md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
-                      "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
-                    )}
-                  >
-                    Hi, I am
-                    <br className="md:hidden" />
-                  </p>
-                </BlurIn>
-                <BlurIn delay={1}>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <h1
-                        className={cn(
-                          "font-thin text-6xl text-transparent text-slate-800 ml-1 text-left",
-                          "cursor-default text-edge-outline font-display sm:text-7xl md:text-9xl "
-                        )}
-                      >
-                        {config.author.split(" ")[0]}
-                        <br className="md:block hiidden" />
-                        {config.author.split(" ").slice(1).join(" ")}
-                      </h1>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="top"
-                      className="dark:bg-white dark:text-black"
-                    >
-                      theres something waiting for you in devtools
-                    </TooltipContent>
-                  </Tooltip>
-                </BlurIn>
-                <BlurIn delay={1.2}>
-                  <p
-                    className={cn(
-                      "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
-                      "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
-                    )}
-                  >
-                    AI & Software Developer
-                  </p>
-                </BlurIn>
-              </div>
-              <div className="mt-8 md:ml-2 flex flex-col gap-3">
-                <Link
-                  href="/resume24April2026.pdf"
-                  target="_blank"
-                  className="flex-1"
-                >
-                  <BoxReveal delay={2} width="100%" >
-                    <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
-                      <p>Resume</p>
+              <BlurIn delay={0.7}>
+                <p className="font-thin text-md text-slate-500 dark:text-zinc-400 mb-2">
+                  Hi, I am
+                </p>
+              </BlurIn>
+              <BlurIn delay={1}>
+                <h1 className="font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-slate-800 dark:text-white leading-tight">
+                  {config.author.split(" ")[0]}
+                  <br />
+                  <span className="text-brand">{config.author.split(" ").slice(1).join(" ")}</span>
+                </h1>
+              </BlurIn>
+              <BlurIn delay={1.2}>
+                <p className="mt-4 font-medium text-xl md:text-2xl text-slate-600 dark:text-zinc-300">
+                  AI & Software Developer
+                </p>
+              </BlurIn>
+              
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <Link href="/resume24April2026.pdf" target="_blank" className="w-full sm:w-auto">
+                  <BoxReveal delay={2} width="100%">
+                    <Button className="flex items-center justify-center gap-2 w-full h-12 px-8 text-lg">
+                      <File size={20} />
+                      Resume
                     </Button>
                   </BoxReveal>
                 </Link>
-                <div className="md:self-start flex gap-3">
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <Link href={"#contact"}>
-                        <Button
-                          variant={"outline"}
-                          className="block w-full overflow-hidden"
-                        >
-                          Hire Me
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <p>Let&apos;s build something amazing! 🚀</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Link
-                    href={config.social.github}
-                    target="_blank"
-                  >
-                    <Button variant={"outline"}>
+                <div className="flex gap-3 justify-center">
+                  <Link href={config.social.github} target="_blank">
+                    <Button variant="outline" size="icon" className="h-12 w-12">
                       <Github size={24} />
                     </Button>
                   </Link>
-                  <Link
-                    href={config.social.linkedin}
-                    target="_blank"
-                  >
-                    <Button variant={"outline"}>
+                  <Link href={config.social.linkedin} target="_blank">
+                    <Button variant="outline" size="icon" className="h-12 w-12">
                       <Linkedin size={24} />
                     </Button>
                   </Link>
                 </div>
-                            </div>
+              </div>
             </>
           )}
         </div>
-        <div className="grid col-span-1"></div>
+        
+        <div className="relative order-first lg:order-last">
+          {!isLoading && (
+            <BlurIn delay={1.5}>
+              <PhoenixModel />
+            </BlurIn>
+          )}
+        </div>
       </div>
-      <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
+      
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
         <ScrollDownIcon />
       </div>
     </section>

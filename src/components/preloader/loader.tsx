@@ -1,41 +1,17 @@
 "use client";
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { opacity, slideUp } from "./anim";
 import { usePreloader } from ".";
 
-const steps = [
-  "10%",
-  "20%",
-  "30%",
-  "40%",
-  "50%",
-  "60%",
-  "70%",
-  "80%",
-  "90%",
-  "100%",
-];
-
 export default function Index() {
   const { isLoading, loadingPercent } = usePreloader();
-  const [index, setIndex] = useState(0);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     setDimension({ width: window.innerWidth, height: window.innerHeight });
   }, []);
-
-  useEffect(() => {
-    if (index == steps.length - 1) return;
-    setTimeout(
-      () => {
-        setIndex(index + 1);
-      },
-      index == 0 ? 1000 : 150
-    );
-  }, [index]);
 
   const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${
     dimension.height
@@ -66,14 +42,34 @@ export default function Index() {
     >
       {dimension.width > 0 && (
         <>
-          <motion.p variants={opacity} initial="initial" animate="enter">
-            {(loadingPercent - (loadingPercent % 5)).toFixed(0)} %
-          </motion.p>
-          <svg>
+          {/* Scanning Line Effect */}
+          <motion.div 
+            className="absolute top-0 left-0 w-full h-[2px] bg-brand/50 z-50 shadow-[0_0_15px_rgba(255,100,0,0.8)]"
+            animate={{ top: ["0%", "100%"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          />
+          
+          <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="mb-8"
+            >
+              <h2 className="text-2xl font-mono tracking-widest text-brand">SYSTEM INITIALIZING...</h2>
+            </motion.div>
+            
+            <motion.p variants={opacity} initial="initial" animate="enter" className="text-7xl font-bold">
+              {(loadingPercent - (loadingPercent % 5)).toFixed(0)} %
+            </motion.p>
+          </div>
+
+          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
             <motion.path
               variants={curve}
               initial="initial"
               exit="exit"
+              fill="currentColor"
+              className="text-background"
             ></motion.path>
           </svg>
         </>

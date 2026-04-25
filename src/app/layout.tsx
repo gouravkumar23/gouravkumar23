@@ -14,6 +14,7 @@ import EasterEggs from "@/components/easter-eggs";
 import { config } from "@/data/config";
 import SocketContextProvider from "@/contexts/socketio";
 import RemoteCursors from "@/components/realtime/remote-cursors";
+import InteractiveGrid from "@/components/interactive-grid";
 
 export const metadata: Metadata = {
   title: config.title,
@@ -64,7 +65,6 @@ export default function RootLayout({
           src={process.env.UMAMI_DOMAIN}
           data-website-id={process.env.UMAMI_SITE_ID}
         ></Script>
-        {/* <Analytics /> */}
       </head>
       <body>
         <ThemeProvider
@@ -72,6 +72,7 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
+          <InteractiveGrid />
           <Particles
             className="fixed inset-0 -z-10 animate-fade-in"
             quantity={100}
