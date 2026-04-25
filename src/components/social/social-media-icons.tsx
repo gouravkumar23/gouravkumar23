@@ -3,7 +3,7 @@
 import { useInView } from "framer-motion";
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
-import { FaGithub, FaInstagram, FaLinkedin, FaXTwitter } from "react-icons/fa6";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 import { config } from "@/data/config";
 import Link from "next/link";
 
@@ -17,11 +17,6 @@ const BUTTONS = [
     name: "LinkedIn",
     href: config.social.linkedin,
     icon: <FaLinkedin size={"24"} color={"#fff"} />,
-  },
-  {
-    name: "Twitter",
-    href: config.social.twitter,
-    icon: <FaXTwitter size={"24"} color={"#fff"} />,
   },
   {
     name: "Instagram",
