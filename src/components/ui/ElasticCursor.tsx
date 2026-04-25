@@ -136,12 +136,6 @@ function ElasticCursor() {
       }
     );
   };
-  window.addEventListener("mousedown", handleClick);
-
-return () => {
-  window.removeEventListener("mousemove", setFromEvent);
-  window.removeEventListener("mousedown", handleClick);
-};
   // Run on Mouse Move
   useLayoutEffect(() => {
     if (isMobile) return;
