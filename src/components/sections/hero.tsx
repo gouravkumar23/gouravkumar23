@@ -8,13 +8,7 @@ import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { config } from "@/data/config";
-import dynamic from "next/dynamic";
 import LightningCubes from "../lightning-cubes";
-
-const PhoenixModel = dynamic(() => import("../phoenix-model"), { 
-  ssr: false,
-  loading: () => <div className="w-full h-full flex items-center justify-center text-zinc-500 font-mono">Loading 3D Phoenix...</div>
-});
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
@@ -70,9 +64,8 @@ const HeroSection = () => {
           )}
         </div>
         
-        <div className="relative order-first lg:order-last h-[350px] sm:h-[450px] md:h-[550px]">
-          <PhoenixModel />
-        </div>
+        {/* Placeholder for spacing where the Phoenix used to be */}
+        <div className="relative order-first lg:order-last h-[350px] sm:h-[450px] md:h-[550px] pointer-events-none" />
       </div>
       
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
