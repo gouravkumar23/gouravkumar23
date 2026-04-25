@@ -86,7 +86,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
   );
 }
 
-function Model({ scale = 0.0095, ...props }: any) {
+function Model({ scale = 0.01, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
   const { resolvedTheme } = useTheme();
@@ -156,8 +156,8 @@ function Model({ scale = 0.0095, ...props }: any) {
     tl.set(group.current.position, { x: -25, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section)
-    tl.to(group.current.position, { x: 0, y: -15, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section) - Adjusted Y to stay above footer
+    tl.to(group.current.position, { x: 0, y: -11, z: 5, duration: 10, ease: "power1.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -190,7 +190,7 @@ const PhoenixModel = () => {
         <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={3} rotationIntensity={0.3} floatIntensity={0.3}>
-            <Model scale={isMobile ? 0.008 : 0.0095} />
+            <Model scale={isMobile ? 0.009 : 0.01} />
           </Float>
         </Suspense>
       </Canvas>
