@@ -27,7 +27,7 @@ import {
   SiMysql,
   SiPostman,
   SiTypescript,
-} from "si";
+} from "react-icons/si";
 
 // @ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
