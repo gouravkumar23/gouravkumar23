@@ -42,18 +42,16 @@ function MainPage() {
           </div>
         </div>
 
-        {/* Layer 3: Page Content */}
+        {/* Layer 3: Page Content - pointer-events-none allows interaction with keyboard below */}
         <div className="relative z-[20] pointer-events-none">
-          <div className="pointer-events-auto">
-            <HeroSection />
-            <EducationSection />
-            <ExperienceSection />
-            <SkillsSection />
-            <ProjectsSection />
-            <CertificatesSection />
-            <LeadershipSection />
-            <ContactSection />
-          </div>
+          <HeroSection />
+          <EducationSection />
+          <ExperienceSection />
+          <SkillsSection />
+          <ProjectsSection />
+          <CertificatesSection />
+          <LeadershipSection />
+          <ContactSection />
         </div>
       </main>
     </SmoothScroll>

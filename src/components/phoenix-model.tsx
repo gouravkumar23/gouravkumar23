@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect, useMemo, useState } from "react";
+import React, { Suspense, useRef, useEffect, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, useAnimations, Float, Points, PointMaterial } from "@react-three/drei";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -10,19 +10,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Dynamic Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 150;
+  const count = 100;
   
-  // Particle state
   const particles = useMemo(() => {
     const arr = [];
     for (let i = 0; i < count; i++) {
       arr.push({
-        pos: new THREE.Vector3(0, -100, 0), // Start off-screen
-        life: 0,
-        size: 0
+        pos: new THREE.Vector3(0, -100, 0),
+        life: 0
       });
     }
     return arr;
@@ -36,38 +33,32 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     const currentPos = new THREE.Vector3();
     targetRef.current.getWorldPosition(currentPos);
 
-    // Update particles
     let spawned = false;
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
         particles[i].life -= delta;
-        // Add slight drift
-        particles[i].pos.y += delta * 0.2;
-        
         positions[i * 3] = particles[i].pos.x;
         positions[i * 3 + 1] = particles[i].pos.y;
         positions[i * 3 + 2] = particles[i].pos.z;
       } else if (!spawned) {
-        // Spawn new particle at bird's position
-        particles[i].life = 1.0; // 1 second life
+        particles[i].life = 1.0;
         particles[i].pos.copy(currentPos);
         spawned = true;
       }
     }
-
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
-    <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
+    <Points ref={pointsRef} positions={positions} stride={3}>
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.12}
+        size={0.1}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.5}
+        opacity={0.4}
       />
     </Points>
   );
@@ -116,13 +107,10 @@ function Model({ scale = 1, ...props }: any) {
     tl.to(group.current.position, { x: 15, y: 5, z: -5, duration: 2 })
       .to(group.current.rotation, { y: Math.PI * 0.5, duration: 2 }, 0)
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 })
-      
       .set(group.current.position, { x: -15, y: -3, z: -2 })
       .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 })
-      
       .to(group.current.position, { x: 0, y: 0, z: 0, duration: 2 })
       .to(group.current.rotation, { y: Math.PI * 2, duration: 2 }, "<")
-      
       .to(group.current.position, { x: 18, y: 6, z: -8, duration: 2 })
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
 

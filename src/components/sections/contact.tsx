@@ -14,8 +14,8 @@ import { config } from "@/data/config";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="min-h-screen max-w-7xl mx-auto px-4 py-20">
-      <Link href={"#contact"}>
+    <section id="contact" className="min-h-screen max-w-7xl mx-auto px-4 py-20 pointer-events-none">
+      <Link href={"#contact"} className="pointer-events-auto">
         <h2
           className={cn(
             "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
@@ -27,7 +27,7 @@ const ContactSection = () => {
           TOGETHER
         </h2>
       </Link>
-      <div className="flex justify-center mt-10 md:mt-20">
+      <div className="flex justify-center mt-10 md:mt-20 pointer-events-auto">
         <Card className="w-full max-w-2xl bg-white/70 dark:bg-black/70 backdrop-blur-sm rounded-2xl border-zinc-200 dark:border-zinc-800">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl md:text-4xl font-bold">Contact Form</CardTitle>
