@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Suspense, useRef, useEffect, useMemo } from "react";
+import React, { Suspense, useRef, useEffect, useMemo, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, useAnimations, Float, Html, Points, PointMaterial } from "@react-three/drei";
+import { useGLTF, useAnimations, Float, Points, PointMaterial } from "@react-three/drei";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -10,41 +10,64 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Trail() {
-  const points = useRef<THREE.Points>(null);
-  const count = 100;
-  const [positions, setPositions] = React.useState(() => new Float32Array(count * 3));
+// Dynamic Trail Component
+function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const count = 150;
   
-  // We'll use a simple trail that follows the mouse or a target
-  // But since the phoenix is animated by GSAP, we'll just create some ambient floating dust
-  // that moves slightly to give the illusion of a trail.
-  useFrame((state) => {
-    if (points.current) {
-      points.current.rotation.y += 0.01;
-      points.current.position.y = Math.sin(state.clock.elapsedTime) * 0.2;
+  // Particle state
+  const particles = useMemo(() => {
+    const arr = [];
+    for (let i = 0; i < count; i++) {
+      arr.push({
+        pos: new THREE.Vector3(0, -100, 0), // Start off-screen
+        life: 0,
+        size: 0
+      });
     }
+    return arr;
+  }, [count]);
+
+  const positions = useMemo(() => new Float32Array(count * 3), [count]);
+
+  useFrame((state, delta) => {
+    if (!targetRef.current || !pointsRef.current) return;
+
+    const currentPos = new THREE.Vector3();
+    targetRef.current.getWorldPosition(currentPos);
+
+    // Update particles
+    let spawned = false;
+    for (let i = 0; i < count; i++) {
+      if (particles[i].life > 0) {
+        particles[i].life -= delta;
+        // Add slight drift
+        particles[i].pos.y += delta * 0.2;
+        
+        positions[i * 3] = particles[i].pos.x;
+        positions[i * 3 + 1] = particles[i].pos.y;
+        positions[i * 3 + 2] = particles[i].pos.z;
+      } else if (!spawned) {
+        // Spawn new particle at bird's position
+        particles[i].life = 1.0; // 1 second life
+        particles[i].pos.copy(currentPos);
+        spawned = true;
+      }
+    }
+
+    pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
-  const particles = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 5;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 5;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 5;
-    }
-    return pos;
-  }, []);
-
   return (
-    <Points positions={particles} stride={3}>
+    <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.05}
+        size={0.12}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.4}
+        opacity={0.5}
       />
     </Points>
   );
@@ -52,6 +75,7 @@ function Trail() {
 
 function Model({ scale = 1, ...props }: any) {
   const group = useRef<THREE.Group>(null);
+  const birdRef = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
   const { actions, names } = useAnimations(animations, group);
 
@@ -89,22 +113,17 @@ function Model({ scale = 1, ...props }: any) {
       }
     });
 
-    tl.to(group.current.position, { x: 12, y: 5, z: -5, duration: 2 })
+    tl.to(group.current.position, { x: 15, y: 5, z: -5, duration: 2 })
       .to(group.current.rotation, { y: Math.PI * 0.5, duration: 2 }, 0)
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 })
       
-      .set(group.current.position, { x: -12, y: -3, z: -2 })
-      .to(group.current.scale, { 
-        x: scale, 
-        y: scale, 
-        z: scale, 
-        duration: 0.5 
-      })
+      .set(group.current.position, { x: -15, y: -3, z: -2 })
+      .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 })
       
       .to(group.current.position, { x: 0, y: 0, z: 0, duration: 2 })
       .to(group.current.rotation, { y: Math.PI * 2, duration: 2 }, "<")
       
-      .to(group.current.position, { x: 15, y: 6, z: -8, duration: 2 })
+      .to(group.current.position, { x: 18, y: 6, z: -8, duration: 2 })
       .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
 
     return () => {
@@ -114,8 +133,10 @@ function Model({ scale = 1, ...props }: any) {
 
   return (
     <group ref={group} dispose={null}>
-      <primitive object={scene} scale={scale} {...props} />
-      <Trail />
+      <group ref={birdRef}>
+        <primitive object={scene} scale={scale} {...props} />
+      </group>
+      <PhoenixTrail targetRef={birdRef} />
     </group>
   );
 }
