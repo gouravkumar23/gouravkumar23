@@ -85,7 +85,7 @@ const PROJECT_SKILLS = {
   vite: { title: "Vite", bg: "black", fg: "white", icon: <SiVite /> },
   html: { title: "HTML5", bg: "black", fg: "white", icon: <SiHtml5 /> },
   css: { title: "CSS3", bg: "black", fg: "white", icon: <FaCss3Alt /> },
-  bootstrap: { title: "Bootstrap", bg: "black", fg: "white", icon: <SiGooglecloud /> }, // Placeholder
+  bootstrap: { title: "Bootstrap", bg: "black", fg: "white", icon: <SiGooglecloud /> },
   maven: { title: "Maven", bg: "black", fg: "white", icon: <SiApachemaven /> },
   flask: { title: "Flask", bg: "black", fg: "white", icon: <SiFlask /> },
   gemini: { title: "Gemini AI", bg: "black", fg: "white", icon: <SiGooglecloud /> },
@@ -105,10 +105,10 @@ export type Project = {
 
 const projects: Project[] = [
   {
-    id: "smartquizhub",
+    id: "eduease",
     category: "AI Proctored Platform",
-    title: "SmartQuizHub (EduEase)",
-    src: "/assets/projects-screenshots/smartquizhub/main.png",
+    title: "EduEase",
+    src: "/assets/projects-screenshots/eduease/main.png",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.tailwind],

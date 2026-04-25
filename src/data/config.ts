@@ -14,7 +14,7 @@ const config = {
     "Machine Learning",
     "Full Stack Developer",
     "Anurag University",
-    "SmartQuizHub",
+    "EduEase",
     "DANCCES",
     "AI Proctored Examination",
     "Distributed Systems",
@@ -27,10 +27,10 @@ const config = {
     return this.site + "/assets/seo/og-image.png";
   },
   social: {
-    twitter: "https://x.com/gourav_gunjari", // Placeholder if not provided
+    twitter: "https://x.com/gourav_gunjari",
     linkedin: "https://linkedin.com/in/gunjari-gourav-kumar",
-    instagram: "https://www.instagram.com/gourav_gunjari/", // Placeholder
-    facebook: "https://www.facebook.com/gourav.gunjari", // Placeholder
+    instagram: "https://www.instagram.com/gourav_gunjari/",
+    facebook: "https://www.facebook.com/gourav.gunjari",
     github: "https://github.com/gouravkumar23",
   },
 };
