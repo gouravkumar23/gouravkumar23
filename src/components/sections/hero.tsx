@@ -4,18 +4,16 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { File, Github, Linkedin } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { config } from "@/data/config";
 import dynamic from "next/dynamic";
 
-const PhoenixModel = dynamic(() => import("../phoenix-model"), { ssr: false });
+const PhoenixModel = dynamic(() => import("../phoenix-model"), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center text-zinc-500 font-mono">Loading 3D Phoenix...</div>
+});
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
@@ -70,12 +68,8 @@ const HeroSection = () => {
           )}
         </div>
         
-        <div className="relative order-first lg:order-last">
-          {!isLoading && (
-            <BlurIn delay={1.5}>
-              <PhoenixModel />
-            </BlurIn>
-          )}
+        <div className="relative order-first lg:order-last h-[350px] sm:h-[450px] md:h-[550px]">
+          <PhoenixModel />
         </div>
       </div>
       
