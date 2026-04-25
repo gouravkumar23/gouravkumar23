@@ -1,14 +1,15 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF, Stage, PresentationControls } from "@react-three/drei";
 
 function Model(props: any) {
-  // The model is now in the public directory
   const { scene } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
-  return <primitive object={scene} {...props} />;
+  // Clone the scene to ensure it's a fresh instance for this component
+  const clonedScene = useMemo(() => scene.clone(), [scene]);
+  return <primitive object={clonedScene} {...props} />;
 }
 
 const PhoenixModel = () => {
@@ -17,21 +18,26 @@ const PhoenixModel = () => {
       <Canvas 
         dpr={[1, 2]} 
         shadows 
-        camera={{ fov: 45 }}
-        onCreated={({ gl }) => {
-          gl.toneMapping = THREE.AgXToneMapping;
+        camera={{ fov: 45, position: [0, 0, 5] }}
+        gl={{ 
+          antialias: true,
+          toneMapping: THREE.AgXToneMapping,
+          outputColorSpace: THREE.SRGBColorSpace
         }}
       >
         <color attach="background" args={["transparent"]} />
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} />
+        
         <Suspense fallback={null}>
           <PresentationControls 
             speed={1.5} 
             global 
-            zoom={0.5} 
+            zoom={0.7} 
             polar={[-0.1, Math.PI / 4]}
             rotation={[0, -Math.PI / 4, 0]}
           >
-            <Stage environment="city" intensity={0.5}>
+            <Stage environment="city" intensity={0.5} contactShadow={false}>
               <Model scale={0.01} />
             </Stage>
           </PresentationControls>
