@@ -1,0 +1,343 @@
+{
+  "personal_information": {
+    "name": "Gourav Kumar Gunjari [cite: 1]",
+    "email": "gunjarigourav@gmail.com [cite: 1]",
+    "phone": "+91 9676473925 [cite: 1]",
+    "linkedin": "https://linkedin.com/in/gunjari-gourav-kumar [cite: 1]",
+    "portfolio": "https://gouravkumar23.github.io/profile [cite: 1]",
+    "location": "Secunderabad, Telangana [cite: 1]"
+  },
+  "education": [
+    {
+      "degree": "Bachelor of Computer Science [cite: 1]",
+      "institution": "Anurag University [cite: 2]",
+      "graduation_year": "Expected 2026 [cite: 2]",
+      "coursework": "Data Science with Computer Science and Engineering. [cite: 2]",
+      "cgpa": "8.79 [cite: 2]"
+    },
+    {
+      "degree": "Schooling [cite: 2]",
+      "institution": "St. Francis De Sales High School [cite: 2]",
+      "graduation_year": "2020 [cite: 2]",
+      "cgpa": "10 [cite: 2]"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Software Development Intern [cite: 2]",
+      "company": "DRDO – Research Centre Imarat (RCI), Hyderabad [cite: 2]",
+      "duration": "Jul 2025- August 2025 [cite: 2]",
+      "responsibilities": [
+        "Developing a C-based software system to interface with and store data from defense-grade hardware protocols such as RS-422 and MIL-STD-1553. [cite: 2]",
+        "Implementing a native Windows GUI using WinAPI for real-time visualization, control, and diagnostics of connected hardware. [cite: 2]",
+        "Collaborating with hardware teams to ensure accurate data interpretation, protocol compliance, and low-latency performance. [cite: 2]"
+      ]
+    }
+  ],
+  "skills": {
+    "programming_languages": "C, Java, Python, Dart, R, PL/SQL [cite: 3]",
+    "web_development_frontend": "HTML, CSS, JavaScript, Bootstrap [cite: 3]",
+    "web_development_backend": "Flask, Django, Spring, Spring Boot, Servlet, Gradio (Prompting) [cite: 3]",
+    "mobile_development": "Flutter, Android Studio [cite: 3]",
+    "web_tools_and_apis": "REST API, Firebase Firestore, Supabase, Postman, Maven [cite: 3]",
+    "database_management": "SQL, MySQL, SQLite3, SQLAlchemy, Firebase, Supabase [cite: 3]",
+    "ai_and_machine_learning": "Fundamentals of AI, Machine Learning, DeepLearning and Computer Vision Algorithms, Prompt Engineering, Genai, Agentic ai, MCP Servers, RAG Systems, Context Aware AI Systems, XaI [cite: 3]",
+    "ai_and_llm_tools": "Google Gemini API, LangGraph, LangSmith, ollama, dyad, claude [cite: 3]",
+    "cloud_and_devops": "System Design and Software Archetecture, Docker, Render, Cloudinary, Git, SDLC, Agile, CI/CD [cite: 3]",
+    "ai_libraries_and_platforms": "scikit-learn, Hugging Face, Transformers [cite: 3]",
+    "data_analysis_and_visualization": "NumPy, Pandas, [cite: 3] Matplotlib, Plotly, Altair, Tableau, Qlik Sense, Pygwalker, R Programming [cite: 4]",
+    "cs_concepts": "Data Structures, Algorithms, Intermediate DSA [cite: 4]",
+    "soft_skills": "Communication, Interpersonal Skills, Critical Thinking, Problem-Solving, Leadership, Time Management, Strategic Thinking, Innovation [cite: 4]",
+    "languages": "English (Fluent), Hindi (Fluent), Telugu (Native) [cite: 4]",
+    "communication_and_presentation": "Public Speaking, Technical/Non-Technical Writing, Slide Deck Creation & Delivery [cite: 4]"
+  },
+  "projects": [
+    {
+      "name": "SmartQuizHub (EduEase) – AI Proctored Examination Platform [cite: 4]",
+      "duration": "Jan 2026 - Present [cite: 4]",
+      "description": "Intelligent Learning and Testing Platform [cite: 4]",
+      "technologies": "React, Firebase, Node.js, Gemini API, Cloudinary [cite: 4]",
+      "links": {
+        "live": "https://eduease-jade.vercel.app/ [cite: 4]",
+        "github": "https://github.com/gouravkumar23/eduEase [cite: 4]"
+      },
+      "details": [
+        "Built an AI-powered examination platform with real-time monitoring and secure session control. [cite: 4]",
+        "Designed a 4-tier architecture integrating frontend, Firebase, backend relay, and AI services. [cite: 5]",
+        "Implemented AI proctoring (face detection, noise analysis, tab tracking), OTP authentication, role-based access, and automated MCQ generation. [cite: 6]",
+        "Introduced Concepts of rooms for targeted Studies and Context AI systems for improved personalized learning techniques. [cite: 7]"
+      ]
+    },
+    {
+      "name": "DANCCES – Distributed Autonomous Network Compliance System [cite: 8]",
+      "duration": "Sep 2025 - Present [cite: 8]",
+      "description": "Endpoint Network Management [cite: 8]",
+      "technologies": "Python, Networking, Security, Systems [cite: 8]",
+      "links": {
+        "live": "https://drive.google.com/file/d/1iqtyRYBMamkz3fSpMg1lhLBrqRYGr1Ur/view?usp=sharing [cite: 8]",
+        "github": "https://github.com/gouravkumar23/DANCCES [cite: 8]"
+      },
+      "details": [
+        "Developed a decentralized endpoint compliance system with autonomous enforcement at device level. [cite: 8]",
+        "Implemented cryptographic command validation, real-time heartbeat monitoring, firewall/DNS control, and remote system execution. [cite: 9]",
+        "Designed scalable architecture with Rust (client) and Go (admin) roadmap. [cite: 10]"
+      ]
+    },
+    {
+      "name": "DataDynomo2 – Hackathon Management Platform [cite: 11]",
+      "duration": "Jan 2026 [cite: 11]",
+      "description": "Hackathon Management System [cite: 11]",
+      "technologies": "React, TypeScript, Firebase, Cloudinary, Zod QR [cite: 11]",
+      "links": {
+        "live": "https://datadynomo2.vercel.app/ [cite: 11]",
+        "github": "https://github.com/gouravkumar23/datadynomo2 [cite: 11]"
+      },
+      "details": [
+        "Built a full-stack system for managing hackathons with QR-based secure check-ins and role-based dashboards. [cite: 11]",
+        "Implemented real-time announcements, voting systems, Project Allocations and audit logging. [cite: 12]"
+      ]
+    },
+    {
+      "name": "Universal Mailing Service (Render Deployed) [cite: 13]",
+      "duration": "Feb 2026 [cite: 13]",
+      "description": "Mailing Backend [cite: 13]",
+      "technologies": "Node.js, SMTP, REST API [cite: 13]",
+      "links": {
+        "github": "https://github.com/qwertymailingdemon/qwertyMailingService [cite: 13]"
+      },
+      "details": [
+        "Developed a centralized email service supporting OTP, password reset, and notifications across multiple applications. [cite: 13]",
+        "Designed secure API-based mailing system with authentication and scalable deployment. [cite: 14]"
+      ]
+    },
+    {
+      "name": "qwerty mailing automation – AI-Powered Intelligent Email Management System [cite: 15]",
+      "duration": "Feb 2026 - Present [cite: 15]",
+      "description": "Intelligent Email Automation [cite: 15]",
+      "technologies": "React, TypeScript, Firebase, Gemini 2.5 Flash, Gmail API [cite: 15]",
+      "links": {
+        "live": "https://qwertymailingautomation.vercel.app/ [cite: 15]",
+        "github": "https://github.com/gouravkumar23/QwertyMailingAutomation [cite: 15]"
+      },
+      "details": [
+        "Developed an advanced email orchestration platform integrating Gmail API and Gemini AI for automated processing. [cite: 15]",
+        "Implemented real-time synchronization, AI-driven summarization, priority detection, and sentiment analysis. [cite: 16]"
+      ]
+    },
+    {
+      "name": "Scrum-Assisstant: Intelligent Scrum Master Assistant with Automation & AI Guidance [cite: 17]",
+      "duration": "Sep 2025 [cite: 17]",
+      "description": "AI Based Scrum Assistant Software [cite: 17]",
+      "technologies": "Gemini API, Whapi, SMTP, Firebase Firestore & Auth, Bolt.new, Flask, Requests [cite: 18]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/Scrum-Assisstant [cite: 17]"
+      },
+      "details": [
+        "Built an AI-powered Scrum assistant that automates Scrum Master duties, integrates with WhatsApp, and supports intelligent project and team management for Agile teams. [cite: 17]",
+        "Scales to 1000+ users with real-time features. [cite: 18]"
+      ]
+    },
+    {
+      "name": "BayMax – AI-Powered IT Incident Summarization [cite: 18]",
+      "duration": "Jan--Mar 2025 [cite: 18]",
+      "description": "AI Platform for IT Incidents [cite: 18]",
+      "technologies": "BART (facebook/bart-base), Gradio, Flask, Firebase, React, Web Analytics [cite: 18]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/BayMax [cite: 18]"
+      },
+      "details": [
+        "Designed an AI system to summarize IT incidents and provide analytical dashboards for IT management. [cite: 18]"
+      ]
+    },
+    {
+      "name": "Online Quiz Application [cite: 18]",
+      "duration": "Jan 2025 [cite: 18]",
+      "description": "Java-based Project [cite: 18]",
+      "technologies": "Java, Spring Boot, Servlets [cite: 18]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/JavaQuiz [cite: 18]"
+      },
+      "details": [
+        "Built a web-based platform for hosting and managing online quizzes. [cite: 18]"
+      ]
+    },
+    {
+      "name": "ClubEase – Club Management System [cite: 18]",
+      "duration": "Feb 2025 [cite: 18]",
+      "description": "Web App [cite: 18]",
+      "technologies": "JavaScript, Supabase, HTML, CSS [cite: 18]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/club_manaement_system [cite: 18]"
+      },
+      "details": [
+        "Created a club management platform with Supabase APIs and real-time frontend data manipulation. [cite: 18]"
+      ]
+    },
+    {
+      "name": "Punch-In System with Auth [cite: 18]",
+      "duration": "Mar 2025 [cite: 18, 19]",
+      "description": "Flutter Mobile App [cite: 19]",
+      "technologies": "Flutter, Firebase, Google Maps API [cite: 19]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/login-signup-flutter-firebase [cite: 18]"
+      },
+      "details": [
+        "Developed a sign-in/sign-up and punch-in system with location verification and real-time updates. [cite: 19]"
+      ]
+    },
+    {
+      "name": "QR Code-Based Food System [cite: 19]",
+      "duration": "Dec 2024 [cite: 19]",
+      "description": "University Community Project [cite: 19]",
+      "technologies": "Python, Flask, Firebase [cite: 19]",
+      "links": {
+        "github": "https://github.com/gfgau/QRCodeBasedFoodAttedance [cite: 19]"
+      },
+      "details": [
+        "Developed a system where participants can use QR codes provided by event hosts instead of paper food tokens. [cite: 19]"
+      ]
+    },
+    {
+      "name": "Gesture-Based Navigation for Presentations [cite: 19]",
+      "duration": "Sep--Oct 2024 [cite: 19]",
+      "description": "Computer Vision Project [cite: 19]",
+      "technologies": "Python, OpenCV, MediaPipe, PyAutoGUI [cite: 19]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/pptNav [cite: 19]"
+      },
+      "details": [
+        "Controlled PowerPoint slides using 3 hand gestures for seamless presentation navigation. [cite: 19]"
+      ]
+    },
+    {
+      "name": "Trash Detection System [cite: 19]",
+      "duration": "Mar--May 2024 [cite: 19]",
+      "description": "API-Based Project [cite: 19]",
+      "technologies": "Python, OpenCV, Gemini API, Front-end [cite: 19]",
+      "links": {
+        "github": "https://github.com/gouravkumar23/Trash-Detection [cite: 19]"
+      },
+      "details": [
+        "Built a system that detects and classifies trash into 3 categories, offering 2 actionable solutions. [cite: 19]"
+      ]
+    },
+    {
+      "name": "Sleep Data Analysis [cite: 19]",
+      "duration": "Feb 2024 [cite: 19]",
+      "description": "Data Analysis [cite: 19]",
+      "technologies": "Qlik Sense [cite: 20]",
+      "links": {
+        "github": "https://github.com/gouravkumar23 [cite: 19]"
+      },
+      "details": [
+        "Analyzed sleep data using Qlik Sense, generating interactive dashboards and insights. [cite: 19, 20]"
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Software Architecture Foundations [cite: 20]",
+      "issuer": "LinkedIn Learning [cite: 20]",
+      "date": "Apr 2026 [cite: 20]",
+      "link": "https://drive.google.com/file/d/1HC36k_jP-U5HRUWSHfjsRoAOCdLp76mU/view [cite: 20]"
+    },
+    {
+      "name": "Quickstart: LangSmith Fleet [cite: 20]",
+      "issuer": "LangChain Academy [cite: 20]",
+      "date": "Apr 2026 [cite: 20]",
+      "link": "https://drive.google.com/file/d/1HC36k_jP-U5HRUWSHfjsRoAOCdLp76mU/view [cite: 20]"
+    },
+    {
+      "name": "Quickstart: LangGraph Essentials - Python [cite: 20]",
+      "issuer": "LangChain Academy [cite: 20]",
+      "date": "Apr 2026 [cite: 20]",
+      "link": "https://drive.google.com/file/d/1HC36k_jP-U5HRUWSHfjsRoAOCdLp76mU/view [cite: 20]"
+    },
+    {
+      "name": "Docker for Developers [cite: 20]",
+      "issuer": "LinkedIn Learning [cite: 20]",
+      "date": "Apr 2026 [cite: 20]",
+      "link": "https://drive.google.com/file/d/1ssYShpr5T1KVFYO58AUOICFdFL5JksnJ/view [cite: 20]"
+    },
+    {
+      "name": "Prompt Engineering [cite: 20]",
+      "issuer": "LinkedIn Learning [cite: 20]",
+      "date": "Jan 2024 [cite: 20]",
+      "link": "https://drive.google.com/file/d/1HJJ2tOzLK-1qcEhdWI8qxIvtnjPyOIvB/view [cite: 20]"
+    },
+    {
+      "name": "Qlik Data Literacy [cite: 20]",
+      "issuer": "Qlik [cite: 20]",
+      "date": "Feb 2024 [cite: 20]",
+      "link": "https://drive.google.com/file/d/151Lu6SHdX0idCp76uXvE54R1efh83M2f/view [cite: 20]"
+    },
+    {
+      "name": "Code Maze [cite: 20]",
+      "issuer": "Anurag University [cite: 21]",
+      "date": "Sep 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/11PwNeuCX3OP0V1F_fRPQzgn-empL2S3b/view [cite: 20]"
+    },
+    {
+      "name": "Blockchain [cite: 21]",
+      "issuer": "Udemy [cite: 21]",
+      "date": "Oct 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HCKYJxXhXuOr9HtX1u-Eq54IfdRvksfC/view [cite: 21]"
+    },
+    {
+      "name": "Data Visualization [cite: 21]",
+      "issuer": "LinkedIn Learning [cite: 21]",
+      "date": "Jan 2024 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HLf4UtWW36XZVO_Nt89b6GFeOqIYXuOU/view [cite: 21]"
+    },
+    {
+      "name": "DSA in Java [cite: 21]",
+      "issuer": "Infosys Springboard [cite: 21]",
+      "date": "Oct 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HPYjO7kX_pUHZo1q_jU3Xd03-YnrOUZG/view [cite: 21]"
+    },
+    {
+      "name": "HTML [cite: 21]",
+      "issuer": "Infosys Springboard [cite: 21]",
+      "date": "Nov 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HrTK9ZGVoM3Tw9hWwJqYoUBfuhoBFcOw/view [cite: 21]"
+    },
+    {
+      "name": "Java for Beginners [cite: 21]",
+      "issuer": "Infosys Springboard [cite: 21]",
+      "date": "Oct 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HPcbnvyzxrbCsH4AOwU558OIV6aNNXdk/view [cite: 21]"
+    },
+    {
+      "name": "NumPy & Pandas [cite: 21]",
+      "issuer": "Infosys Springboard [cite: 21]",
+      "date": "Nov 2023 [cite: 21]",
+      "link": "https://drive.google.com/file/d/1HVi9JXJu8hvhG_1Ca20n7cdWucZFUhdk/view [cite: 21]"
+    },
+    {
+      "name": "Schooling Certificates [cite: 21]",
+      "issuer": "St. Francis De Sales [cite: 21]",
+      "date": "2020 [cite: 21]",
+      "link": "https://drive.google.com/drive/folders/1UBmicuelDgLwGSgxyRpdbezyskjmWUYj [cite: 21]"
+    }
+  ],
+  "responsible_positions": [
+    {
+      "title": "Chief Advisory Chair Person [cite: 21]",
+      "organization": "GeeksforGeeks Student Chapter, Anurag University [cite: 21, 22]"
+    },
+    {
+      "title": "President [cite: 22]",
+      "organization": "Data Analytics Club [cite: 22]",
+      "details": [
+        "Led and organized 8 events, including a hackathon, with our teams. [cite: 22]"
+      ]
+    }
+  ],
+  "additional_strength": "Quickly adapt to new technologies and tools. [cite: 22]",
+  "extra_curricular_activities": [
+    "Improve basic communication skills in free time. [cite: 22]",
+    "Solve puzzles to enhance logical thinking. [cite: 23]",
+    "Play badminton regularly. [cite: 23]",
+    "Adventure games to explore creativity. [cite: 23]"
+  ]
+}
