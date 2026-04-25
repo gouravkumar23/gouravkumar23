@@ -119,16 +119,17 @@ export default function BottomOrb() {
             far={4.5} 
             color="#8a2be2"
           />
-
-          <EffectComposer disableNormalPass multisampling={4}>
-            <Bloom 
-              intensity={2.5} 
-              luminanceThreshold={0.1} 
-              luminanceSmoothing={0.9} 
-              mipmapBlur
-            />
-          </EffectComposer>
         </Suspense>
+
+        {/* EffectComposer moved outside Suspense and multisampling set to 4 */}
+        <EffectComposer disableNormalPass multisampling={4}>
+          <Bloom 
+            intensity={2.5} 
+            luminanceThreshold={0.1} 
+            luminanceSmoothing={0.9} 
+            mipmapBlur
+          />
+        </EffectComposer>
       </Canvas>
       
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-purple-900/5 blur-[150px] rounded-full -z-10" />
