@@ -15,7 +15,7 @@ import { config } from "@/data/config";
 import SocketContextProvider from "@/contexts/socketio";
 import RemoteCursors from "@/components/realtime/remote-cursors";
 import InteractiveGrid from "@/components/interactive-grid";
-import BottomOrb from "@/components/bottom-orb";
+import BottomOrbWrapper from "@/components/bottom-orb-wrapper";
 
 export const metadata: Metadata = {
   title: config.title,
@@ -85,7 +85,7 @@ export default function RootLayout({
               <TooltipProvider>
                 <Header />
                 {children}
-                <BottomOrb />
+                <BottomOrbWrapper />
                 <Footer />
               </TooltipProvider>
             </SocketContextProvider>
