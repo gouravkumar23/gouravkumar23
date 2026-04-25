@@ -2,7 +2,7 @@ import AceTernityLogo from "@/components/logos/aceternity";
 import SlideShow from "@/components/slide-show";
 import { Button } from "@/components/ui/button";
 import { TypographyH3, TypographyP } from "@/components/ui/typography";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Users } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { RiNextjsFill, RiNodejsFill, RiReactjsFill } from "react-icons/ri";
@@ -28,7 +28,7 @@ import { TbBrandFramerMotion } from "react-icons/tb";
 
 const BASE_PATH = "/assets/projects-screenshots";
 
-const ProjectsLinks = ({ live, repo }: { live?: string; repo?: string }) => {
+const ProjectsLinks = ({ live, repo, collaborator }: { live?: string; repo?: string; collaborator?: string }) => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-start gap-3 my-3 mb-8">
       {live && (
@@ -54,6 +54,19 @@ const ProjectsLinks = ({ live, repo }: { live?: string; repo?: string }) => {
           <Button variant={"default"} size={"sm"}>
             Github
             <ArrowUpRight className="ml-3 w-5 h-5" />
+          </Button>
+        </Link>
+      )}
+      {collaborator && (
+        <Link
+          className="font-mono underline flex gap-2"
+          rel="noopener"
+          target="_new"
+          href={collaborator}
+        >
+          <Button variant={"outline"} size={"sm"}>
+            Collaborator
+            <Users className="ml-3 w-5 h-5" />
           </Button>
         </Link>
       )}
@@ -101,6 +114,7 @@ export type Project = {
   content: React.ReactNode | any;
   github?: string;
   live?: string;
+  collaborator?: string;
 };
 
 const projects: Project[] = [
@@ -116,13 +130,14 @@ const projects: Project[] = [
     },
     live: "https://eduease-jade.vercel.app/",
     github: "https://github.com/gouravkumar23/eduEase",
+    collaborator: "https://github.com/mujju0Luna",
     get content() {
       return (
         <div>
           <TypographyP className="font-mono ">
             Intelligent Learning and Testing Platform featuring AI-powered examination with real-time monitoring and secure session control.
           </TypographyP>
-          <ProjectsLinks live={this.live} repo={this.github} />
+          <ProjectsLinks live={this.live} repo={this.github} collaborator={this.collaborator} />
           <TypographyH3 className="my-4 mt-8">Key Features</TypographyH3>
           <ul className="list-disc ml-6 font-mono">
             <li>AI proctoring (face detection, noise analysis, tab tracking)</li>
