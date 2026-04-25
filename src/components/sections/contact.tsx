@@ -14,7 +14,7 @@ import { config } from "@/data/config";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="min-h-screen max-w-7xl mx-auto px-4 pt-[400px] pb-[800px] pointer-events-none">
+    <section id="contact" className="min-h-screen max-w-7xl mx-auto px-4 pt-[400px] pb-[500px] pointer-events-none">
       <Link href={"#contact"} className="pointer-events-auto">
         <h2
           className={cn(

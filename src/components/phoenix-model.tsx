@@ -138,7 +138,7 @@ function Model({ scale = 0.02, ...props }: any) {
     // 1. Spawn at Center Top
     tl.set(group.current.position, { x: 0, y: 5, z: 0 });
     tl.set(group.current.scale, { x: 1, y: 1, z: 1 });
-    tl.set(group.current.rotation, { y: -Math.PI / 2 }); // Face Right (Corrected)
+    tl.set(group.current.rotation, { y: -Math.PI / 2 }); // Face Right
 
     // 2. Pass 1: Gentle Glide to Right
     tl.to(group.current.position, { x: 30, y: -5, z: -5, duration: 10, ease: "none" });
@@ -156,8 +156,8 @@ function Model({ scale = 0.02, ...props }: any) {
     tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section) - Moved lower (y: -12)
-    tl.to(group.current.position, { x: 0, y: -12, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section) - Centered in viewport (y: -2)
+    tl.to(group.current.position, { x: 0, y: -2, z: 5, duration: 10, ease: "power1.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
