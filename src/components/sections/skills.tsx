@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 
 const SkillsSection = () => {
   return (
-    <section id="skills" className="w-full h-screen md:h-[150dvh]">
-      <div className="top-[70px] sticky mb-96">
+    <section id="skills" className="w-full h-screen md:h-[150dvh] px-4">
+      <div className="top-[100px] sticky mb-48 md:mb-96">
         <Link href={"#skills"}>
           <BoxReveal width="100%">
             <h2
@@ -20,8 +20,8 @@ const SkillsSection = () => {
             </h2>
           </BoxReveal>
         </Link>
-        <p className="mx-auto mt-4 line-clamp-4 max-w-3xl font-normal text-base text-center text-neutral-300">
-          (hint: press a key)
+        <p className="mx-auto mt-4 line-clamp-4 max-w-3xl font-normal text-sm md:text-base text-center text-neutral-500 dark:text-neutral-400">
+          (hint: press a key or hover over them)
         </p>
       </div>
     </section>

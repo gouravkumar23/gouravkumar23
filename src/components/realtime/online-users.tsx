@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { motion } from "framer-motion";
 
-import { SocketContext, type User, type Message } from "@/contexts/socketio";
+import { SocketContext, type User } from "@/contexts/socketio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
@@ -71,12 +71,12 @@ const OnlineUsers = () => {
           <div className="relative flex flex-col gap-2">
             <div className="flex items-center gap-2 h-fit">
               <div className="w-2 h-2 animate-pulse rounded-full bg-green-400"></div>
-              {users.length} online
+              <span className="text-xs md:text-sm">{users.length} online</span>
             </div>
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-[calc(100vw-32px)] sm:w-80 mx-4 sm:mx-0">
         <Tabs
           defaultValue="users"
           className="w-full h-[30rem] flex flex-col items-center no-hover-zone"
@@ -125,11 +125,11 @@ const OnlineUsers = () => {
             className="w-full flex-1 overflow-auto flex flex-col"
           >
             <div
-              className="w-full h-full modall overflow-auto"
+              className="w-full h-full modall overflow-auto p-2"
               ref={chatContainer}
             >
               {msgs.map((msg, i) => (
-                <div key={i}>
+                <div key={i} className="mb-2 text-sm">
                   <span>
                     <span
                       style={{
@@ -137,23 +137,23 @@ const OnlineUsers = () => {
                           users.find((u) => u.socketId === msg.socketId)
                             ?.color || "#777",
                       }}
-                      className="mr-2"
+                      className="mr-2 font-bold"
                     >
                       {msg.username} {msg.socketId === socket?.id && "(you)"}:
                     </span>
-                    <span className="font-mono">{msg.content}</span>
+                    <span className="font-mono break-words">{msg.content}</span>
                   </span>
                 </div>
               ))}
             </div>
-            <div className="w-full h-20 flex items-center gap-2">
+            <div className="w-full h-20 flex items-center gap-2 p-2 border-t border-zinc-800">
               <Input
-                className="flex-1"
+                className="flex-1 h-9 text-sm"
                 ref={inputRef}
                 placeholder="Enter message"
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               />
-              <Button onClick={sendMessage}>Send</Button>
+              <Button size="sm" onClick={sendMessage}>Send</Button>
             </div>
           </TabsContent>
         </Tabs>
@@ -194,45 +194,46 @@ const UserItem = ({
   return (
     <motion.li
       key={user.socketId}
-      className="flex items-center justify-between"
+      className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-800/50 transition-colors"
       variants={item}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <div
-          className="w-4 h-4 rounded-full"
+          className="w-3 h-3 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.2)]"
           style={{ backgroundColor: user.color }}
         ></div>
         {isEditingName ? (
-          <>
+          <div className="flex items-center gap-1">
             <Input
               value={newUsername}
               ref={inputRef}
               onChange={(e) => setNewUsername(e.target.value)}
-              className="w-40"
+              className="w-32 h-8 text-xs"
               onKeyDown={(e) => e.key === "Enter" && saveEdit()}
             />
-            <Button variant={"ghost"} onClick={cancelEditing}>
-              <X className="w-4 h-4" />
+            <Button variant={"ghost"} size="icon" className="h-8 w-8" onClick={cancelEditing}>
+              <X className="w-3 h-3" />
             </Button>
-            <Button variant={"ghost"} onClick={saveEdit}>
-              <Check className="w-4 h-4" />
+            <Button variant={"ghost"} size="icon" className="h-8 w-8 text-green-500" onClick={saveEdit}>
+              <Check className="w-3 h-3" />
             </Button>
-          </>
+          </div>
         ) : (
-          <>
-            <span className="text-sm">
-              {user.name} {user.socketId === socket?.id && "(you)"}
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">
+              {user.name} {user.socketId === socket?.id && <span className="text-zinc-500 text-[10px]">(you)</span>}
             </span>
             {user.socketId === socket?.id && (
               <Button
-                className="py-0 my-0"
                 variant={"ghost"}
+                size="icon"
+                className="h-6 w-6 text-zinc-500 hover:text-white"
                 onClick={() => setIsEditingName(true)}
               >
-                <Edit className="w-4 h-4" />
+                <Edit className="w-3 h-3" />
               </Button>
             )}
-          </>
+          </div>
         )}
       </div>
     </motion.li>

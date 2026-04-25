@@ -1,31 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  FaCss3,
-  FaDocker,
   FaEnvelope,
   FaGit,
   FaGithub,
-  FaHtml5,
   FaLinkedin,
-  FaNodeJs,
   FaPhone,
   FaReact,
   FaPython,
   FaJava,
+  FaDocker,
+  FaNodeJs,
   FaExternalLinkAlt,
 } from "react-icons/fa6";
 import {
   RiFirebaseFill,
   RiJavascriptFill,
-  RiTailwindCssFill,
 } from "react-icons/ri";
 import {
-  SiExpress,
   SiFlask,
   SiGooglecloud,
   SiMysql,
-  SiPostman,
   SiTypescript,
 } from "react-icons/si";
 
@@ -33,47 +28,48 @@ import {
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { config } from "@/data/config";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 const CONTACT_LINKS = [
   {
     name: "Email",
     content: config.email,
     href: `mailto:${config.email}`,
-    icon: <FaEnvelope height={"50px"} />,
+    icon: <FaEnvelope />,
   },
   {
     name: "Phone",
     content: "+91 9676473925",
     href: "tel:+919676473925",
-    icon: <FaPhone height={"50px"} />,
+    icon: <FaPhone />,
   },
   {
     name: "LinkedIn",
     href: config.social.linkedin,
-    content: "/gunjari-gourav-kumar",
-    icon: <FaLinkedin height={"50px"} />,
+    content: "gunjari-gourav-kumar",
+    icon: <FaLinkedin />,
   },
   {
     name: "GitHub",
     href: config.social.github,
-    content: "/gouravkumar23",
-    icon: <FaGithub height={"50px"} />,
+    content: "gouravkumar23",
+    icon: <FaGithub />,
   },
 ];
 
 const TOOLS = [
-  { name: "Python", icon: <FaPython size={"50px"} color={"#3776AB"} /> },
-  { name: "Java", icon: <FaJava size={"50px"} color={"#007396"} /> },
-  { name: "JavaScript", icon: <RiJavascriptFill size={"50px"} color={"#f0db4f"} /> },
-  { name: "TypeScript", icon: <SiTypescript size={"50px"} color={"#007acc"} /> },
-  { name: "React", icon: <FaReact size={"50px"} color={"#61dafb"} /> },
-  { name: "Node.js", icon: <FaNodeJs size={"50px"} color={"#6cc24a"} /> },
-  { name: "Flask", icon: <SiFlask size={"50px"} color={"#fff"} /> },
-  { name: "Firebase", icon: <RiFirebaseFill size={"50px"} color={"#FFCA28"} /> },
-  { name: "Docker", icon: <FaDocker size={"50px"} color={"#2496ed"} /> },
-  { name: "MySQL", icon: <SiMysql size={"50px"} color={"#4479A1"} /> },
-  { name: "Git", icon: <FaGit size={"50px"} color={"#f05032"} /> },
-  { name: "Gemini AI", icon: <SiGooglecloud size={"50px"} color={"#4285F4"} /> },
+  { name: "Python", icon: <FaPython size={"40px"} color={"#3776AB"} /> },
+  { name: "Java", icon: <FaJava size={"40px"} color={"#007396"} /> },
+  { name: "JavaScript", icon: <RiJavascriptFill size={"40px"} color={"#f0db4f"} /> },
+  { name: "TypeScript", icon: <SiTypescript size={"40px"} color={"#007acc"} /> },
+  { name: "React", icon: <FaReact size={"40px"} color={"#61dafb"} /> },
+  { name: "Node.js", icon: <FaNodeJs size={"40px"} color={"#6cc24a"} /> },
+  { name: "Flask", icon: <SiFlask size={"40px"} color={"#fff"} /> },
+  { name: "Firebase", icon: <RiFirebaseFill size={"40px"} color={"#FFCA28"} /> },
+  { name: "Docker", icon: <FaDocker size={"40px"} color={"#2496ed"} /> },
+  { name: "MySQL", icon: <SiMysql size={"40px"} color={"#4479A1"} /> },
+  { name: "Git", icon: <FaGit size={"40px"} color={"#f05032"} /> },
+  { name: "Gemini AI", icon: <SiGooglecloud size={"40px"} color={"#4285F4"} /> },
 ];
 
 const CERTIFICATES = [
@@ -83,145 +79,139 @@ const CERTIFICATES = [
   { name: "Docker for Developers", issuer: "LinkedIn Learning", date: "Apr 2026", link: "https://drive.google.com/file/d/1ssYShpr5T1KVFYO58AUOICFdFL5JksnJ/view" },
   { name: "Prompt Engineering", issuer: "LinkedIn Learning", date: "Jan 2024", link: "https://drive.google.com/file/d/1HJJ2tOzLK-1qcEhdWI8qxIvtnjPyOIvB/view" },
   { name: "Qlik Data Literacy", issuer: "Qlik", date: "Feb 2024", link: "https://drive.google.com/file/d/151Lu6SHdX0idCp76uXvE54R1efh83M2f/view" },
-  { name: "Code Maze", issuer: "Anurag University", date: "Sep 2023", link: "https://drive.google.com/file/d/11PwNeuCX3OP0V1F_fRPQzgn-empL2S3b/view" },
-  { name: "Blockchain", issuer: "Udemy", date: "Oct 2023", link: "https://drive.google.com/file/d/1HCKYJxXhXuOr9HtX1u-Eq54IfdRvksfC/view" },
-  { name: "Data Visualization", issuer: "LinkedIn Learning", date: "Jan 2024", link: "https://drive.google.com/file/d/1HLf4UtWW36XZVO_Nt89b6GFeOqIYXuOU/view" },
-  { name: "DSA in Java", issuer: "Infosys Springboard", date: "Oct 2023", link: "https://drive.google.com/file/d/1HPYjO7kX_pUHZo1q_jU3Xd03-YnrOUZG/view" },
-  { name: "HTML", issuer: "Infosys Springboard", date: "Nov 2023", link: "https://drive.google.com/file/d/1HrTK9ZGVoM3Tw9hWwJqYoUBfuhoBFcOw/view" },
-  { name: "Java for Beginners", issuer: "Infosys Springboard", date: "Oct 2023", link: "https://drive.google.com/file/d/1HPcbnvyzxrbCsH4AOwU558OIV6aNNXdk/view" },
-  { name: "NumPy & Pandas", issuer: "Infosys Springboard", date: "Nov 2023", link: "https://drive.google.com/file/d/1HVi9JXJu8hvhG_1Ca20n7cdWucZFUhdk/view" },
 ];
 
 function Page() {
   const [toolsLoaded, setToolsLoaded] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   useEffect(() => {
     setToolsLoaded(true);
   }, []);
+
   return (
-    <div className="container mx-auto px-4 md:px-[50px] xl:px-[200px] text-zinc-300 pt-20 pb-20">
-      <div className="flex flex-col lg:flex-row gap-5">
-        <aside className="w-full md:basis-1/4">
+    <div className="container mx-auto px-4 md:px-[50px] xl:px-[150px] text-zinc-300 pt-24 pb-20">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <aside className="w-full lg:w-1/3 xl:w-1/4">
           <div
-            className="p-4 md:p-8 lg:p-10 rounded-2xl border-[.5px] border-zinc-600"
-            style={{ backdropFilter: "blur(2px)" }}
+            className="p-6 md:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-24"
           >
-            <div className="flex flex-row lg:flex-col items-center">
-              <div className="flex justify-center items-center lg:w-full lg:aspect-square bg-zinc-800 rounded-xl lg:mb-5">
+            <div className="flex flex-col items-center text-center">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 mb-6">
                 <img
-                  className="rounded-full p-4 lg:p-10 w-[100px] md:w-[150px] lg:w-[200px] aspect-square bg-zinc-800"
+                  className="rounded-full w-full h-full object-cover border-4 border-zinc-800"
                   alt="me"
                   src="/assets/me.jpg"
                 />
+                <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-zinc-900"></div>
               </div>
-              <div className="flex flex-col gap-3 lg:items-center ml-10 md:ml-20 lg:ml-0">
-                <p className="text-center text-xl">{config.author}</p>
-                <div className="text-xs bg-zinc-700 w-fit px-3 py-1 rounded-full">
-                  AI & Software Developer
-                </div>
-              </div>
-            </div>
-            <div className="hidden lg:block">
-              <hr className="my-10 border-zinc-600" />
-              <ul className="flex flex-col gap-3">
+              <h2 className="text-2xl font-bold text-white mb-1">{config.author}</h2>
+              <p className="text-sm text-brand font-medium mb-6">AI & Software Developer</p>
+              
+              <div className="w-full space-y-3">
                 {CONTACT_LINKS.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      className="flex items-center px-3 gap-3 w-full h-12 border-zinc-700 bg-zinc-800 hover:border-zinc-600 border-[.5px] rounded-md "
-                      href={link.href}
-                    >
-                      <div className="w-8">{link.icon}</div>
-                      <div className="flex flex-col">
-                        <div className="text-sm">{link.name}</div>
-                        <div className="text-xs text-zinc-500">
-                          {link.content}
-                        </div>
-                      </div>
-                    </a>
-                  </li>
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-zinc-800/50 border border-zinc-700 hover:border-brand transition-colors group"
+                  >
+                    <div className="text-zinc-400 group-hover:text-brand transition-colors">
+                      {link.icon}
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[10px] uppercase tracking-wider text-zinc-500">{link.name}</p>
+                      <p className="text-xs text-zinc-300 truncate">{link.content}</p>
+                    </div>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </aside>
-        <main className="basis-3/4 w-full">
-          <div
-            className="p-10 border-[.5px] rounded-md border-zinc-600"
-            style={{ backdropFilter: "blur(2px)" }}
-          >
-            <h1 className="text-3xl mb-10 lg:md-20">About me</h1>
-            <p className="mb-10 text-roboto">
-              Hey there! I&apos;m Gourav, a Computer Science student at Anurag University with a deep passion for AI, Data Science, and Software Engineering. I specialize in building intelligent systems that solve real-world problems, from AI-proctored examination platforms to distributed network compliance systems.
-            </p>
-            <p className="mb-10">
-              I recently completed a Software Development Internship at DRDO (RCI), where I developed C-based software for defense-grade hardware protocols. I love exploring new technologies like Agentic AI, RAG systems, and Context-Aware AI.
-            </p>
-            
-            <h1 className="text-3xl mb-10 lg:md-20">Education</h1>
-            <div className="mb-10 space-y-4">
-              <div>
-                <h3 className="text-xl font-bold">Bachelor of Computer Science</h3>
-                <p className="text-zinc-400">Anurag University | Expected 2026</p>
-                <p className="text-sm">CGPA: 8.79 | Coursework: Data Science with CSE</p>
+
+        <main className="flex-1 space-y-8">
+          <section className="p-6 md:p-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm">
+            <h1 className="text-3xl font-bold text-white mb-6">About Me</h1>
+            <div className="space-y-4 text-zinc-400 leading-relaxed">
+              <p>
+                Hey there! I&apos;m Gourav, a Computer Science student at Anurag University with a deep passion for AI, Data Science, and Software Engineering. I specialize in building intelligent systems that solve real-world problems.
+              </p>
+              <p>
+                I recently completed a Software Development Internship at DRDO (RCI), where I developed C-based software for defense-grade hardware protocols. I love exploring new technologies like Agentic AI, RAG systems, and Context-Aware AI.
+              </p>
+            </div>
+          </section>
+
+          <section className="p-6 md:p-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold text-white mb-6">Education</h2>
+            <div className="space-y-6">
+              <div className="relative pl-6 border-l-2 border-zinc-800">
+                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand"></div>
+                <h3 className="text-lg font-bold text-white">Bachelor of Computer Science</h3>
+                <p className="text-brand text-sm">Anurag University | Expected 2026</p>
+                <p className="text-sm text-zinc-500 mt-1">CGPA: 8.79 | Data Science Specialization</p>
               </div>
-              <div>
-                <h3 className="text-xl font-bold">Schooling</h3>
-                <p className="text-zinc-400">St. Francis De Sales High School | 2020</p>
-                <p className="text-sm">CGPA: 10</p>
+              <div className="relative pl-6 border-l-2 border-zinc-800">
+                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-zinc-700"></div>
+                <h3 className="text-lg font-bold text-white">Schooling</h3>
+                <p className="text-zinc-400 text-sm">St. Francis De Sales High School | 2020</p>
+                <p className="text-sm text-zinc-500 mt-1">CGPA: 10/10</p>
               </div>
             </div>
+          </section>
 
-            <h1 className="text-3xl mb-10 lg:md-20">Certificates</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-              {CERTIFICATES.map((cert, index) => (
-                <a 
-                  key={index} 
-                  href={cert.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="p-4 border-[.5px] border-zinc-700 bg-zinc-800/50 rounded-lg hover:border-zinc-500 transition-colors group"
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-bold text-sm group-hover:text-white transition-colors">{cert.name}</h4>
-                      <p className="text-xs text-zinc-400">{cert.issuer}</p>
-                      <p className="text-[10px] text-zinc-500 mt-1">{cert.date}</p>
-                    </div>
-                    <FaExternalLinkAlt className="text-zinc-600 group-hover:text-zinc-400 text-xs" />
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            <h1 className="text-3xl mb-10 lg:md-20">Stuff I use</h1>
-            <div className="mb-5">
-              {!toolsLoaded ? (
-                <p className="h-[100px]"></p>
-              ) : (
+          <section className="p-6 md:p-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold text-white mb-6">Tech Stack</h2>
+            <div className="py-4">
+              {toolsLoaded && (
                 <Splide
                   options={{
                     type: "loop",
                     interval: 2000,
                     autoplay: true,
                     pagination: false,
-                    speed: 2000,
-                    perPage: 5,
-                    perMove: 1,
-                    rewind: true,
-                    easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+                    speed: 1000,
+                    perPage: isMobile ? 3 : 5,
+                    gap: "1rem",
                     arrows: false,
                   }}
                 >
                   {TOOLS.map((tool) => (
                     <SplideSlide key={tool.name}>
-                      <div className="w-fit p-2 border-[.5px] border-zinc-600 rounded-md">
+                      <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-zinc-800/30 border border-zinc-800 hover:border-zinc-700 transition-all">
                         {tool.icon}
+                        <span className="text-[10px] text-zinc-500 font-medium">{tool.name}</span>
                       </div>
                     </SplideSlide>
                   ))}
                 </Splide>
               )}
             </div>
-          </div>
+          </section>
+
+          <section className="p-6 md:p-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm">
+            <h2 className="text-2xl font-bold text-white mb-6">Certificates</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {CERTIFICATES.map((cert, index) => (
+                <a 
+                  key={index} 
+                  href={cert.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-4 rounded-xl border border-zinc-800 bg-zinc-800/30 hover:border-brand transition-all group"
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <div>
+                      <h4 className="font-bold text-sm text-zinc-200 group-hover:text-white transition-colors">{cert.name}</h4>
+                      <p className="text-xs text-zinc-500 mt-1">{cert.issuer}</p>
+                      <p className="text-[10px] text-brand mt-2">{cert.date}</p>
+                    </div>
+                    <FaExternalLinkAlt className="text-zinc-600 group-hover:text-brand text-xs shrink-0" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
         </main>
       </div>
     </div>

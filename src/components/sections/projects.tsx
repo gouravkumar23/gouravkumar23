@@ -18,20 +18,72 @@ import { cn } from "@/lib/utils";
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="max-w-7xl mx-auto md:h-[130vh]">
+    <section id="projects" className="max-w-7xl mx-auto px-4 py-20">
       <Link href={"#projects"}>
         <h2
           className={cn(
-            "bg-clip-text text-4xl text-center text-transparent md:text-7xl pt-16",
+            "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
             "bg-gradient-to-b from-black/80 to-black/50",
-            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-32"
+            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-16 md:mb-32"
           )}
         >
           Projects
         </h2>
+think
+The user wants me to continue the previous response exactly where I left off.
+Looking at the previous response, it cut off in the middle of `src/components/sections/projects.tsx`.
+
+The last lines were:
+```tsx
+const ProjectsSection = () => {
+  return (
+    <section id="projects" className="max-w-7xl mx-auto px-4 py-20">
+      <Link href={"#projects"}>
+        <h2
+          className={cn(
+            "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
+            "bg-gradient-to-b from-black/80 to-black/50",
+            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-16 md:mb-32"
+          )}
+        >
+          Projects
+        </h2>
+```
+
+I need to complete this file and then continue with the other files I was planning to update for mobile optimization.
+
+Planned updates:
+1. `src/components/sections/projects.tsx` (Complete)
+2. `src/app/about/page.tsx` (Fix Splide perPage and layout)
+3. `src/components/preloader/loader.tsx` (Fix text size)
+4. `src/components/sections/contact.tsx` (Fix card width)
+5. `src/components/sections/skills.tsx` (Fix margin)
+6. `src/components/animated-background.tsx` (Fix mobile scale)
+7. `src/components/realtime/online-users.tsx` (Fix popover width)
+8. `src/components/header/nav/style.module.scss` (Fix gap)
+9. `src/components/preloader/style.module.scss` (Fix padding)
+
+Let's start by completing `src/components/sections/projects.tsx`.
+
+Wait, the instructions say "Continue exactly where you left off without any preamble."
+This means I should start with the code block for `src/components/sections/projects.tsx` but starting from where it cut off? No, usually it's better to provide the full file if it was a `dyad-write` block that was interrupted, or at least the rest of it. However, the `dyad-write` tag was opened but not closed.
+
+Actually, I should probably just rewrite the whole file `src/components/sections/projects.tsx` to be safe, or continue the content. But the user said "Continue exactly where you left off".
+
+If I just output the rest of the code, it might break the XML structure if the user's system expects a full tag.
+The previous response ended with:
+```tsx
+        </h2>
+```
+(inside the `dyad-write` block).
+
+I will provide the rest of the `dyad-write` block for `projects.tsx` and then the other files.
+
+Wait, if I just start with the code, it might look like this:
+```tsx
       </Link>
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        {projects.map((project, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
           <Modall key={project.id} project={project} />
         ))}
       </div>
@@ -41,31 +93,31 @@ const ProjectsSection = () => {
 
 const Modall = ({ project }: { project: Project }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-full">
       <Modal>
-        <ModalTrigger className="bg-transparent flex justify-center group/modal-btn">
+        <ModalTrigger className="bg-transparent flex justify-center group/modal-btn w-full">
           <div
-            className="relative w-[400px] h-auto rounded-lg overflow-hidden"
+            className="relative w-full max-w-[400px] h-auto rounded-lg overflow-hidden shadow-lg"
             style={{ aspectRatio: "3/2" }}
           >
             <Image
-              className="absolute w-full h-full top-0 left-0 hover:scale-[1.05] transition-all"
+              className="absolute w-full h-full top-0 left-0 hover:scale-[1.05] transition-all object-cover"
               src={project.src}
               alt={project.title}
-              width={300}
+              width={400}
               height={300}
             />
             <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none">
-              <div className="flex flex-col h-full items-start justify-end p-6">
-                <div className="text-lg text-left">{project.title}</div>
-                <div className="text-xs bg-white text-black rounded-lg w-fit px-2">
+              <div className="flex flex-col h-full items-start justify-end p-4 md:p-6">
+                <div className="text-base md:text-lg text-left text-white font-bold">{project.title}</div>
+                <div className="text-[10px] md:text-xs bg-white text-black rounded-lg w-fit px-2 py-0.5 mt-1">
                   {project.category}
                 </div>
               </div>
             </div>
           </div>
         </ModalTrigger>
-        <ModalBody className="md:max-w-4xl md:max-h-[80%] overflow-auto">
+        <ModalBody className="w-[95vw] md:max-w-4xl md:max-h-[80%] overflow-auto">
           <SmoothScroll isInsideModal={true}>
             <ModalContent>
               <ProjectContents project={project} />
@@ -81,15 +133,15 @@ const Modall = ({ project }: { project: Project }) => {
 const ModalFooterContent = ({ project }: { project: Project }) => {
   const { setOpen } = useModal();
   return (
-    <ModalFooter className="gap-4">
+    <ModalFooter className="gap-4 flex-row justify-end">
       <button 
         onClick={() => setOpen(false)}
-        className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28"
+        className="px-4 py-2 bg-gray-200 text-black dark:bg-zinc-800 dark:text-white border border-transparent rounded-md text-sm transition-colors hover:bg-gray-300 dark:hover:bg-zinc-700"
       >
         Cancel
       </button>
       <Link href={project.live || "#"} target="_blank">
-        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
+        <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-4 py-2 rounded-md border border-transparent transition-opacity hover:opacity-90">
           Visit
         </button>
       </Link>
@@ -99,13 +151,13 @@ const ModalFooterContent = ({ project }: { project: Project }) => {
 
 const ProjectContents = ({ project }: { project: Project }) => {
   return (
-    <>
-      <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
+    <div className="p-2 md:p-4">
+      <h4 className="text-xl md:text-3xl text-neutral-800 dark:text-neutral-100 font-bold text-center mb-6 md:mb-10">
         {project.title}
       </h4>
-      <div className="flex flex-col md:flex-row md:justify-evenly max-w-screen overflow-hidden md:overflow-visible">
-        <div className="flex flex-row md:flex-col-reverse justify-center items-center gap-2 text-3xl mb-8">
-          <p className="text-sm mt-1 text-neutral-600 dark:text-neutral-500">
+      <div className="flex flex-col md:flex-row md:justify-evenly gap-6 mb-10">
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
             Frontend
           </p>
           {project.skills.frontend?.length > 0 && (
@@ -113,16 +165,18 @@ const ProjectContents = ({ project }: { project: Project }) => {
           )}
         </div>
         {project.skills.backend?.length > 0 && (
-          <div className="flex flex-row md:flex-col-reverse justify-center items-center gap-2 text-3xl mb-8">
-            <p className="text-sm mt-1 text-neutral-600 dark:text-neutral-500">
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
               Backend
             </p>
             <FloatingDock items={project.skills.backend} />
           </div>
         )}
       </div>
-      {project.content}
-    </>
+      <div className="prose dark:prose-invert max-w-none">
+        {project.content}
+      </div>
+    </div>
   );
 };
 
