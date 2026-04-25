@@ -10,16 +10,18 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Volumetric Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 100;
+  const count = 250; // Increased count for better shape
   
   const particles = useMemo(() => {
     const arr = [];
     for (let i = 0; i < count; i++) {
       arr.push({
         pos: new THREE.Vector3(0, -100, 0),
-        life: 0
+        life: 0,
+        velocity: new THREE.Vector3()
       });
     }
     return arr;
@@ -33,32 +35,48 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     const currentPos = new THREE.Vector3();
     targetRef.current.getWorldPosition(currentPos);
 
-    let spawned = false;
+    let spawned = 0;
+    const spawnRate = 3; // Spawn multiple particles per frame for volume
+
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta;
+        particles[i].life -= delta * 1.5; // Fade faster
+        // Particles drift slightly backwards and outwards
+        particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
+        
         positions[i * 3] = particles[i].pos.x;
         positions[i * 3 + 1] = particles[i].pos.y;
         positions[i * 3 + 2] = particles[i].pos.z;
-      } else if (!spawned) {
+      } else if (spawned < spawnRate) {
+        // Spawn with random offset to mimic bird shape
         particles[i].life = 1.0;
-        particles[i].pos.copy(currentPos);
-        spawned = true;
+        particles[i].pos.copy(currentPos).add(new THREE.Vector3(
+          (Math.random() - 0.5) * 1.5,
+          (Math.random() - 0.5) * 0.8,
+          (Math.random() - 0.5) * 1.5
+        ));
+        // Velocity away from bird movement
+        particles[i].velocity.set(
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.5
+        );
+        spawned++;
       }
     }
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
-    <Points ref={pointsRef} positions={positions} stride={3}>
+    <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.1}
+        size={0.08}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.4}
+        opacity={0.6}
       />
     </Points>
   );
@@ -78,9 +96,9 @@ function Model({ scale = 1, ...props }: any) {
           color: "#1e1b4b",
           wireframe: true,
           transparent: true,
-          opacity: 0.6,
+          opacity: 0.5,
           emissive: "#6366f1",
-          emissiveIntensity: 1.5,
+          emissiveIntensity: 2,
         });
       }
     });
@@ -95,24 +113,29 @@ function Model({ scale = 1, ...props }: any) {
   useEffect(() => {
     if (!group.current) return;
 
+    // Faster, more dynamic flight path
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: 0.5, // Smoother scrub
       }
     });
 
-    tl.to(group.current.position, { x: 15, y: 5, z: -5, duration: 2 })
-      .to(group.current.rotation, { y: Math.PI * 0.5, duration: 2 }, 0)
-      .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 })
-      .set(group.current.position, { x: -15, y: -3, z: -2 })
-      .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 })
-      .to(group.current.position, { x: 0, y: 0, z: 0, duration: 2 })
-      .to(group.current.rotation, { y: Math.PI * 2, duration: 2 }, "<")
-      .to(group.current.position, { x: 18, y: 6, z: -8, duration: 2 })
-      .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
+    tl.to(group.current.position, { x: 12, y: 4, z: -2, duration: 1.5, ease: "power1.inOut" })
+      .to(group.current.rotation, { y: Math.PI * 0.4, duration: 1.5 }, 0)
+      .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.3 })
+      
+      // Reset to a closer position so it reappears faster
+      .set(group.current.position, { x: -12, y: -2, z: 0 })
+      .to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.3 })
+      
+      .to(group.current.position, { x: 0, y: 1, z: 1, duration: 1.5, ease: "power1.inOut" })
+      .to(group.current.rotation, { y: Math.PI * 2.2, duration: 1.5 }, "<")
+      
+      .to(group.current.position, { x: 15, y: 5, z: -4, duration: 1.5, ease: "power1.in" })
+      .to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.3 });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -139,10 +162,10 @@ const PhoenixModel = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#6366f1" />
+        <ambientLight intensity={0.6} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color="#6366f1" />
         <Suspense fallback={null}>
-          <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
+          <Float speed={4} rotationIntensity={0.8} floatIntensity={0.8}>
             <Model scale={isMobile ? 0.004 : 0.007} />
           </Float>
         </Suspense>
