@@ -16,13 +16,33 @@ export default function FunnyThemeToggle({
   className?: string;
 }) {
   const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
   const [counter, setCounter] = React.useState({ dark: 0, light: 0 });
   const { toast } = useToast();
+
+  // Ensure component is mounted to avoid hydration mismatch
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button
+        variant="outline"
+        size="icon"
+        className={cn("border-none bg-transparent opacity-0", className)}
+        disabled
+      >
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+      </Button>
+    );
+  }
 
   const goLight = () => {
     setCounter({ ...counter, light: counter.light + 1 });
     setTheme("light");
   };
+  
   const goDark = () => {
     const description =
       themeDisclaimers.dark[counter.dark % themeDisclaimers.dark.length];
@@ -34,6 +54,7 @@ export default function FunnyThemeToggle({
     });
     setTheme("dark");
   };
+
   return (
     <>
       {theme === "light" ? (
@@ -61,8 +82,7 @@ export default function FunnyThemeToggle({
             </Button>
           </PopoverTrigger>
           <PopoverContent className="z-[99999] flex flex-col items-center gap-2">
-            {/* <p className="text-sm">these stunts are done by professional only</p> */}
-            <p className="text-sm text-center">{themeDisclaimers.light[counter.light]}</p>
+            <p className="text-sm text-center">{themeDisclaimers.light[counter.light % themeDisclaimers.light.length]}</p>
             <Button onClick={goLight}>Go Light</Button>
           </PopoverContent>
         </Popover>
