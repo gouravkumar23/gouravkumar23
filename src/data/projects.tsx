@@ -18,13 +18,12 @@ import {
   SiTypescript,
   SiVite,
   SiHtml5,
-  SiCss3,
-  SiBootstrap,
   SiApachemaven,
   SiArduino,
   SiFlask,
   SiGooglecloud,
 } from "react-icons/si";
+import { FaCss3Alt } from "react-icons/fa6";
 import { TbBrandFramerMotion } from "react-icons/tb";
 
 const BASE_PATH = "/assets/projects-screenshots";
@@ -85,8 +84,8 @@ const PROJECT_SKILLS = {
   framerMotion: { title: "Framer Motion", bg: "black", fg: "white", icon: <TbBrandFramerMotion /> },
   vite: { title: "Vite", bg: "black", fg: "white", icon: <SiVite /> },
   html: { title: "HTML5", bg: "black", fg: "white", icon: <SiHtml5 /> },
-  css: { title: "CSS3", bg: "black", fg: "white", icon: <SiCss3 /> },
-  bootstrap: { title: "Bootstrap", bg: "black", fg: "white", icon: <SiBootstrap /> },
+  css: { title: "CSS3", bg: "black", fg: "white", icon: <FaCss3Alt /> },
+  bootstrap: { title: "Bootstrap", bg: "black", fg: "white", icon: <SiGooglecloud /> }, // Placeholder
   maven: { title: "Maven", bg: "black", fg: "white", icon: <SiApachemaven /> },
   flask: { title: "Flask", bg: "black", fg: "white", icon: <SiFlask /> },
   gemini: { title: "Gemini AI", bg: "black", fg: "white", icon: <SiGooglecloud /> },

@@ -53,20 +53,33 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
 
   // SETUP SOCKET.IO
   useEffect(() => {
-    const username =  localStorage.getItem("username") || generateRandomCursor().name
-    const socket = io(process.env.NEXT_PUBLIC_WS_URL!, {
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL;
+    if (!wsUrl) {
+      console.warn("NEXT_PUBLIC_WS_URL is not defined. Real-time features will be disabled.");
+      return;
+    }
+
+    const username = localStorage.getItem("username") || generateRandomCursor().name;
+    const newSocket = io(wsUrl, {
       query: { username },
     });
-    setSocket(socket);
-    socket.on("connect", () => {});
-    socket.on("msgs-receive-init", (msgs) => {
+    
+    setSocket(newSocket);
+    
+    newSocket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+    
+    newSocket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
     });
-    socket.on("msg-receive", (msgs) => {
-      setMsgs((p) => [...p, msgs]);
+    
+    newSocket.on("msg-receive", (msg) => {
+      setMsgs((p) => [...p, msg]);
     });
+    
     return () => {
-      socket.disconnect();
+      newSocket.disconnect();
     };
   }, []);
 
