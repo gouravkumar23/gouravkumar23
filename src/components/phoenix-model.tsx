@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Volumetric Trail Component
 function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 200; 
+  const count = 600; // Increased for a denser, longer trail
   
   const particles = useMemo(() => {
     const arr = [];
@@ -36,11 +36,12 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = 3; 
+    const spawnRate = 5; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 1.5; 
+        // Slower decay (0.4 instead of 1.5) makes the trail much longer
+        particles[i].life -= delta * 0.4; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -49,14 +50,15 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       } else if (spawned < spawnRate) {
         particles[i].life = 1.0;
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          (Math.random() - 0.5) * 1.5,
-          (Math.random() - 0.5) * 0.8,
-          (Math.random() - 0.5) * 1.5
+          (Math.random() - 0.5) * 1.0,
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 1.0
         ));
+        // Slight drift velocity
         particles[i].velocity.set(
-          (Math.random() - 0.5) * 0.4,
-          (Math.random() - 0.5) * 0.4,
-          (Math.random() - 0.5) * 0.4
+          (Math.random() - 0.5) * 0.2,
+          (Math.random() - 0.5) * 0.2,
+          (Math.random() - 0.5) * 0.2
         );
         spawned++;
       }
@@ -69,11 +71,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.08}
+        size={0.1}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.4}
+        opacity={0.6}
       />
     </Points>
   );
@@ -119,23 +121,24 @@ function Model({ scale = 1, ...props }: any) {
       }
     });
 
-    // Define a single "lap" from left to right
-    const startPos = { x: -20, y: -6, z: -8 };
-    const endPos = { x: 20, y: 6, z: 4 };
-    const startRot = { y: Math.PI / 2, z: 0.2 }; // Facing right with a slight tilt
+    // Initial state: Center (Hero section)
+    tl.set(group.current.position, { x: 0, y: 0, z: 0 })
+      .set(group.current.rotation, { y: Math.PI / 2, z: 0.1 });
 
-    // Lap 1
-    tl.set(group.current.position, startPos)
-      .set(group.current.rotation, startRot)
-      .to(group.current.position, { ...endPos, duration: 10, ease: "none" })
+    // Segment 1: Fly out to the right
+    tl.to(group.current.position, { x: 25, y: 10, z: -5, duration: 5, ease: "none" })
       
-      // Lap 2
-      .set(group.current.position, startPos)
-      .to(group.current.position, { ...endPos, duration: 10, ease: "none" })
+      // Reset: Reappear from the left
+      .set(group.current.position, { x: -25, y: -10, z: -5 })
       
-      // Lap 3
-      .set(group.current.position, startPos)
-      .to(group.current.position, { ...endPos, duration: 10, ease: "none" });
+      // Segment 2: Fly across the whole screen
+      .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" })
+      
+      // Reset: Reappear from the left again
+      .set(group.current.position, { x: -25, y: -10, z: -5 })
+      
+      // Segment 3: Final pass
+      .to(group.current.position, { x: 25, y: 10, z: -5, duration: 10, ease: "none" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -164,10 +167,10 @@ const PhoenixModel = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
-        <ambientLight intensity={1} />
-        <pointLight position={[10, 10, 10]} intensity={2.5} color="#6366f1" />
+        <ambientLight intensity={1.2} />
+        <pointLight position={[10, 10, 10]} intensity={3} color="#6366f1" />
         <Suspense fallback={null}>
-          <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
+          <Float speed={3} rotationIntensity={0.4} floatIntensity={0.4}>
             <Model scale={isMobile ? 0.005 : 0.008} />
           </Float>
         </Suspense>
