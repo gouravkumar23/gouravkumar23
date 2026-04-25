@@ -11,18 +11,18 @@ function Model({ scale = 1, ...props }: any) {
   const { scene, animations } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
   const { actions, names } = useAnimations(animations, group);
 
-  // Apply wireframe grid structure with a color that syncs with the background
+  // Apply wireframe grid structure with blue, purple, and black tones
   useMemo(() => {
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         const mesh = obj as THREE.Mesh;
         mesh.material = new THREE.MeshStandardMaterial({
-          color: "#71717a", // Zinc-500 to match the background/grid vibe
+          color: "#1e1b4b", // Deep Indigo/Blackish Blue
           wireframe: true,
           transparent: true,
-          opacity: 0.4,
-          emissive: "#3f3f46", // Zinc-600 for a subtle glow
-          emissiveIntensity: 0.2,
+          opacity: 0.6,
+          emissive: "#6366f1", // Indigo/Purple glow
+          emissiveIntensity: 0.8,
         });
       }
     });
@@ -59,8 +59,8 @@ function Model({ scale = 1, ...props }: any) {
 
 const Loader = () => (
   <Html center>
-    <div className="text-zinc-500 font-mono text-xs whitespace-nowrap animate-pulse">
-      SYNCING GRID...
+    <div className="text-indigo-400 font-mono text-xs whitespace-nowrap animate-pulse">
+      CALIBRATING NEBULA...
     </div>
   </Html>
 );
@@ -76,8 +76,9 @@ const PhoenixModel = () => {
         camera={{ position: [0, 0, 5], fov: isMobile ? 55 : 45 }}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
+        <ambientLight intensity={0.2} />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#8b5cf6" />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#3b82f6" />
         
         <Suspense fallback={<Loader />}>
           <PresentationControls 
