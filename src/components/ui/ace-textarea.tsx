@@ -16,21 +16,22 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     function handleMouseMove({ currentTarget, clientX, clientY }: any) {
       let { left, top } = currentTarget.getBoundingClientRect();
-
       mouseX.set(clientX - left);
       mouseY.set(clientY - top);
     }
 
+    const backgroundStyle = useMotionTemplate`
+      radial-gradient(
+        ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+        var(--brand),
+        transparent 80%
+      )
+    `;
+
     return (
       <motion.div
         style={{
-          background: useMotionTemplate`
-        radial-gradient(
-          ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
-          var(--brand),
-          transparent 80%
-        )
-      `,
+          background: backgroundStyle,
         }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setVisible(true)}
