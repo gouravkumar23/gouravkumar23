@@ -107,7 +107,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="max-w-7xl mx-auto px-4 py-20">
+    <section id="projects" className="max-w-7xl mx-auto px-4 py-48 md:py-80">
       <Link href={"#projects"}>
         <h2
           className={cn(
