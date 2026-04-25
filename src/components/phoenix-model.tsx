@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Volumetric Trail Component with "Star" effect matching bird color
 function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE.Group>, opacity: number }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 800; 
+  const count = 600; 
   
   const particles = useMemo(() => {
     const arr = [];
@@ -36,11 +36,11 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = opacity > 0.1 ? 10 : 0; 
+    const spawnRate = opacity > 0.1 ? 8 : 0; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 0.8; 
+        particles[i].life -= delta * 1.2; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -49,15 +49,15 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
       } else if (spawned < spawnRate) {
         particles[i].life = 1.0;
         particles[i].pos.copy(currentPos).add(new THREE.Vector3(
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3
         ));
         
         particles[i].velocity.set(
-          (Math.random() - 0.5) * 1.5,
-          0.2 + Math.random() * 0.3,
-          (Math.random() - 0.5) * 1.5
+          (Math.random() - 0.5) * 1.2,
+          0.1 + Math.random() * 0.2,
+          (Math.random() - 0.5) * 1.2
         );
         spawned++;
       }
@@ -66,7 +66,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
     
     if (pointsRef.current.material instanceof THREE.PointsMaterial) {
       const time = state.clock.getElapsedTime();
-      pointsRef.current.material.opacity = (0.2 + Math.sin(time * 12) * 0.1) * opacity;
+      pointsRef.current.material.opacity = (0.15 + Math.sin(time * 15) * 0.1) * opacity;
     }
   });
 
@@ -75,7 +75,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.1}
+        size={0.08}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -85,7 +85,7 @@ function PhoenixTrail({ targetRef, opacity }: { targetRef: React.RefObject<THREE
   );
 }
 
-function Model({ scale = 1, ...props }: any) {
+function Model({ scale = 0.001, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
   const [modelOpacity, setModelOpacity] = React.useState(1);
@@ -99,7 +99,7 @@ function Model({ scale = 1, ...props }: any) {
       transparent: true,
       opacity: 0.3,
       emissive: "#6366f1",
-      emissiveIntensity: 4,
+      emissiveIntensity: 5,
     });
     return mat;
   }, []);
@@ -128,45 +128,46 @@ function Model({ scale = 1, ...props }: any) {
         end: "bottom bottom",
         scrub: 0.5,
         onUpdate: (self) => {
-          if (group.current) setModelOpacity(group.current.scale.x / scale);
+          if (group.current) setModelOpacity(group.current.scale.x);
         }
       }
     });
 
     // 1. Spawn at Center
     tl.set(group.current.position, { x: 0, y: 0, z: 0 });
+    tl.set(group.current.scale, { x: 1, y: 1, z: 1 });
     tl.set(group.current.rotation, { y: Math.PI / 2 }); // Face Right
 
     // 2. Pass 1: Steep Downward Slant to Right
-    tl.to(group.current.position, { x: 25, y: -25, z: -10, duration: 8, ease: "none" });
+    tl.to(group.current.position, { x: 20, y: -20, z: -5, duration: 8, ease: "none" });
     
     // 3. Vanish at Right
     tl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.5 });
     tl.to(material, { opacity: 0, duration: 0.5 }, "<");
 
     // 4. Teleport to Left (at same Y)
-    tl.set(group.current.position, { x: -25, y: -25, z: -10 });
+    tl.set(group.current.position, { x: -20, y: -20, z: -5 });
     
     // 5. Reappear at Left
-    tl.to(group.current.scale, { x: scale, y: scale, z: scale, duration: 0.5 });
+    tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
     tl.to(material, { opacity: 0.3, duration: 0.5 }, "<");
 
     // 6. Pass 2: Steep Downward Slant to Right
-    tl.to(group.current.position, { x: 25, y: -55, z: -10, duration: 10, ease: "none" });
+    tl.to(group.current.position, { x: 20, y: -45, z: -5, duration: 10, ease: "none" });
 
     // 7. Final: Glide to Center and stay stationary (Contact Section)
-    tl.to(group.current.position, { x: 0, y: -85, z: 5, duration: 5, ease: "power2.out" });
+    tl.to(group.current.position, { x: 0, y: -70, z: 5, duration: 5, ease: "power2.out" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
-  }, [scale, material]);
+  }, [material]);
 
   return (
     <>
       <group ref={group} dispose={null}>
         <group ref={birdRef}>
-          <primitive object={scene} scale={1} {...props} />
+          <primitive object={scene} scale={scale} {...props} />
         </group>
       </group>
       <PhoenixTrail targetRef={birdRef} opacity={modelOpacity} />
@@ -184,11 +185,11 @@ const PhoenixModel = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ pointerEvents: 'none' }}
       >
-        <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={5} color="#6366f1" />
+        <ambientLight intensity={2} />
+        <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
-          <Float speed={3} rotationIntensity={0.4} floatIntensity={0.4}>
-            <Model scale={isMobile ? 0.008 : 0.012} />
+          <Float speed={4} rotationIntensity={0.5} floatIntensity={0.5}>
+            <Model scale={isMobile ? 0.0008 : 0.0015} />
           </Float>
         </Suspense>
       </Canvas>
