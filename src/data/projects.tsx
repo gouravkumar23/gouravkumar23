@@ -218,7 +218,7 @@ const projects: Project[] = [
     id: "universal-mailing",
     category: "Backend Service",
     title: "Universal Mailing Service",
-    src: "/assets/logo-dark.svg",
+    src: "/assets/projects-screenshots/qwerty-mailing/main.png",
     screenshots: [],
     skills: {
       frontend: [],
