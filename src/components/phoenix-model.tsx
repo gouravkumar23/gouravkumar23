@@ -11,9 +11,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 // Volumetric Trail Component
-function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }) {
+function PhoenixTrail({ targetRef, direction }: { targetRef: React.RefObject<THREE.Group>, direction: number }) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 800; // Denser trail
+  const count = 1000; 
   
   const particles = useMemo(() => {
     const arr = [];
@@ -36,11 +36,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
     targetRef.current.getWorldPosition(currentPos);
 
     let spawned = 0;
-    const spawnRate = 8; 
+    const spawnRate = 12; 
 
     for (let i = 0; i < count; i++) {
       if (particles[i].life > 0) {
-        particles[i].life -= delta * 0.3; 
+        particles[i].life -= delta * 0.4; 
         particles[i].pos.add(particles[i].velocity.clone().multiplyScalar(delta));
         
         positions[i * 3] = particles[i].pos.x;
@@ -53,10 +53,12 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
           (Math.random() - 0.5) * 1.0,
           (Math.random() - 0.5) * 2.0
         ));
-        // Trail goes in opposite direction of flight (Right and Up)
+        
+        // Trail direction depends on flight direction
+        const xVel = direction >= 0 ? 1.5 : -1.5;
         particles[i].velocity.set(
+          xVel + (Math.random() - 0.5),
           0.5 + Math.random() * 0.5,
-          0.2 + Math.random() * 0.2,
           (Math.random() - 0.5) * 0.5
         );
         spawned++;
@@ -70,11 +72,11 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
       <PointMaterial
         transparent
         color="#6366f1"
-        size={0.4} // Increased particle size
+        size={0.6} // Even larger particles
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        opacity={0.7}
+        opacity={0.6}
       />
     </Points>
   );
@@ -83,6 +85,7 @@ function PhoenixTrail({ targetRef }: { targetRef: React.RefObject<THREE.Group> }
 function Model({ scale = 1, ...props }: any) {
   const group = useRef<THREE.Group>(null);
   const birdRef = useRef<THREE.Group>(null);
+  const scrollDir = useRef(1);
   const { scene, animations } = useGLTF("/3dmodels/phoenix_bird/scene.gltf");
   const { actions, names } = useAnimations(animations, group);
 
@@ -116,29 +119,39 @@ function Model({ scale = 1, ...props }: any) {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: 0.3, // Faster response
+        onUpdate: (self) => {
+          scrollDir.current = self.direction;
+          if (!group.current) return;
+          
+          // Adjust rotation based on scroll direction
+          const targetY = self.direction >= 0 ? -Math.PI / 2 : Math.PI / 2;
+          gsap.to(group.current.rotation, {
+            y: targetY,
+            duration: 0.2,
+            overwrite: "auto"
+          });
+        }
       }
     });
 
-    // Facing Left and slightly Down
-    const flightRotation = { y: -Math.PI / 2, z: -0.2 };
+    // Initial Hero State (Center)
+    tl.set(group.current.position, { x: 0, y: 0, z: 0 });
 
-    // Initial: Center
-    tl.set(group.current.position, { x: 0, y: 0, z: 0 })
-      .set(group.current.rotation, flightRotation);
+    // Move to Start of Path (Top-Right)
+    tl.to(group.current.position, { x: 25, y: 15, z: -10, duration: 2 });
 
-    // Lap 1: Start Top-Right, fly to Left-Middle
-    tl.set(group.current.position, { x: 25, y: 15, z: -10 })
-      .to(group.current.position, { x: -25, y: 5, z: -10, duration: 10, ease: "none" })
-      
-      // Wrap-around: Back to Right at same height (5)
-      .set(group.current.position, { x: 25, y: 5, z: -10 })
-      
-      // Lap 2: Fly to Left-Bottom
-      .to(group.current.position, { x: -25, y: -15, z: -10, duration: 10, ease: "none" })
-      
-      // Final: At the bottom, fly to the front (Z axis)
-      .to(group.current.position, { z: 10, duration: 5, ease: "power2.inOut" });
+    // Lap 1: Fly to Left-Middle
+    tl.to(group.current.position, { x: -25, y: 5, z: -10, duration: 10, ease: "none" });
+    
+    // Teleport: Back to Right at same height
+    tl.set(group.current.position, { x: 25, y: 5, z: -10 });
+    
+    // Lap 2: Fly to Left-Bottom
+    tl.to(group.current.position, { x: -25, y: -15, z: -10, duration: 10, ease: "none" });
+    
+    // Final: Fly to front
+    tl.to(group.current.position, { x: 0, y: -10, z: 15, duration: 5, ease: "power2.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -152,7 +165,7 @@ function Model({ scale = 1, ...props }: any) {
           <primitive object={scene} scale={scale} {...props} />
         </group>
       </group>
-      <PhoenixTrail targetRef={birdRef} />
+      <PhoenixTrail targetRef={birdRef} direction={scrollDir.current} />
     </>
   );
 }
