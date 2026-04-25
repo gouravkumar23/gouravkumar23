@@ -115,6 +115,27 @@ function ElasticCursor() {
   }, [isHovering, isLoading]);
 
   const [cursorMoved, setCursorMoved] = useState(false);
+
+  //mouse click effect:
+  const handleClick = () => {
+    if (!jellyRef.current) return;
+
+    gsap.killTweensOf(jellyRef.current); // stop any ongoing animations
+
+    gsap.fromTo(
+      jellyRef.current,
+      { scale: 1 },
+      {
+        scale: 2,          // expand to 2x
+        duration: 0.1,     // very fast expand
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 1,         // go back instantly
+        duration: 0.15,
+        ease: "power2.inOut",
+      }
+    );
+  };
   // Run on Mouse Move
   useLayoutEffect(() => {
     if (isMobile) return;
