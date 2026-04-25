@@ -189,7 +189,7 @@ const PhoenixModel = () => {
         <pointLight position={[10, 10, 10]} intensity={10} color="#6366f1" />
         <Suspense fallback={null}>
           <Float speed={4} rotationIntensity={0.5} floatIntensity={0.5}>
-            <Model scale={isMobile ? 0.005 : 0.005} />
+            <Model scale={isMobile ? 0.05 : 0.05} />
           </Float>
         </Suspense>
       </Canvas>
