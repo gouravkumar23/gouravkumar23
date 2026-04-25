@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, animate } from "framer-motion";
 
 const InteractiveGrid = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const scale = useMotionValue(1);
 
   const springConfig = { damping: 25, stiffness: 150 };
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
+  const springScale = useSpring(scale, { damping: 15, stiffness: 200 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -27,14 +29,26 @@ const InteractiveGrid = () => {
       mouseY.set(e.touches[0].clientY - rect.top);
     };
 
+    const handleMouseDown = () => {
+      animate(scale, 2.5, { duration: 0.1, ease: "easeOut" });
+    };
+
+    const handleMouseUp = () => {
+      animate(scale, 1, { duration: 0.4, ease: "backOut" });
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, scale]);
 
   return (
     <div 
@@ -59,6 +73,7 @@ const InteractiveGrid = () => {
         style={{
           x,
           y,
+          scale: springScale,
           translateX: "-50%",
           translateY: "-50%",
           background: "radial-gradient(circle, rgba(var(--brand-rgb), 0.4) 0%, transparent 70%)",
