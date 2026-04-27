@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 import { EmailTemplate } from '@/components/email-template';
 import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = 'force-dynamic';
 
 const EmailSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -27,6 +27,8 @@ export async function POST(req: Request) {
     if (!process.env.RESEND_API_KEY) {
       return Response.json({ error: "Resend API Key is missing. Please set RESEND_API_KEY in your environment variables." }, { status: 500 });
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data, error } = await resend.emails.send({
       from: 'Portfolio <onboarding@resend.dev>',
