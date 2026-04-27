@@ -1,4 +1,8 @@
+import { Resend } from 'resend';
+import { EmailTemplate } from '@/components/email-template';
 import { z } from "zod";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const EmailSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -20,41 +24,22 @@ export async function POST(req: Request) {
 
     const { fullName, email, message } = result.data;
 
-    // Using the Render mailing service API
-    const response = await fetch("https://qwertymailingservice.onrender.com/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.MAILING_SERVICE_API_KEY || "YOUR_SERVICE_API_KEY",
-      },
-      body: JSON.stringify({
-        to: ["gunjarigourav@gmail.com"],
-        subject: `Portfolio Contact: ${fullName}`,
-        html: `
-          <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 10px; max-width: 600px;">
-            <h2 style="color: #ff6400; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Portfolio Message</h2>
-            <p><strong>From:</strong> ${fullName}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 20px;">
-              <p style="white-space: pre-wrap; line-height: 1.6; color: #333;">${message}</p>
-            </div>
-            <p style="font-size: 12px; color: #888; margin-top: 30px;">Sent from your portfolio contact form.</p>
-          </div>
-        `,
-        from: {
-          name: "Portfolio Contact"
-        }
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      return Response.json({ 
-        error: errorData.message || "Mailing service error" 
-      }, { status: response.status });
+    if (!process.env.RESEND_API_KEY) {
+      return Response.json({ error: "Resend API Key is missing. Please set RESEND_API_KEY in your environment variables." }, { status: 500 });
     }
 
-    return Response.json({ success: true });
+    const { data, error } = await resend.emails.send({
+      from: 'Portfolio <onboarding@resend.dev>',
+      to: ['gunjarigourav@gmail.com'],
+      subject: `New Message from ${fullName}`,
+      react: EmailTemplate({ fullName, email, message }),
+    });
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 400 });
+    }
+
+    return Response.json({ success: true, data });
   } catch (error) {
     console.error("Email API Error:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
