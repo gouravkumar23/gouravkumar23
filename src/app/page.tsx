@@ -30,19 +30,19 @@ function MainPage() {
   return (
     <SmoothScroll>
       <main className={cn("bg-slate-100 dark:bg-transparent relative min-h-screen")}>
-        {/* Layer 1: Background Phoenix (Non-interactive) */}
+        {/* Layer 1: Interactive Keyboard (Base Layer) */}
         <div className="fixed inset-0 z-[5] pointer-events-none">
-          <PhoenixModel />
-        </div>
-
-        {/* Layer 2: Interactive Keyboard */}
-        <div className="fixed inset-0 z-[10] pointer-events-none">
           <div className="w-full h-full pointer-events-auto">
             <AnimatedBackground />
           </div>
         </div>
 
-        {/* Layer 3: Page Content - pointer-events-none allows interaction with keyboard below */}
+        {/* Layer 2: Phoenix Bird (Middle Layer - Visible above keyboard) */}
+        <div className="fixed inset-0 z-[15] pointer-events-none">
+          <PhoenixModel />
+        </div>
+
+        {/* Layer 3: Page Content (Top Layer) */}
         <div className="relative z-[20] pointer-events-none">
           <HeroSection />
           <EducationSection />

@@ -3,15 +3,17 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
-import { File, Github, Linkedin } from "lucide-react";
+import { FileText, Github, Linkedin } from "lucide-react";
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { config } from "@/data/config";
 import LightningCubes from "../lightning-cubes";
+import ResumeModal from "../resume-modal";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
+  const resumePath = "/resume24April2026.pdf";
 
   return (
     <section id="hero" className={cn("relative w-full min-h-screen flex flex-col justify-center overflow-hidden pointer-events-none")}>
@@ -39,22 +41,22 @@ const HeroSection = () => {
               </BlurIn>
               
               <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto pointer-events-auto">
-                <Link href="/resume24April2026.pdf" target="_blank" className="w-full sm:w-auto">
-                  <BoxReveal delay={2} width="100%">
-                    <Button className="flex items-center justify-center gap-2 w-full h-12 px-8 text-lg">
-                      <File size={20} />
-                      Resume
+                <BoxReveal delay={2} width="100%">
+                  <ResumeModal resumeUrl={resumePath}>
+                    <Button className="flex items-center justify-center gap-2 w-full h-12 px-8 text-lg bg-brand hover:bg-brand/90 text-white">
+                      <FileText size={20} />
+                      View Resume
                     </Button>
-                  </BoxReveal>
-                </Link>
+                  </ResumeModal>
+                </BoxReveal>
                 <div className="flex gap-3 justify-center">
                   <Link href={config.social.github} target="_blank">
-                    <Button variant="outline" size="icon" className="h-12 w-12">
+                    <Button variant="outline" size="icon" className="h-12 w-12 border-zinc-700 hover:border-brand transition-colors">
                       <Github size={24} />
                     </Button>
                   </Link>
                   <Link href={config.social.linkedin} target="_blank">
-                    <Button variant="outline" size="icon" className="h-12 w-12">
+                    <Button variant="outline" size="icon" className="h-12 w-12 border-zinc-700 hover:border-brand transition-colors">
                       <Linkedin size={24} />
                     </Button>
                   </Link>
