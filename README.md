@@ -89,7 +89,7 @@ I am a passionate developer specializing in building intelligent systems, distri
 
 - 📧 **Email:** [gunjarigourav@gmail.com](mailto:gunjarigourav@gmail.com)
 - 🔗 **LinkedIn:** [linkedin.com/in/gunjari-gourav-kumar](https://linkedin.com/in/gunjari-gourav-kumar)
-- 🌐 **Portfolio:** [gouravkumar23.github.io/profile](https://gouravkumar23.github.io/profile)
+- 🌐 **Portfolio:** [gouravkumar23.vercel.app](https://gouravkumar23.vercel.app)
 
 ---
 
