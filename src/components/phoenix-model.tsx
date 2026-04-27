@@ -156,8 +156,8 @@ function Model({ scale = 0.02, ...props }: any) {
     tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section) - Centered in viewport (y: -2)
-    tl.to(group.current.position, { x: 0, y: -2, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section) - Moved lower (y: -8) to avoid keyboard overlap
+    tl.to(group.current.position, { x: 0, y: -8, z: 5, duration: 10, ease: "power1.inOut" });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
