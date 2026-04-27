@@ -123,6 +123,8 @@ function Model({ scale = 0.02, ...props }: any) {
   useEffect(() => {
     if (!group.current) return;
 
+    const isMobile = window.innerWidth < 768;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: "body",
@@ -156,8 +158,15 @@ function Model({ scale = 0.02, ...props }: any) {
     tl.set(group.current.position, { x: -30, y: 5, z: -5 });
     tl.to(group.current.scale, { x: 1, y: 1, z: 1, duration: 0.5 });
 
-    // 6. Pass 3: Final Glide to Center (Contact Section) - Moved lower (y: -8) to avoid keyboard overlap
-    tl.to(group.current.position, { x: 0, y: -8, z: 5, duration: 10, ease: "power1.inOut" });
+    // 6. Pass 3: Final Glide to Center (Contact Section)
+    // On mobile, we move it even further down (y: -15) to avoid clashing with the keyboard
+    tl.to(group.current.position, { 
+      x: 0, 
+      y: isMobile ? -15 : -8, 
+      z: 5, 
+      duration: 10, 
+      ease: "power1.inOut" 
+    });
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());

@@ -30,16 +30,16 @@ function MainPage() {
   return (
     <SmoothScroll>
       <main className={cn("bg-slate-100 dark:bg-transparent relative min-h-screen")}>
-        {/* Layer 1: Interactive Keyboard (Base Layer) */}
+        {/* Layer 1: Phoenix Bird (Base Layer) */}
         <div className="fixed inset-0 z-[10] pointer-events-none">
+          <PhoenixModel />
+        </div>
+
+        {/* Layer 2: Interactive Keyboard (Middle Layer) */}
+        <div className="fixed inset-0 z-[15] pointer-events-none">
           <div className="w-full h-full pointer-events-auto">
             <AnimatedBackground />
           </div>
-        </div>
-
-        {/* Layer 2: Phoenix Bird (Middle Layer) */}
-        <div className="fixed inset-0 z-[15] pointer-events-none">
-          <PhoenixModel />
         </div>
 
         {/* Layer 3: Page Content (Top Layer) */}
