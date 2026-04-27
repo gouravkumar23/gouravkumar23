@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { EmailTemplate } from '@/components/email-template';
 import { z } from "zod";
+import * as React from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,36 +15,46 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     
+    // 1. Validate input
     const result = EmailSchema.safeParse(body);
 
     if (!result.success) {
-      return Response.json({ 
-        error: result.error.errors.map(e => e.message).join(", ") 
-      }, { status: 400 });
+      const errorMsg = result.error.errors.map(e => e.message).join(", ");
+      console.error("Validation Error:", errorMsg);
+      return Response.json({ error: errorMsg }, { status: 400 });
     }
 
     const { fullName, email, message } = result.data;
 
+    // 2. Check API Key
     if (!process.env.RESEND_API_KEY) {
-      return Response.json({ error: "Resend API Key is missing. Please set RESEND_API_KEY in your environment variables." }, { status: 500 });
+      console.error("Missing RESEND_API_KEY");
+      return Response.json({ error: "Server configuration error: Missing API Key" }, { status: 500 });
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
+    // 3. Send Email
+    // Note: Using 'onboarding@resend.dev' requires the 'to' address to be your Resend account email
     const { data, error } = await resend.emails.send({
-      from: 'Portfolio <onboarding@resend.dev>',
+      from: 'Contact Form <onboarding@resend.dev>',
       to: ['gunjarigourav@gmail.com'],
       subject: `New Message from ${fullName}`,
-      react: EmailTemplate({ fullName, email, message }),
+      react: React.createElement(EmailTemplate, {
+        fullName,
+        email,
+        message,
+      }),
     });
 
     if (error) {
+      console.error("Resend API Error:", error);
       return Response.json({ error: error.message }, { status: 400 });
     }
 
     return Response.json({ success: true, data });
   } catch (error) {
-    console.error("Email API Error:", error);
+    console.error("Unexpected Error:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
