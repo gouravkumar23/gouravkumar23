@@ -1,7 +1,7 @@
-import { Resend } from 'resend';
 import { EmailTemplate } from '@/components/email-template';
 import { z } from "zod";
 import * as React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,36 +20,49 @@ export async function POST(req: Request) {
 
     if (!result.success) {
       const errorMsg = result.error.errors.map(e => e.message).join(", ");
-      console.error("Validation Error:", errorMsg);
       return Response.json({ error: errorMsg }, { status: 400 });
     }
 
     const { fullName, email, message } = result.data;
 
     // 2. Check API Key
-    if (!process.env.RESEND_API_KEY) {
-      console.error("Missing RESEND_API_KEY");
+    const apiKey = process.env.MAILING_SERVICE_API_KEY;
+    if (!apiKey) {
+      console.error("Missing MAILING_SERVICE_API_KEY");
       return Response.json({ error: "Server configuration error: Missing API Key" }, { status: 500 });
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    // 3. Send Email
-    // Note: Using 'onboarding@resend.dev' requires the 'to' address to be your Resend account email
-    const { data, error } = await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: ['gunjarigourav@gmail.com'],
-      subject: `New Message from ${fullName}`,
-      react: React.createElement(EmailTemplate, {
+    // 3. Render Template to HTML string
+    const htmlContent = renderToStaticMarkup(
+      React.createElement(EmailTemplate, {
         fullName,
         email,
         message,
+      })
+    );
+
+    // 4. Send to Custom Mailing Service
+    const response = await fetch("https://qwertymailingservice.onrender.com/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        to: ["gunjarigourav@gmail.com"],
+        subject: `New Portfolio Message from ${fullName}`,
+        html: htmlContent,
+        from: {
+          name: "Portfolio Contact Form"
+        }
       }),
     });
 
-    if (error) {
-      console.error("Resend API Error:", error);
-      return Response.json({ error: error.message }, { status: 400 });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Mailing Service Error:", data);
+      return Response.json({ error: data.message || "Failed to send email" }, { status: response.status });
     }
 
     return Response.json({ success: true, data });
