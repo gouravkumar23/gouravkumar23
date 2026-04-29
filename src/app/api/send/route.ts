@@ -1,7 +1,5 @@
-import { EmailTemplate } from '@/components/email-template';
+import { getEmailHtml } from '@/components/email-template';
 import { z } from "zod";
-import * as React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,14 +30,12 @@ export async function POST(req: Request) {
       return Response.json({ error: "Server configuration error: Missing API Key" }, { status: 500 });
     }
 
-    // 3. Render Template to HTML string
-    const htmlContent = renderToStaticMarkup(
-      React.createElement(EmailTemplate, {
-        fullName,
-        email,
-        message,
-      })
-    );
+    // 3. Generate HTML string
+    const htmlContent = getEmailHtml({
+      fullName,
+      email,
+      message,
+    });
 
     // 4. Send to Custom Mailing Service
     const response = await fetch("https://qwertymailingservice.onrender.com/send-email", {
