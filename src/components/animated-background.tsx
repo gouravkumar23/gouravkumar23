@@ -135,13 +135,10 @@ const AnimatedBackground = () => {
   const safeSetVariable = (name: string, value: any) => {
     if (!splineApp) return;
     try {
-      // Only attempt to set if the variable exists to avoid console warnings
       if (splineApp.getVariable(name) !== undefined) {
         splineApp.setVariable(name, value);
       }
-    } catch (e) {
-      // Silently fail if variable doesn't exist
-    }
+    } catch (e) {}
   };
 
   const handleMouseHover = (e: SplineEvent) => {
@@ -159,14 +156,12 @@ const AnimatedBackground = () => {
     }
   };
 
-  // handle keyboard press interaction
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
     safeSetVariable("heading", selectedSkill.label);
     safeSetVariable("desc", selectedSkill.shortDescription);
   }, [selectedSkill]);
 
-  // handle keyboard heading and desc visibility
   useEffect(() => {
     if (!splineApp) return;
     const textDesktopDark = splineApp.findObjectByName("text-desktop-dark");
@@ -210,7 +205,6 @@ const AnimatedBackground = () => {
     }
   }, [theme, splineApp, isMobile, activeSection]);
 
-  // initialize gsap animations
   useEffect(() => {
     handleSplineInteractions();
     handleGsapAnimations();
@@ -238,7 +232,6 @@ const AnimatedBackground = () => {
         kbd.rotation,
         {
           y: 0,
-          // x: -Math.PI,
           x: -Math.PI,
           z: 0,
         },
@@ -248,7 +241,6 @@ const AnimatedBackground = () => {
           repeat: -1,
           yoyo: true,
           yoyoEase: true,
-          // ease: "none",
           delay: 2.5,
           immediateRender: false,
           paused: true,
@@ -293,13 +285,14 @@ const AnimatedBackground = () => {
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
   const router = useRouter();
-  //reveal keycaps
+  
   useEffect(() => {
     const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
     router.push("/" + hash, { scroll: false });
     if (!splineApp || isLoading || keyboardRevealed) return;
     revealKeyCaps();
   }, [splineApp, isLoading, activeSection]);
+
   const revealKeyCaps = async () => {
     if (!splineApp) return;
     const kbd = splineApp.findObjectByName("keyboard");
@@ -308,7 +301,7 @@ const AnimatedBackground = () => {
     await sleep(400);
     kbd.visible = true;
     setKeyboardRevealed(true);
-    console.log(activeSection);
+    
     gsap.fromTo(
       kbd?.scale,
       { x: 0.01, y: 0.01, z: 0.01 },
@@ -320,7 +313,6 @@ const AnimatedBackground = () => {
         ease: "elastic.out(1, 0.6)",
       }
     );
-    // }
 
     const allObjects = splineApp.getAllObjects();
     const keycaps = allObjects.filter((obj) => obj.name === "keycap");
@@ -352,6 +344,7 @@ const AnimatedBackground = () => {
       );
     });
   };
+
   const handleSplineInteractions = () => {
     if (!splineApp) return;
     splineApp.addEventListener("keyUp", (e) => {
@@ -369,6 +362,7 @@ const AnimatedBackground = () => {
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
   };
+
   const handleGsapAnimations = () => {
     if (!splineApp) return;
     const kbd: SPEObject | undefined = splineApp.findObjectByName("keyboard");
@@ -385,7 +379,6 @@ const AnimatedBackground = () => {
         start: "top 50%",
         end: "bottom bottom",
         scrub: true,
-        // markers: true,
         onEnter: () => {
           setActiveSection("skills");
           gsap.to(kbd.scale, {
@@ -412,7 +405,6 @@ const AnimatedBackground = () => {
             ...keyboardStates("hero").rotation,
             duration: 1,
           });
-          // gsap.to(kbd.rotation, { x: 0, duration: 1 });
         },
       },
     });
@@ -422,7 +414,6 @@ const AnimatedBackground = () => {
         start: "top 70%",
         end: "bottom bottom",
         scrub: true,
-        // markers: true,
         onEnter: () => {
           setActiveSection("projects");
           gsap.to(kbd.scale, {
@@ -452,7 +443,6 @@ const AnimatedBackground = () => {
             ...keyboardStates("skills").rotation,
             duration: 1,
           });
-          // gsap.to(kbd.rotation, { x: 0, duration: 1 });
         },
       },
     });
@@ -462,7 +452,6 @@ const AnimatedBackground = () => {
         start: "top 30%",
         end: "bottom bottom",
         scrub: true,
-        // markers: true,
         onEnter: () => {
           setActiveSection("contact");
           gsap.to(kbd.scale, {
@@ -492,11 +481,11 @@ const AnimatedBackground = () => {
             ...keyboardStates("projects").rotation,
             duration: 1,
           });
-          // gsap.to(kbd.rotation, { x: 0, duration: 1 });
         },
       },
     });
   };
+
   const getBongoAnimation = () => {
     const framesParent = splineApp?.findObjectByName("bongo-cat");
     const frame1 = splineApp?.findObjectByName("frame-1");
@@ -527,6 +516,7 @@ const AnimatedBackground = () => {
     };
     return { start, stop };
   };
+
   const getKeycapsAnimation = () => {
     if (!splineApp) return { start: () => {}, stop: () => {} };
 
@@ -570,6 +560,7 @@ const AnimatedBackground = () => {
     };
     return { start, stop };
   };
+
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
@@ -579,7 +570,7 @@ const AnimatedBackground = () => {
             setSplineApp(app);
             bypassLoading();
           }}
-          scene="/assets/skills-keyboard.spline"
+          scene="/assets/skills-keyboard.splinecode"
         />
       </Suspense>
     </>
