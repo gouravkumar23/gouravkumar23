@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       message,
     });
 
-    // 4. Send to Custom Mailing Service
+    // 4. Send to Custom Mailing Service using minimum required parameters
     const response = await fetch("https://qwertymailingservice.onrender.com/send-email", {
       method: "POST",
       headers: {
@@ -48,9 +48,6 @@ export async function POST(req: Request) {
         to: ["gunjarigourav@gmail.com"],
         subject: `New Portfolio Message from ${fullName}`,
         html: htmlContent,
-        from: {
-          name: "Portfolio Contact Form"
-        }
       }),
     });
 
