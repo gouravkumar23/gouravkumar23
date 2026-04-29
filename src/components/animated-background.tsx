@@ -132,15 +132,25 @@ const AnimatedBackground = () => {
     return STATES[section][isMobile ? "mobile" : "desktop"];
   };
 
+  const safeSetVariable = (name: string, value: any) => {
+    if (!splineApp) return;
+    try {
+      // Only attempt to set if the variable exists to avoid console warnings
+      if (splineApp.getVariable(name) !== undefined) {
+        splineApp.setVariable(name, value);
+      }
+    } catch (e) {
+      // Silently fail if variable doesn't exist
+    }
+  };
+
   const handleMouseHover = (e: SplineEvent) => {
     if (!splineApp || selectedSkill?.name === e.target.name) return;
 
     if (e.target.name === "body" || e.target.name === "platform") {
       setSelectedSkill(null);
-      if (splineApp.getVariable("heading") && splineApp.getVariable("desc")) {
-        splineApp.setVariable("heading", "");
-        splineApp.setVariable("desc", "");
-      }
+      safeSetVariable("heading", "");
+      safeSetVariable("desc", "");
     } else {
       if (!selectedSkill || selectedSkill.name !== e.target.name) {
         const skill = SKILLS[e.target.name as SkillNames];
@@ -152,8 +162,8 @@ const AnimatedBackground = () => {
   // handle keyboard press interaction
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
-    splineApp.setVariable("heading", selectedSkill.label);
-    splineApp.setVariable("desc", selectedSkill.shortDescription);
+    safeSetVariable("heading", selectedSkill.label);
+    safeSetVariable("desc", selectedSkill.shortDescription);
   }, [selectedSkill]);
 
   // handle keyboard heading and desc visibility
@@ -255,8 +265,8 @@ const AnimatedBackground = () => {
       }
       if (activeSection === "skills") {
       } else {
-        splineApp.setVariable("heading", "");
-        splineApp.setVariable("desc", "");
+        safeSetVariable("heading", "");
+        safeSetVariable("desc", "");
       }
       if (activeSection === "projects") {
         await sleep(300);
@@ -345,16 +355,17 @@ const AnimatedBackground = () => {
   const handleSplineInteractions = () => {
     if (!splineApp) return;
     splineApp.addEventListener("keyUp", (e) => {
-      if (!splineApp) return;
-      splineApp.setVariable("heading", "");
-      splineApp.setVariable("desc", "");
+      safeSetVariable("heading", "");
+      safeSetVariable("desc", "");
     });
     splineApp.addEventListener("keyDown", (e) => {
       if (!splineApp) return;
       const skill = SKILLS[e.target.name as SkillNames];
-      if (skill) setSelectedSkill(skill);
-      splineApp.setVariable("heading", skill.label);
-      splineApp.setVariable("desc", skill.shortDescription);
+      if (skill) {
+        setSelectedSkill(skill);
+        safeSetVariable("heading", skill.label);
+        safeSetVariable("desc", skill.shortDescription);
+      }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
   };
