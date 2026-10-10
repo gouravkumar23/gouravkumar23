@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/app1",
+      "destination": "https://tirupathi-plan.vercel.app"
+    },
+    {
+      "source": "/app1/:path*",
+      "destination": "https://tirupathi-plan.vercel.app/:path*"
+    },
+    {
+      "source": "/tirupathi",
+      "destination": "https://tirupathi-plan.vercel.app"
+    },
+    {
+      "source": "/tirupathi/:path*",
+      "destination": "https://tirupathi-plan.vercel.app/:path*"
+    },
+    {
+      "source": "/trip",
+      "destination": "https://tirupathi-plan.vercel.app"
+    },
+    {
+      "source": "/trip/:path*",
+      "destination": "https://tirupathi-plan.vercel.app/:path*"
+    }
+  ]
+}
